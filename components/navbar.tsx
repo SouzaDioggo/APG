@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Menu, X } from "lucide-react"
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "Treinamentos", href: "#treinamentos" },
-    { name: "Consultoria", href: "#consultoria" },
-    { name: "Cursos", href: "#cursos" },
-  ]
+    { name: "Home", href: "/" },
+    { name: "Treinamentos", href: "treinamentos" },
+    { name: "Consultoria", href: "consultoria" },
+    { name: "Cursos", href: "cursos" },
+  ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-950 text-white">
+    <nav className="sticky top-0 left-0 right-0 z-50 bg-gray-950 text-white">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -38,7 +38,11 @@ export function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button className="md:hidden" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+          <button
+            className="md:hidden"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -60,5 +64,5 @@ export function Navbar() {
         )}
       </div>
     </nav>
-  )
+  );
 }
