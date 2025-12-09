@@ -1,8 +1,15 @@
 import { Play } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 export function AboutSection() {
-  const highlights = [
+  const originalHighlights = [
     {
       image: "/modern-office-meeting.png",
       title: "Estratégias de Gestão",
@@ -19,6 +26,10 @@ export function AboutSection() {
       subtitle: "Resultados mensuráveis",
     },
   ]
+
+  // AQUI ESTÁ O TRUQUE: Duplicamos a lista para garantir que o loop funcione
+  const highlights = [...originalHighlights, ...originalHighlights]
+
 
   return (
     <section className="py-24 bg-white">
@@ -52,20 +63,41 @@ export function AboutSection() {
           </p>
         </div>
 
-        {/* Highlights Grid (Mantido igual) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {highlights.map((item, index) => (
-            <Card key={index} className="overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <div className="aspect-4/3 overflow-hidden">
-                <img src={item.image || "/placeholder.svg"} alt={item.title} className="w-full h-full object-cover" />
-              </div>
-              <div className="p-6 text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                <p className="text-gray-600 text-sm">{item.subtitle}</p>
-              </div>
-            </Card>
-          ))}
+        {/* CARROSSEL DOS DESTAQUES */}
+        <div className="flex justify-center px-4 md:px-12">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full max-w-5xl"
+          >
+            <CarouselContent className="-ml-4">
+              {highlights.map((item, index) => (
+                <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                  <div className="p-1 h-full">
+                    <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+                      <div className="aspect-4/3 overflow-hidden">
+                        <img 
+                          src={item.image || "/placeholder.svg"} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
+                        />
+                      </div>
+                      <div className="p-6 text-center flex-1 flex flex-col justify-center">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                        <p className="text-gray-600 text-sm">{item.subtitle}</p>
+                      </div>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </div>
+
       </div>
     </section>
   )
