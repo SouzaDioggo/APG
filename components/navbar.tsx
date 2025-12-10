@@ -8,7 +8,6 @@ export function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Treinamentos", href: "treinamentos" },
     { name: "Consultoria", href: "consultoria" },
     { name: "Cursos", href: "cursos" },
   ];
