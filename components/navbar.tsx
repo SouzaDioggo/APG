@@ -8,7 +8,6 @@ export function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Consultoria", href: "consultoria" },
     { name: "Cursos", href: "cursos" },
   ];
 
@@ -35,7 +34,7 @@ export function Navbar() {
               </a>
             ))}
           </div>
-
+          
           {/* Mobile Menu Button */}
           <button
             className="md:hidden"

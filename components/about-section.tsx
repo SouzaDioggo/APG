@@ -1,4 +1,7 @@
-import { Play } from "lucide-react"
+"use client"
+
+import { useState } from "react"
+import { ChevronRight, ChevronDown } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import {
   Carousel,
@@ -9,6 +12,9 @@ import {
 } from "@/components/ui/carousel"
 
 export function AboutSection() {
+  const [isQuemSomosOpen, setIsQuemSomosOpen] = useState(false)
+  const [isOQueFazemosOpen, setIsOQueFazemosOpen] = useState(false)
+
   const originalHighlights = [
     {
       image: "/modern-office-meeting.png",
@@ -27,9 +33,7 @@ export function AboutSection() {
     },
   ]
 
-  // AQUI ESTÁ O TRUQUE: Duplicamos a lista para garantir que o loop funcione
   const highlights = [...originalHighlights, ...originalHighlights]
-
 
   return (
     <section className="py-24 bg-white">
@@ -37,30 +41,68 @@ export function AboutSection() {
         
         {/* TÓPICO 1: QUEM SOMOS */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <Play className="w-6 h-6 text-black/62 fill-purple-600" />
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Quem Somos</h2>
+          <button 
+            onClick={() => setIsQuemSomosOpen(!isQuemSomosOpen)}
+            className="flex items-center gap-3 mb-6 group cursor-pointer focus:outline-none"
+          >
+            {isQuemSomosOpen ? (
+              <ChevronDown className="w-8 h-8 text-purple-600 transition-transform duration-300" />
+            ) : (
+              <ChevronRight className="w-8 h-8 text-purple-600 transition-transform duration-300" />
+            )}
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors">
+              Quem Somos
+            </h2>
+          </button>
+          
+          {/* Animação com Grid */}
+          <div 
+            className={`grid transition-all duration-500 ease-in-out ${
+              isQuemSomosOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <p className="text-gray-600 text-lg leading-relaxed max-w-4xl ml-11">
+                Na APG, somos parceiros estratégicos na jornada de crescimento sustentável. 
+                Nossa identidade é formada pela combinação de expertise técnica com visão estratégica, 
+                atuando com foco total em resultados mensuráveis. Acreditamos no potencial das equipes 
+                e na busca constante pela excelência operacional em um mercado cada vez mais competitivo.
+              </p>
+            </div>
           </div>
-          <p className="text-gray-600 text-lg leading-relaxed max-w-4xl">
-            Na APG, somos parceiros estratégicos na jornada de crescimento sustentável. 
-            Nossa identidade é formada pela combinação de expertise técnica com visão estratégica, 
-            atuando com foco total em resultados mensuráveis. Acreditamos no potencial das equipes 
-            e na busca constante pela excelência operacional em um mercado cada vez mais competitivo.
-          </p>
         </div>
 
         {/* TÓPICO 2: O QUE FAZEMOS */}
         <div className="mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <Play className="w-6 h-6 text-black/62 fill-purple-600" />
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">O Que Fazemos</h2>
+          <button 
+            onClick={() => setIsOQueFazemosOpen(!isOQueFazemosOpen)}
+            className="flex items-center gap-3 mb-6 group cursor-pointer focus:outline-none"
+          >
+            {isOQueFazemosOpen ? (
+              <ChevronDown className="w-8 h-8 text-purple-600 transition-transform duration-300" />
+            ) : (
+              <ChevronRight className="w-8 h-8 text-purple-600 transition-transform duration-300" />
+            )}
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors">
+              O Que Fazemos
+            </h2>
+          </button>
+
+          {/* Animação com Grid */}
+          <div 
+            className={`grid transition-all duration-500 ease-in-out ${
+              isOQueFazemosOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <p className="text-gray-600 text-lg leading-relaxed max-w-4xl ml-11">
+                Na APG, somos parceiros estratégicos na jornada de crescimento sustentável. 
+                Nossa identidade é formada pela combinação de expertise técnica com visão estratégica, 
+                atuando com foco total em resultados mensuráveis. Acreditamos no potencial das equipes 
+                e na busca constante pela excelência operacional em um mercado cada vez mais competitivo.
+              </p>
+            </div>
           </div>
-          <p className="text-gray-600 text-lg leading-relaxed max-w-4xl">
-            Na APG, somos parceiros estratégicos na jornada de crescimento sustentável. 
-            Nossa identidade é formada pela combinação de expertise técnica com visão estratégica, 
-            atuando com foco total em resultados mensuráveis. Acreditamos no potencial das equipes 
-            e na busca constante pela excelência operacional em um mercado cada vez mais competitivo.
-          </p>
         </div>
 
         {/* CARROSSEL DOS DESTAQUES */}
@@ -77,7 +119,7 @@ export function AboutSection() {
                 <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
                   <div className="p-1 h-full">
                     <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
-                      <div className="aspect-4/3 overflow-hidden">
+                      <div className="aspect-4/3 overflow-hidden relative">
                         <img 
                           src={item.image || "/placeholder.svg"} 
                           alt={item.title} 
