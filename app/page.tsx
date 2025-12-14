@@ -4,19 +4,33 @@ import { AboutSection } from "@/components/about-section"
 import { FeatureBanner } from "@/components/feature-banner"
 import { TestimonialsSection } from "@/components/testimonials-section" 
 import { FloatingElements } from "@/components/floating-elements"
+import { ScrollReveal } from "@/components/scroll-reveal" // Importe o novo componente
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
+      {/* Navbar e Hero (Fundo) sem animação, aparecem instantaneamente */}
       <Navbar />
       <HeroSection />
-      <AboutSection />
-      <FeatureBanner />
+
+      {/* As seções abaixo só animam quando você rolar até elas */}
       
-      {/* 2. Coloque o componente onde deseja que ele apareça na tela */}
-      <TestimonialsSection /> 
+      <ScrollReveal>
+        <AboutSection />
+      </ScrollReveal>
+
+      <ScrollReveal delay="0.2s">
+        <FeatureBanner />
+      </ScrollReveal>
       
-      <FloatingElements />
+      <ScrollReveal>
+        <TestimonialsSection /> 
+      </ScrollReveal>
+      
+      {/* O botão flutuante também pode ter animação se desejar, ou deixe fixo */}
+      <div className="animate-fade-in-up" style={{ animationDelay: "1s" }}>
+        <FloatingElements />
+      </div>
     </main>
   )
 }
