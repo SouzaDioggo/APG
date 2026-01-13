@@ -28,9 +28,9 @@ export default function Home() {
       </ScrollReveal>
       
       {/* O botão flutuante também pode ter animação se desejar, ou deixe fixo */}
-      <div className="animate-fade-in-up" style={{ animationDelay: "1s" }}>
+
         <FloatingElements />
-      </div>
+
     </main>
   )
 }
