@@ -45,13 +45,13 @@ export function CoursesSection() {
               key={index}
               className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
             >
-              <div className="relative aspect-[3/2] overflow-hidden bg-gradient-to-br from-purple-600 to-blue-600">
+              <div className="relative aspect-3/2 overflow-hidden bg-linear-to-br from-purple-600 to-blue-600">
                 <img
                   src={course.image || "/placeholder.svg"}
                   alt={course.title}
                   className="w-full h-full object-cover opacity-80"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-gray-900/60 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <h3 className="text-white font-bold text-lg leading-tight">{course.title}</h3>
                 </div>

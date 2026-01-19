@@ -120,7 +120,7 @@ export function AboutSection() {
                 <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
                   <div className="p-1 h-full">
                     <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
-                      {/* ALTERAÇÃO 2: Adicionei 'border-b border-gray-200' para delimitar a foto */}
+                      
                       <div className="aspect-4/3 overflow-hidden relative border-b border-gray-200">
                         <img 
                           src={item.image || "/placeholder.svg"} 

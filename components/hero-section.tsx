@@ -19,9 +19,9 @@ export function HeroSection() {
       {/* Conteúdo (Logo Centralizado) */}
       <div className="relative z-10 w-full px-6 flex justify-center items-center">
         <img
-          src="/LOGO APG COLORIDO.png"
+          src="/LOGO APG NEGATIVO.png"
           alt="APG - Educação Empresarial & Treinamento"
-          className="w-full max-w-[500px] md:max-w-[700px] h-auto object-contain drop-shadow-2xl animate-fade-in-up"
+          className="w-full max-w-[300px] md:max-w-[500px] h-auto object-contain drop-shadow-2xl animate-fade-in-up"
         />
       </div>
     </section>

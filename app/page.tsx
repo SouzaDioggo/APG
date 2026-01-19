@@ -4,7 +4,7 @@ import { AboutSection } from "@/components/about-section"
 import { FeatureBanner } from "@/components/feature-banner"
 import { TestimonialsSection } from "@/components/testimonials-section" 
 import { FloatingElements } from "@/components/floating-elements"
-import { ScrollReveal } from "@/components/scroll-reveal" // Importe o novo componente
+import { ScrollReveal } from "@/components/scroll-reveal"
 
 export default function Home() {
   return (
@@ -24,7 +24,7 @@ export default function Home() {
       </ScrollReveal>
       
       <ScrollReveal>
-        <TestimonialsSection /> 
+        <TestimonialsSection />
       </ScrollReveal>
       
       {/* O botão flutuante também pode ter animação se desejar, ou deixe fixo */}

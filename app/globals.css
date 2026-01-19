@@ -121,8 +121,31 @@
   }
   body {
     @apply bg-background text-foreground;
-    zoom: 85%;
+    zoom: 87%;
   }
+  .animate-fade-in-up {
+  animation: fadeInUp 4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    zoom: 87%;
+  }
+  
+  /* Adicione isto aqui dentro */
+  html {
+    -ms-overflow-style: none; /* IE e Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+  
 }
 
 @keyframes fadeInUp {
@@ -136,6 +159,4 @@
   }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
+
