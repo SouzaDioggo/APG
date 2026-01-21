@@ -25,59 +25,59 @@ export function Navbar() {
   ];
 
   const coursesList = [
-    "Liderança e Gestão de Equipes",
-    "Estratégias de Marketing Digital",
-    "Gestão de Projetos e Metodologias Ágeis",
-    "Inteligência Emocional no Trabalho",
-    "Técnicas Avançadas de Negociação",
-    "Inovação e Transformação Digital"
+    { name: "Liderança e Gestão de Equipes", href: "/cursos#lideranca-gestao-equipes" },
+    { name: "Estratégias de Marketing Digital", href: "/cursos#estrategias-marketing-digital" },
+    { name: "Gestão de Projetos e Metodologias Ágeis", href: "/cursos#gestao-projetos-ageis" },
+    { name: "Inteligência Emocional no Trabalho", href: "/cursos#inteligencia-emocional" },
+    { name: "Técnicas Avançadas de Negociação", href: "/cursos#tecnicas-negociacao" },
+    { name: "Inovação e Transformação Digital", href: "/cursos#inovacao-transformacao-digital" }
   ];
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 bg-gray-950 text-white">
-      {/* AUMENTADO: Padding vertical alterado de py-4 para py-6 */}
-      <div className="container mx-auto px-6 py-6">
+    <nav className="sticky top-0 left-0 right-0 z-50 bg-slate-950 text-white border-b border-slate-800">
+      {/* Padding refinado para visual mais profissional */}
+      <div className="container mx-auto px-6 py-5">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <a href="/" className="block">
-              {/* AUMENTADO: Altura da logo alterada de h-10 para h-16 */}
+            <a href="/" className="block hover:opacity-90 transition-opacity">
+              {/* Logo refinada */}
               <img 
                 src="/APG BRANCO.png" 
                 alt="APG Logo" 
-                className="h-16 w-auto object-contain" 
+                className="h-14 w-auto object-contain" 
               />
             </a>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-10"> {/* AUMENTADO: Gap entre itens de 8 para 10 */}
+          <div className="hidden md:flex items-center gap-12">
             {navLinks.map((link) => {
               if (link.hasDropdown) {
                 return (
                   <DropdownMenu key={link.name}>
-                    {/* AUMENTADO: Texto alterado de text-sm para text-lg */}
-                    <DropdownMenuTrigger className="flex items-center gap-2 text-lg font-medium hover:text-purple-400 transition-colors outline-none data-[state=open]:text-purple-400">
+                    {/* Links com transição mais suave */}
+                    <DropdownMenuTrigger className="flex items-center gap-2 text-base font-medium hover:text-purple-300 transition-colors duration-200 outline-none data-[state=open]:text-purple-300">
                       {link.name}
-                      {/* AUMENTADO: Ícone da seta um pouco maior */}
-                      <ChevronDown className="w-5 h-5" />
+                      {/* Ícone com transição */}
+                      <ChevronDown className="w-4 h-4 transition-transform duration-200" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-72 p-2" align="start"> {/* Aumentei a largura do dropdown */}
+                    <DropdownMenuContent className="w-72 p-3 bg-white border border-slate-200 rounded-lg shadow-lg" align="start">
                       {coursesList.map((course, index) => (
                         <DropdownMenuItem key={index} asChild>
                           <a 
-                            href="/cursos" 
-                            // AUMENTADO: Texto interno do dropdown para text-base
-                            className="w-full cursor-pointer hover:bg-gray-100 rounded-sm p-3 text-base font-medium text-gray-700"
+                            href={course.href} 
+                            className="w-full cursor-pointer hover:bg-purple-50 rounded-md p-3 text-sm font-medium text-gray-700 transition-colors duration-150"
+                            onClick={() => setIsOpen(false)}
                           >
-                            {course}
+                            {course.name}
                           </a>
                         </DropdownMenuItem>
                       ))}
-                      <div className="border-t my-1" />
+                      <div className="border-t border-slate-200 my-2" />
                       <DropdownMenuItem asChild>
-                        <a href="/cursos" className="w-full font-bold text-purple-600 cursor-pointer p-3 text-base">
-                          Ver todos os cursos
+                        <a href="/cursos" className="w-full font-semibold text-purple-600 cursor-pointer p-3 text-sm hover:bg-purple-50 rounded-md transition-colors duration-150">
+                          Ver todos os cursos →
                         </a>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -89,8 +89,7 @@ export function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  // AUMENTADO: Texto alterado de text-sm para text-lg
-                  className="text-lg font-medium hover:text-purple-400 transition-colors"
+                  className="text-sm font-medium hover:text-purple-300 transition-colors duration-200"
                 >
                   {link.name}
                 </a>
@@ -100,44 +99,41 @@ export function Navbar() {
           
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden"
+            className="md:hidden text-white hover:opacity-80 transition-opacity"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
-            {/* AUMENTADO: Ícone do menu mobile de 24 para 32 */}
-            {isOpen ? <X size={32} /> : <Menu size={32} />}
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden mt-6 pb-4 border-t border-gray-800">
-            <div className="flex flex-col space-y-2"> {/* Adicionei espaçamento vertical */}
+          <div className="md:hidden mt-4 pb-4 border-t border-slate-800">
+            <div className="flex flex-col space-y-1">
               {navLinks.map((link) => 
                 link.hasDropdown ? (
                   // Opção com Dropdown vira Accordion no Mobile
                   <Accordion key={link.name} type="single" collapsible className="w-full">
                     <AccordionItem value={link.name} className="border-b-0">
-                      {/* AUMENTADO: Texto mobile para text-lg */}
-                      <AccordionTrigger className="py-4 text-lg font-medium hover:text-purple-400 hover:no-underline [&>svg]:text-white [&>svg]:w-6 [&>svg]:h-6">
+                      <AccordionTrigger className="py-3 text-sm font-medium hover:text-purple-300 hover:no-underline [&>svg]:text-white [&>svg]:w-5 [&>svg]:h-5">
                         {link.name}
                       </AccordionTrigger>
                       <AccordionContent>
-                        <div className="flex flex-col space-y-4 pl-4 pb-2 border-l border-gray-800 ml-2">
+                        <div className="flex flex-col space-y-3 pl-4 pb-2 border-l border-slate-700 ml-2">
                           {coursesList.map((course, i) => (
                             <a
                               key={i}
-                              href="/cursos"
-                              // AUMENTADO: Subitens mobile para text-base
-                              className="text-base text-gray-400 hover:text-purple-400"
+                              href={course.href}
+                              className="text-sm text-gray-300 hover:text-purple-300 transition-colors duration-150"
                               onClick={() => setIsOpen(false)}
                             >
-                              {course}
+                              {course.name}
                             </a>
                           ))}
                           <a 
                             href="/cursos" 
-                            className="text-base font-semibold text-purple-500 pt-2"
+                            className="text-sm font-semibold text-purple-400 pt-1 hover:text-purple-300 transition-colors duration-150"
                             onClick={() => setIsOpen(false)}
                           >
                             Ver todos os cursos →
@@ -151,8 +147,7 @@ export function Navbar() {
                   <a
                     key={link.name}
                     href={link.href}
-                    // AUMENTADO: Texto mobile para text-lg
-                    className="block py-4 text-lg font-medium hover:text-purple-400 transition-colors border-b border-transparent"
+                    className="block py-3 text-sm font-medium hover:text-purple-300 transition-colors duration-150"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.name}

@@ -36,21 +36,21 @@ export function AboutSection() {
   const highlights = [...originalHighlights, ...originalHighlights]
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-28 bg-white">
       <div className="container mx-auto px-6">
         
         {/* TÓPICO 1: QUEM SOMOS */}
-        <div className="mb-12">
+        <div className="mb-16">
           <button 
             onClick={() => setIsQuemSomosOpen(!isQuemSomosOpen)}
-            className="flex items-center gap-3 mb-6 group cursor-pointer focus:outline-none"
+            className="flex items-center gap-3 mb-8 group cursor-pointer focus:outline-none"
           >
             {isQuemSomosOpen ? (
-              <ChevronDown className="w-8 h-8 text-purple-600 transition-transform duration-300" />
+              <ChevronDown className="w-7 h-7 text-purple-600 transition-transform duration-300" />
             ) : (
-              <ChevronRight className="w-8 h-8 text-purple-600 transition-transform duration-300" />
+              <ChevronRight className="w-7 h-7 text-purple-600 transition-transform duration-300" />
             )}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors duration-200">
               Quem Somos
             </h2>
           </button>
@@ -62,7 +62,7 @@ export function AboutSection() {
             }`}
           >
             <div className="overflow-hidden">
-              <p className="text-gray-600 text-lg leading-relaxed max-w-4xl ml-11">
+              <p className="text-gray-600 text-base leading-relaxed max-w-4xl ml-10 font-light">
                 Na APG, somos parceiros estratégicos na jornada de crescimento sustentável. 
                 Nossa identidade é formada pela combinação de expertise técnica com visão estratégica, 
                 atuando com foco total em resultados mensuráveis. Acreditamos no potencial das equipes 
@@ -73,17 +73,17 @@ export function AboutSection() {
         </div>
 
         {/* TÓPICO 2: O QUE FAZEMOS */}
-        <div className="mb-16">
+        <div className="mb-20">
           <button 
             onClick={() => setIsOQueFazemosOpen(!isOQueFazemosOpen)}
-            className="flex items-center gap-3 mb-6 group cursor-pointer focus:outline-none"
+            className="flex items-center gap-3 mb-8 group cursor-pointer focus:outline-none"
           >
             {isOQueFazemosOpen ? (
-              <ChevronDown className="w-8 h-8 text-purple-600 transition-transform duration-300" />
+              <ChevronDown className="w-7 h-7 text-purple-600 transition-transform duration-300" />
             ) : (
-              <ChevronRight className="w-8 h-8 text-purple-600 transition-transform duration-300" />
+              <ChevronRight className="w-7 h-7 text-purple-600 transition-transform duration-300" />
             )}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors duration-200">
               O Que Fazemos
             </h2>
           </button>
@@ -95,7 +95,7 @@ export function AboutSection() {
             }`}
           >
             <div className="overflow-hidden">
-              <p className="text-gray-600 text-lg leading-relaxed max-w-4xl ml-11">
+              <p className="text-gray-600 text-base leading-relaxed max-w-4xl ml-10 font-light">
                 Na APG, somos parceiros estratégicos na jornada de crescimento sustentável. 
                 Nossa identidade é formada pela combinação de expertise técnica com visão estratégica, 
                 atuando com foco total em resultados mensuráveis. Acreditamos no potencial das equipes 
@@ -112,14 +112,13 @@ export function AboutSection() {
               align: "start",
               loop: true,
             }}
-            // ALTERAÇÃO 1: Aumentei para max-w-[1400px] para ficar mais largo na tela
             className="w-full max-w-[1400px]"
           >
             <CarouselContent className="-ml-4">
               {highlights.map((item, index) => (
                 <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
                   <div className="p-1 h-full">
-                    <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+                    <Card className="overflow-hidden hover:shadow-2xl transition-shadow duration-300 h-full flex flex-col border border-gray-200">
                       
                       <div className="aspect-4/3 overflow-hidden relative border-b border-gray-200">
                         <img 
@@ -129,16 +128,16 @@ export function AboutSection() {
                         />
                       </div>
                       <div className="p-6 text-center flex-1 flex flex-col justify-center">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                        <p className="text-gray-600 text-sm">{item.subtitle}</p>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                        <p className="text-gray-600 text-sm font-light">{item.subtitle}</p>
                       </div>
                     </Card>
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
           </Carousel>
         </div>
 

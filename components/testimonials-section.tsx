@@ -13,21 +13,22 @@ export function TestimonialsSection() {
   ]
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-28 bg-white">
       <div className="container mx-auto px-6 text-center">
-        <h2 className="text-3xl font-bold mb-12">O que dizem nossos parceiros</h2>
+        <h2 className="text-4xl font-bold mb-3 text-gray-900">O que dizem nossos parceiros</h2>
+        <p className="text-gray-600 text-base mb-16 max-w-2xl mx-auto font-light">Empresas que confiam em nossa expertise para transformar seus negócios</p>
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((t, i) => (
-            <Card key={i} className="bg-white">
-              <CardContent className="pt-6">
-                <p className="text-gray-600 mb-6">"{t.content}"</p>
-                <div className="flex items-center justify-center gap-4">
-                  <Avatar>
+            <Card key={i} className="bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+              <CardContent className="pt-8">
+                <p className="text-gray-600 mb-6 text-base font-light italic">"{t.content}"</p>
+                <div className="flex items-center justify-center gap-3">
+                  <Avatar className="h-10 w-10">
                     <AvatarImage src={t.avatar} />
-                    <AvatarFallback>{t.name[0]}</AvatarFallback>
+                    <AvatarFallback className="text-xs">{t.name[0]}</AvatarFallback>
                   </Avatar>
                   <div className="text-left">
-                    <p className="font-bold text-sm">{t.name}</p>
+                    <p className="font-semibold text-sm text-gray-900">{t.name}</p>
                     <p className="text-xs text-gray-500">{t.role}</p>
                   </div>
                 </div>
