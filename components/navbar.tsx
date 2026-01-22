@@ -20,6 +20,7 @@ export function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
+    { name: "Sobre", href: "/sobre" },
     { name: "Blog", href: "/blog" },
     { name: "Cursos", href: "/cursos", hasDropdown: true },
   ];

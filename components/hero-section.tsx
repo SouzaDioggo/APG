@@ -12,7 +12,7 @@ export function HeroSection() {
           className="w-full h-full object-cover"
         />
         {/* Overlay com gradiente mais refinado */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/50" />
+        <div className="absolute inset-0 bg-linear-to-br from-black/70 via-black/60 to-black/50" />
       </div>
 
       {/* Conteúdo (Logo Centralizado) */}

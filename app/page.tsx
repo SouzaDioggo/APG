@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
-import { AboutSection } from "@/components/about-section"
+import { BenefitsSection } from "@/components/benefits-section"
 import { FeatureBanner } from "@/components/feature-banner"
 import { TestimonialsSection } from "@/components/testimonials-section" 
 import { FloatingElements } from "@/components/floating-elements"
@@ -17,7 +17,7 @@ export default function Home() {
       {/* As seções abaixo só animam quando você rolar até elas */}
       
       <ScrollReveal>
-        <AboutSection />
+        <BenefitsSection />
       </ScrollReveal>
 
       <ScrollReveal delay="0.2s">

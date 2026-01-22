@@ -164,4 +164,26 @@
   }
 }
 
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes iconBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Animação do ícone apenas no hover do card */
+.group:hover [style*="--icon-animation"] {
+  --icon-animation: iconSpin 2s linear infinite, iconBounce 1.5s ease-in-out infinite !important;
+}
 
