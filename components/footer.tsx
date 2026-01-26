@@ -44,9 +44,9 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/blog" className="text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm font-light">
+                {/* <a href="/blog" className="text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm font-light">
                   Blog
-                </a>
+                </a> ADICIONAR DEPOIS BLOG FUNCIONANDO!! */}
               </li>
             </ul>
           </div>
@@ -106,7 +106,7 @@ export function Footer() {
           </p>
           
           {/* Social Icons */}
-          <div className="flex items-center gap-6">
+          {/* <div className="flex items-center gap-6">
             <a 
               href="https://www.instagram.com/apg_educacao_empresarial/" 
               target="_blank" 
@@ -116,7 +116,7 @@ export function Footer() {
             >
               <Instagram className="w-5 h-5" />
             </a>
-          </div>
+          </div> ICONE DO INSTAGRAM REMOVDO */}
         </div>
       </div>
     </footer>

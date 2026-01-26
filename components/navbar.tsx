@@ -21,7 +21,7 @@ export function Navbar() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Sobre", href: "/sobre" },
-    { name: "Blog", href: "/blog" },
+    // { name: "Blog", href: "/blog" }, ADICIONAR DEPOIS BLOG PRONTO
     { name: "Cursos", href: "/cursos", hasDropdown: true },
   ];
 
