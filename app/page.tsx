@@ -20,9 +20,9 @@ export default function Home() {
         <BenefitsSection />
       </ScrollReveal>
 
-      {/* <ScrollReveal delay="0.2s">
-        <FeatureBanner />
-      </ScrollReveal> ADICIONAR DEPOIS BLOG PORNTO!!! */}
+      { <ScrollReveal delay="0.2s">
+        {/* <FeatureBanner /> */} 
+      </ScrollReveal>}
       
       <ScrollReveal>
         <TestimonialsSection />
