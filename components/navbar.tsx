@@ -21,7 +21,7 @@ export function Navbar() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Sobre", href: "/sobre" },
-    { name: "Blog", href: "/blog" },
+    // { name: "Blog", href: "/blog" },
     { name: "Cursos", href: "/cursos", hasDropdown: true },
   ];
 
@@ -58,7 +58,7 @@ export function Navbar() {
                 return (
                   <DropdownMenu key={link.name}>
                     {/* Links com transição mais suave */}
-                    <DropdownMenuTrigger className="flex items-center gap-2 text-base font-medium hover:text-purple-300 transition-colors duration-200 outline-none data-[state=open]:text-purple-300">
+                    <DropdownMenuTrigger className="flex items-center gap-2 text-base font-medium hover:text-[#c9a961] transition-colors duration-200 outline-none data-[state=open]:text-[#c9a961]">
                       {link.name}
                       {/* Ícone com transição */}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200" />
@@ -68,7 +68,7 @@ export function Navbar() {
                         <DropdownMenuItem key={index} asChild>
                           <a 
                             href={course.href} 
-                            className="w-full cursor-pointer hover:bg-purple-50 rounded-md p-3 text-sm font-medium text-gray-700 transition-colors duration-150"
+                            className="w-full cursor-pointer hover:bg-[#ecf0f1] rounded-md p-3 text-sm font-medium text-gray-700 transition-colors duration-150"
                             onClick={() => setIsOpen(false)}
                           >
                             {course.name}
@@ -77,7 +77,7 @@ export function Navbar() {
                       ))}
                       <div className="border-t border-slate-200 my-2" />
                       <DropdownMenuItem asChild>
-                        <a href="/cursos" className="w-full font-semibold text-purple-600 cursor-pointer p-3 text-sm hover:bg-purple-50 rounded-md transition-colors duration-150">
+                        <a href="/cursos" className="w-full font-semibold text-[#1a4d7a] cursor-pointer p-3 text-sm hover:bg-[#ecf0f1] rounded-md transition-colors duration-150">
                           Ver todos os cursos →
                         </a>
                       </DropdownMenuItem>
@@ -90,7 +90,7 @@ export function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-sm font-medium hover:text-purple-300 transition-colors duration-200"
+                  className="text-sm font-medium hover:text-[#c9a961] transition-colors duration-200"
                 >
                   {link.name}
                 </a>
@@ -117,7 +117,7 @@ export function Navbar() {
                   // Opção com Dropdown vira Accordion no Mobile
                   <Accordion key={link.name} type="single" collapsible className="w-full">
                     <AccordionItem value={link.name} className="border-b-0">
-                      <AccordionTrigger className="py-3 text-sm font-medium hover:text-purple-300 hover:no-underline [&>svg]:text-white [&>svg]:w-5 [&>svg]:h-5">
+                      <AccordionTrigger className="py-3 text-sm font-medium hover:text-[#c9a961] hover:no-underline [&>svg]:text-white [&>svg]:w-5 [&>svg]:h-5">
                         {link.name}
                       </AccordionTrigger>
                       <AccordionContent>
@@ -126,7 +126,7 @@ export function Navbar() {
                             <a
                               key={i}
                               href={course.href}
-                              className="text-sm text-gray-300 hover:text-purple-300 transition-colors duration-150"
+                              className="text-sm text-gray-300 hover:text-[#c9a961] transition-colors duration-150"
                               onClick={() => setIsOpen(false)}
                             >
                               {course.name}
@@ -134,7 +134,7 @@ export function Navbar() {
                           ))}
                           <a 
                             href="/cursos" 
-                            className="text-sm font-semibold text-purple-400 pt-1 hover:text-purple-300 transition-colors duration-150"
+                            className="text-sm font-semibold text-[#c9a961] pt-1 hover:text-[#d4b876] transition-colors duration-150"
                             onClick={() => setIsOpen(false)}
                           >
                             Ver todos os cursos →
@@ -148,7 +148,7 @@ export function Navbar() {
                   <a
                     key={link.name}
                     href={link.href}
-                    className="block py-3 text-sm font-medium hover:text-purple-300 transition-colors duration-150"
+                    className="block py-3 text-sm font-medium hover:text-[#c9a961] transition-colors duration-150"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.name}

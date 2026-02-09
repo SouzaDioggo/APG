@@ -25,7 +25,7 @@ export function Footer() {
               className="h-12 w-auto object-contain mb-4"
             />
             <p className="text-gray-400 text-sm font-light leading-relaxed">
-              Transformando empresas através de estratégias personalizadas de gestão e desenvolvimento organizacional.
+              Consultoria estratégica focada em transformação organizacional e crescimento sustentável. Combinamos expertise técnica com visão estratégica para entregar resultados mensuráveis em gestão de contratos, compliance e estruturação empresarial.
             </p>
           </div>
 
@@ -34,19 +34,19 @@ export function Footer() {
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wide">Navegação</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/" className="text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm font-light">
+                <a href="/" className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light">
                   Home
                 </a>
               </li>
               <li>
-                <a href="/cursos" className="text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm font-light">
+                <a href="/cursos" className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light">
                   Cursos
                 </a>
               </li>
               <li>
-                {/* <a href="/blog" className="text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm font-light">
+                <a href="/blog" className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light">
                   Blog
-                </a> ADICIONAR DEPOIS BLOG FUNCIONANDO!! */}
+                </a> 
               </li>
             </ul>
           </div>
@@ -59,7 +59,7 @@ export function Footer() {
                 <li key={index}>
                   <a 
                     href={course.href} 
-                    className="text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm font-light line-clamp-1"
+                    className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light line-clamp-1"
                   >
                     {course.name}
                   </a>
@@ -77,7 +77,7 @@ export function Footer() {
                   href="https://www.instagram.com/apg_educacao_empresarial/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm font-light"
+                  className="flex items-center gap-2 text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light"
                 >
                   <Instagram className="w-5 h-5" />
                   Instagram
@@ -85,11 +85,11 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-3">
                 <a 
-                  href="mailto:contato@apg.com.br"
-                  className="flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors duration-200 text-sm font-light"
+                  href="mailto:Apgeducacaoempresarial@gmail.com"
+                  className="flex items-center gap-2 text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light"
                 >
                   <Mail className="w-5 h-5" />
-                  contato@apg.com.br
+                  Apgeducacaoempresarial@gmail.com
                 </a>
               </div>
             </div>
@@ -111,7 +111,7 @@ export function Footer() {
               href="https://www.instagram.com/apg_educacao_empresarial/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-purple-400 transition-colors duration-200 hover:scale-110 transform"
+              className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 hover:scale-110 transform"
               aria-label="Instagram"
             >
               <Instagram className="w-5 h-5" />

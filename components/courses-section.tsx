@@ -45,7 +45,7 @@ export function CoursesSection() {
               key={index}
               className="overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
             >
-              <div className="relative aspect-3/2 overflow-hidden bg-linear-to-br from-purple-600 to-blue-600">
+              <div className="relative aspect-3/2 overflow-hidden bg-linear-to-br from-[#1a4d7a] to-[#0d2d4a]">
                 <img
                   src={course.image || "/placeholder.svg"}
                   alt={course.title}
@@ -62,7 +62,7 @@ export function CoursesSection() {
 
         {/* See More Button */}
         <div className="flex justify-center">
-          <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-6 text-base">
+          <Button size="lg" className="bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white px-8 py-6 text-base">
             Ver mais...
           </Button>
         </div>

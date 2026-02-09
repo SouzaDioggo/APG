@@ -319,7 +319,7 @@ const CourseCard: React.FC<CourseData & { isSelected?: boolean }> = ({
   isSelected = false
 }) => {
   return (
-    <div id={id} className={`bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full flex flex-col scroll-mt-32 ${isSelected ? 'border-4 border-purple-600 shadow-2xl animate-course-bounce' : 'border border-gray-200'}`}>
+    <div id={id} className={`bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full flex flex-col scroll-mt-32 ${isSelected ? 'border-4 border-[#1a4d7a] shadow-2xl animate-course-bounce' : 'border border-gray-200'}`}>
       {/* Header com Gradiente */}
       <div className="relative h-32 overflow-hidden">
         <AbstractBackground bgClass={bgClass} />
@@ -343,11 +343,11 @@ const CourseCard: React.FC<CourseData & { isSelected?: boolean }> = ({
         {/* Informações */}
         <div className="grid grid-cols-2 gap-3 mb-6 py-4 border-y border-gray-200">
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-purple-600" />
+            <Clock className="w-4 h-4 text-[#1a4d7a]" />
             <span className="text-xs text-gray-600 font-medium">{duration}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Award className="w-4 h-4 text-purple-600" />
+            <Award className="w-4 h-4 text-[#1a4d7a]" />
             <span className="text-xs text-gray-600 font-medium">{modules} módulos</span>
           </div>
         </div>
@@ -358,7 +358,7 @@ const CourseCard: React.FC<CourseData & { isSelected?: boolean }> = ({
           <ul className="space-y-2">
             {benefits.slice(0, 3).map((benefit, idx) => (
               <li key={idx} className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-[#1a4d7a] shrink-0 mt-0.5" />
                 <span className="text-xs text-gray-600 font-light">{benefit}</span>
               </li>
             ))}
@@ -367,7 +367,7 @@ const CourseCard: React.FC<CourseData & { isSelected?: boolean }> = ({
 
         {/* Botão */}
         <a href={hotmartLink} target="_blank" rel="noopener noreferrer" className="mt-auto">
-          <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2">
+          <Button className="w-full bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold py-2 rounded-lg transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2">
             Acessar na Hotmart
             <ArrowRight className="w-4 h-4" />
           </Button>
@@ -455,14 +455,16 @@ const App: React.FC = () => {
       <section className="py-20 bg-gray-50 border-t border-gray-200">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Pronto para começar sua transformação?
+            Pronto para transformar sua empresa?
           </h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto font-light">
             Todos os nossos cursos foram desenvolvidos por especialistas da indústria e estão disponíveis na Hotmart com acesso imediato após a compra.
           </p>
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:shadow-lg">
-            Explorar Cursos
-          </Button>
+          <a href="mailto:Apgeducacaoempresarial@gmail.com">
+            <Button className="bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:shadow-lg">
+              Entre em Contato
+            </Button>
+          </a>
         </div>
       </section>
 
