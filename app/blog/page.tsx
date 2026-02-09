@@ -9,7 +9,7 @@ export default function BlogPage() {
       <Navbar />
       
       {/* Hero section para o blog */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
+      <section className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-4">Blog</h1>
           <p className="text-blue-100 text-lg">Artigos, dicas e insights para seu desenvolvimento profissional</p>

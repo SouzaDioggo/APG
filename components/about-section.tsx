@@ -27,20 +27,20 @@ export function AboutSection() {
   const originalHighlights = [
     {
       image: "/modern-office-meeting.png",
-      title: "Estratégias de Gestão",
-      subtitle: "Metodologias avançadas",
+      title: "Consultoria Estratégica",
+      subtitle: "Resultados mensuráveis",
       icon: TrendingUp,
     },
     {
       image: "/business-training.png",
-      title: "Desenvolvimento Profissional",
-      subtitle: "Capacitação empresarial",
+      title: "Gestão de Contratos",
+      subtitle: "Metodologias avançadas",
       icon: Users,
     },
     {
       image: "/executive-consulting.jpg",
-      title: "Consultoria Estratégica",
-      subtitle: "Resultados mensuráveis",
+      title: "Compliance e LGPD",
+      subtitle: "Proteção empresarial",
       icon: Target,
     },
   ]
@@ -58,11 +58,11 @@ export function AboutSection() {
             className="flex items-center gap-3 mb-8 group cursor-pointer focus:outline-none"
           >
             {isQuemSomosOpen ? (
-              <ChevronDown className="w-7 h-7 text-purple-600 transition-transform duration-300" />
+              <ChevronDown className="w-7 h-7 text-[#1a4d7a] transition-transform duration-300" />
             ) : (
-              <ChevronRight className="w-7 h-7 text-purple-600 transition-transform duration-300" />
+              <ChevronRight className="w-7 h-7 text-[#1a4d7a] transition-transform duration-300" />
             )}
-            <h2 className="text-4xl md:text-5xl font-black bg-linear-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent group-hover:from-purple-700 group-hover:to-purple-900 transition-all duration-200">
+            <h2 className="text-4xl md:text-5xl font-black bg-linear-to-r from-[#1a4d7a] to-[#0d2d4a] bg-clip-text text-transparent group-hover:from-[#0d2d4a] group-hover:to-[#1a4d7a] transition-all duration-200 font-serif">
               Quem Somos
             </h2>
           </button>
@@ -75,7 +75,7 @@ export function AboutSection() {
           >
             <div className="overflow-hidden">
               <p className="text-gray-700 text-lg leading-relaxed max-w-4xl ml-10 font-normal">
-                Somos uma consultoria estratégica focada em <span className="font-semibold text-purple-700">transformação organizacional</span> e <span className="font-semibold text-purple-700">crescimento sustentável</span>. Combinamos <span className="font-semibold text-purple-700">expertise técnica</span> com <span className="font-semibold text-purple-700">visão estratégica</span> para entregar resultados mensuráveis. Acreditamos que empresas de excelência são construídas por equipes engajadas, processos bem estruturados e decisões orientadas por dados.
+                Somos uma consultoria estratégica focada em <span className="font-semibold text-[#1a4d7a]">transformação organizacional</span> e <span className="font-semibold text-[#1a4d7a]">crescimento sustentável</span>. Combinamos <span className="font-semibold text-[#1a4d7a]">expertise técnica</span> com <span className="font-semibold text-[#1a4d7a]">visão estratégica</span> para entregar resultados mensuráveis. Acreditamos que empresas de excelência são construídas por equipes engajadas, processos bem estruturados e decisões orientadas por dados.
               </p>
             </div>
           </div>
@@ -88,11 +88,11 @@ export function AboutSection() {
             className="flex items-center gap-3 mb-8 group cursor-pointer focus:outline-none"
           >
             {isOQueFazemosOpen ? (
-              <ChevronDown className="w-7 h-7 text-purple-600 transition-transform duration-300" />
+              <ChevronDown className="w-7 h-7 text-[#1a4d7a] transition-transform duration-300" />
             ) : (
-              <ChevronRight className="w-7 h-7 text-purple-600 transition-transform duration-300" />
+              <ChevronRight className="w-7 h-7 text-[#1a4d7a] transition-transform duration-300" />
             )}
-            <h2 className="text-4xl md:text-5xl font-black bg-linear-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent group-hover:from-purple-700 group-hover:to-purple-900 transition-all duration-200">
+            <h2 className="text-4xl md:text-5xl font-black bg-linear-to-r from-[#1a4d7a] to-[#0d2d4a] bg-clip-text text-transparent group-hover:from-[#0d2d4a] group-hover:to-[#1a4d7a] transition-all duration-200 font-serif">
               O Que Fazemos
             </h2>
           </button>
@@ -105,7 +105,7 @@ export function AboutSection() {
           >
             <div className="overflow-hidden">
               <p className="text-gray-700 text-lg leading-relaxed max-w-4xl ml-10 font-normal">
-                Oferecemos um portfólio completo de <span className="font-semibold text-purple-700">serviços de consultoria</span> que abrange desde <span className="font-semibold text-purple-700">diagnósticos estratégicos</span> até <span className="font-semibold text-purple-700">implantação de soluções</span>. Utilizamos <span className="font-semibold text-purple-700">metodologias comprovadas</span>, <span className="font-semibold text-purple-700">análise de dados</span> e as melhores práticas de mercado para garantir que seus objetivos sejam alcançados com eficiência e excelência operacional.
+                Oferecemos um portfólio completo de <span className="font-semibold text-[#1a4d7a]">serviços de consultoria</span> que abrange desde <span className="font-semibold text-[#1a4d7a]">diagnósticos estratégicos</span> até <span className="font-semibold text-[#1a4d7a]">implantação de soluções</span>. Utilizamos <span className="font-semibold text-[#1a4d7a]">metodologias comprovadas</span>, <span className="font-semibold text-[#1a4d7a]">análise de dados</span> e as melhores práticas de mercado para garantir que seus objetivos sejam alcançados com eficiência e excelência operacional.
               </p>
             </div>
           </div>

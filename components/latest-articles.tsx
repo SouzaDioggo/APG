@@ -8,7 +8,7 @@ export function LatestArticles() {
   const artigos = obterUltimosArtigos(3);
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-16 bg-linear-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Título da seção */}
         <div className="text-center mb-12">
@@ -50,7 +50,7 @@ export function LatestArticles() {
                 </div>
 
                 {/* Título */}
-                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 flex-grow">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 grow">
                   {artigo.titulo}
                 </h3>
 

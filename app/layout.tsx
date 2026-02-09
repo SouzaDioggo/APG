@@ -1,9 +1,17 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Montserrat, Playfair_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const montserrat = Montserrat({ 
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
+
+const playfair = Playfair_Display({ 
+  subsets: ["latin"],
+  variable: "--font-serif",
+})
 
 export const metadata: Metadata = {
   title: "APG - Educação Empresarial & Treinamento",
@@ -24,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="scroll-smooth">
-      <body className={`${inter.className} font-sans antialiased`}>
+      <body className={`${montserrat.variable} ${playfair.variable} font-sans antialiased`}>
         {children}
         <Analytics />
       </body>

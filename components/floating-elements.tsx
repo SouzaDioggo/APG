@@ -13,7 +13,7 @@ export function FloatingElements() {
 "
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-8 right-8 z-40 w-16 h-16 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-2xl"
+        className="fixed bottom-8 right-8 z-40 w-16 h-16 bg-[#c9a961] hover:bg-[#d4b876] text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-2xl"
         aria-label="Chat support"
       >
         <AiOutlineWhatsApp className="w-7 h-7" />

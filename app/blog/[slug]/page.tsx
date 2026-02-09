@@ -36,7 +36,7 @@ export default function ArtigoPage({ params }: PageProps) {
       {/* Artigo */}
       <article className="flex-1">
         {/* Hero do artigo */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
+        <div className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-12">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Link href="/blog" className="flex items-center gap-2 text-blue-100 hover:text-white mb-6 transition-colors">
               <ArrowLeft size={18} />

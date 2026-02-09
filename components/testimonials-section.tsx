@@ -94,8 +94,8 @@ export function TestimonialsSection() {
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-            O que dizem nossos <span className="bg-linear-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">parceiros</span>
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3 font-serif">
+            O que dizem nossos <span className="bg-linear-to-r from-[#1a4d7a] to-[#0d2d4a] bg-clip-text text-transparent">parceiros</span>
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Empresas que confiam em nossa expertise para transformar seus negócios e potencializar seus resultados
@@ -105,7 +105,7 @@ export function TestimonialsSection() {
         {/* Testimonials Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
-            <Card key={i} className="bg-white border border-slate-200 hover:border-purple-300 hover:shadow-lg transition-all duration-300 group overflow-hidden">
+            <Card key={i} className="bg-white border border-slate-200 hover:border-[#c9a961] hover:shadow-lg transition-all duration-300 group overflow-hidden">
               <CardContent className="pt-8">
                 {/* Stars */}
                 <StarRating rating={t.rating} />
@@ -119,11 +119,11 @@ export function TestimonialsSection() {
                 <div className="flex items-center gap-3 pb-4 border-t border-slate-100 pt-4">
                   <Avatar className="h-12 w-12">
                     <AvatarImage src={t.avatar} />
-                    <AvatarFallback className="text-xs font-semibold bg-purple-100 text-purple-700">{t.name[0]}</AvatarFallback>
+                    <AvatarFallback className="text-xs font-semibold bg-[#ecf0f1] text-[#1a4d7a]">{t.name[0]}</AvatarFallback>
                   </Avatar>
                   <div className="text-left flex-1">
                     <p className="font-bold text-sm text-gray-900">{t.name}</p>
-                    <p className="text-xs text-purple-600 font-semibold">{t.role}</p>
+                    <p className="text-xs text-[#1a4d7a] font-semibold">{t.role}</p>
                     <p className="text-xs text-gray-500">{t.company}</p>
                   </div>
                 </div>
@@ -135,19 +135,19 @@ export function TestimonialsSection() {
         {/* Stats Footer */}
         <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <p className="text-3xl font-black text-purple-600 mb-2">+50</p>
+            <p className="text-3xl font-black text-[#1a4d7a] mb-2">+50</p>
             <p className="text-gray-600 font-medium">Empresas Transformadas</p>
           </div>
           <div>
-            <p className="text-3xl font-black text-purple-600 mb-2">98%</p>
+            <p className="text-3xl font-black text-[#1a4d7a] mb-2">98%</p>
             <p className="text-gray-600 font-medium">Satisfação de Clientes</p>
           </div>
           <div>
-            <p className="text-3xl font-black text-purple-600 mb-2">500+</p>
-            <p className="text-gray-600 font-medium">Profissionais Treinados</p>
+            <p className="text-3xl font-black text-[#1a4d7a] mb-2">+200</p>
+            <p className="text-gray-600 font-medium">Profissionais Capacitados</p>
           </div>
           <div>
-            <p className="text-3xl font-black text-purple-600 mb-2">15+</p>
+            <p className="text-3xl font-black text-[#1a4d7a] mb-2">15+</p>
             <p className="text-gray-600 font-medium">Anos de Experiência</p>
           </div>
         </div>
