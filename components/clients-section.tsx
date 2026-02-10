@@ -1,7 +1,7 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { Briefcase, TrendingUp, Scale } from "lucide-react"
+import { Briefcase, TrendingUp, Scale, Heart } from "lucide-react"
 
 export function ClientsSection() {
   const clientTypes = [
@@ -40,6 +40,18 @@ export function ClientsSection() {
         "Gestão contratual estratégica",
         "Estruturação de negócios"
       ]
+    },
+    {
+      icon: Heart,
+      title: "Organização da Sociedade Civil",
+      description: "Associações, fundações e sociedades sem fins lucrativos interessadas em melhorar a gestão, estruturação e compliance. Oferecemos capacitação para profissionais que querem empreender socialmente com excelência operacional.",
+      services: [
+        "Estruturação de OSC, associações e fundações",
+        "Gestão de contratos sociais e estatutos",
+        "Compliance e governança sem fins lucrativos",
+        "Planejamento financeiro sustentável",
+        "Gestão de projetos com impacto social"
+      ]
     }
   ]
 
@@ -57,7 +69,7 @@ export function ClientsSection() {
         </div>
 
         {/* Client Types Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-16">
           {clientTypes.map((client, index) => {
             const Icon = client.icon
             return (
