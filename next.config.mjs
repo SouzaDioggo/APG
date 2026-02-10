@@ -18,7 +18,7 @@ const nextConfig = {
             value: 'apgempresa.com', // Se o usuário acessar SEM www
           },
         ],
-        destination: 'https://www.apgempresa.com/:path*', // Manda para COM www
+        destination: 'http://www.apgempresa.com/:path*', // Manda para COM www
         permanent: true,
       },
     ]
