@@ -23,15 +23,34 @@ export function Navbar() {
     { name: "Sobre", href: "/sobre" },
     // { name: "Blog", href: "/blog" },
     { name: "Cursos", href: "/cursos", hasDropdown: true },
+    { name: "Login", href: "/login" },
   ];
 
   const coursesList = [
-    { name: "Liderança e Gestão de Equipes", href: "/cursos#lideranca-gestao-equipes" },
-    { name: "Estratégias de Marketing Digital", href: "/cursos#estrategias-marketing-digital" },
-    { name: "Gestão de Projetos e Metodologias Ágeis", href: "/cursos#gestao-projetos-ageis" },
-    { name: "Inteligência Emocional no Trabalho", href: "/cursos#inteligencia-emocional" },
-    { name: "Técnicas Avançadas de Negociação", href: "/cursos#tecnicas-negociacao" },
-    { name: "Inovação e Transformação Digital", href: "/cursos#inovacao-transformacao-digital" }
+    {
+      name: "Liderança e Gestão de Equipes",
+      href: "/cursos#lideranca-gestao-equipes",
+    },
+    {
+      name: "Estratégias de Marketing Digital",
+      href: "/cursos#estrategias-marketing-digital",
+    },
+    {
+      name: "Gestão de Projetos e Metodologias Ágeis",
+      href: "/cursos#gestao-projetos-ageis",
+    },
+    {
+      name: "Inteligência Emocional no Trabalho",
+      href: "/cursos#inteligencia-emocional",
+    },
+    {
+      name: "Técnicas Avançadas de Negociação",
+      href: "/cursos#tecnicas-negociacao",
+    },
+    {
+      name: "Inovação e Transformação Digital",
+      href: "/cursos#inovacao-transformacao-digital",
+    },
   ];
 
   return (
@@ -43,10 +62,10 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <a href="/" className="block hover:opacity-90 transition-opacity">
               {/* Logo refinada */}
-              <img 
-                src="/APG BRANCO.png" 
-                alt="APG Logo" 
-                className="h-14 w-auto object-contain" 
+              <img
+                src="/APG BRANCO.png"
+                alt="APG Logo"
+                className="h-14 w-auto object-contain"
               />
             </a>
           </div>
@@ -63,11 +82,14 @@ export function Navbar() {
                       {/* Ícone com transição */}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-72 p-3 bg-white border border-slate-200 rounded-lg shadow-lg" align="start">
+                    <DropdownMenuContent
+                      className="w-72 p-3 bg-white border border-slate-200 rounded-lg shadow-lg"
+                      align="start"
+                    >
                       {coursesList.map((course, index) => (
                         <DropdownMenuItem key={index} asChild>
-                          <a 
-                            href={course.href} 
+                          <a
+                            href={course.href}
                             className="w-full cursor-pointer hover:bg-[#ecf0f1] rounded-md p-3 text-sm font-medium text-gray-700 transition-colors duration-150"
                             onClick={() => setIsOpen(false)}
                           >
@@ -77,7 +99,10 @@ export function Navbar() {
                       ))}
                       <div className="border-t border-slate-200 my-2" />
                       <DropdownMenuItem asChild>
-                        <a href="/cursos" className="w-full font-semibold text-[#1a4d7a] cursor-pointer p-3 text-sm hover:bg-[#ecf0f1] rounded-md transition-colors duration-150">
+                        <a
+                          href="/cursos"
+                          className="w-full font-semibold text-[#1a4d7a] cursor-pointer p-3 text-sm hover:bg-[#ecf0f1] rounded-md transition-colors duration-150"
+                        >
                           Ver todos os cursos →
                         </a>
                       </DropdownMenuItem>
@@ -97,7 +122,7 @@ export function Navbar() {
               );
             })}
           </div>
-          
+
           {/* Mobile Menu Button */}
           <button
             className="md:hidden text-white hover:opacity-80 transition-opacity"
@@ -112,10 +137,15 @@ export function Navbar() {
         {isOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-slate-800">
             <div className="flex flex-col space-y-1">
-              {navLinks.map((link) => 
+              {navLinks.map((link) =>
                 link.hasDropdown ? (
                   // Opção com Dropdown vira Accordion no Mobile
-                  <Accordion key={link.name} type="single" collapsible className="w-full">
+                  <Accordion
+                    key={link.name}
+                    type="single"
+                    collapsible
+                    className="w-full"
+                  >
                     <AccordionItem value={link.name} className="border-b-0">
                       <AccordionTrigger className="py-3 text-sm font-medium hover:text-[#c9a961] hover:no-underline [&>svg]:text-white [&>svg]:w-5 [&>svg]:h-5">
                         {link.name}
@@ -132,8 +162,8 @@ export function Navbar() {
                               {course.name}
                             </a>
                           ))}
-                          <a 
-                            href="/cursos" 
+                          <a
+                            href="/cursos"
                             className="text-sm font-semibold text-[#c9a961] pt-1 hover:text-[#d4b876] transition-colors duration-150"
                             onClick={() => setIsOpen(false)}
                           >
@@ -153,7 +183,7 @@ export function Navbar() {
                   >
                     {link.name}
                   </a>
-                )
+                ),
               )}
             </div>
           </div>
