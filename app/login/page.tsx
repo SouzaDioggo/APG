@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
-import { ForgotPasswordModal } from "@/components/login/Modal-Forget-Password"; // Importação do Modal
+import { Eye, EyeOff, Lock, Mail, ArrowRight, ArrowLeft } from "lucide-react";
+import { ForgotPasswordModal } from "@/components/login/Modal-Forget-Password";
 import Image from "next/image";
-import { SignUpModal } from "@/components/login/Modal-Create-Account"; // Importação do Modal
+import { SignUpModal } from "@/components/login/Modal-Create-Account";
+import Link from "next/link"; // Importação do Link para navegação
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -57,7 +58,17 @@ export default function LoginPage() {
       </div>
 
       {/* Lado Direito - Formulário */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-white">
+      <div className="flex-1 flex items-center justify-center p-8 bg-white relative">
+        <Link
+          href="/"
+          className="absolute top-6 left-6 md:top-8 md:left-8 flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#1a4d7a] transition-colors group"
+        >
+          <div className="p-1 rounded-full group-hover:bg-slate-100 transition-colors">
+            <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+          </div>
+          <span>Voltar</span>
+        </Link>
+
         <div className="w-full max-w-md space-y-8 animate-fade-in-up">
           {/* Cabeçalho Mobile */}
           <div className="lg:hidden text-center mb-8">
