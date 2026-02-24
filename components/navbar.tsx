@@ -77,7 +77,7 @@ export function Navbar() {
                 return (
                   <DropdownMenu key={link.name}>
                     {/* Links com transição mais suave */}
-                    <DropdownMenuTrigger className="flex items-center gap-2 text-base font-medium hover:text-[#c9a961] transition-colors duration-200 outline-none data-[state=open]:text-[#c9a961]">
+                    <DropdownMenuTrigger className="flex items-center gap-2 text-sm font-medium hover:text-[#c9a961] transition-colors duration-200 outline-none data-[state=open]:text-[#c9a961] cursor-pointer">
                       {link.name}
                       {/* Ícone com transição */}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200" />
