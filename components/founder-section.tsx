@@ -39,10 +39,6 @@ export function FounderSection() {
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      Mestre em Ciência Política
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#c9a961] font-bold">•</span>
                       Especialista em Direito Digital e LGPD
                     </li>                   
                   </ul>
