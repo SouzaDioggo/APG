@@ -64,6 +64,7 @@ export const metadata: Metadata = {
   },
 }
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -93,6 +94,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
+      <html lang="pt-BR" suppressHydrationWarning></html>
       <body className={`${montserrat.variable} ${playfair.variable} font-sans antialiased`}>
         {children}
         <Analytics />

@@ -35,11 +35,11 @@ export function FounderSection() {
                   <ul className="space-y-2 text-gray-700">
                     <li className="flex items-center gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      Pós-graduado em direito, Mestre e doutor em Ciência Política. 
+                      <span>Pós-graduado em direito, Mestre e doutor em Ciência Política.</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      Especialista em Direito Digital e LGPD
+                      <span>Especialista em Direito Digital e LGPD</span>
                     </li>                   
                   </ul>
                 </div>
@@ -97,7 +97,7 @@ export function FounderSection() {
                   <ul className="space-y-2 text-gray-700">
                     <li className="flex items-center gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      Graduada e pós-graduada em Recursos Humanos e Administração
+                      <span>Graduada e pós-graduada em Recursos Humanos e Administração</span>
                     </li>
                   </ul>
                 </div>
