@@ -1,22 +1,24 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { artigosBlog, buscarArtigos } from '@/lib/blog-data';
-import { Calendar, Eye, Search, X } from 'lucide-react';
+import Link from "next/link";
+import { useState } from "react";
+import { artigosBlog, buscarArtigos } from "@/lib/blog-data";
+import { Calendar, Eye, Search, X } from "lucide-react";
 
 export function BlogGrid() {
-  const [filtroCategoria, setFiltroCategoria] = useState<string>('Todos');
-  const [busca, setBusca] = useState('');
+  const [filtroCategoria, setFiltroCategoria] = useState<string>("Todos");
+  const [busca, setBusca] = useState("");
 
   // Obter categorias únicas
-  const categorias = ['Todos', ...new Set(artigosBlog.map((a) => a.categoria))];
+  const categorias = ["Todos", ...new Set(artigosBlog.map((a) => a.categoria))];
 
   // Filtrar artigos
   let artigosFiltrados = artigosBlog;
 
-  if (filtroCategoria !== 'Todos') {
-    artigosFiltrados = artigosFiltrados.filter((a) => a.categoria === filtroCategoria);
+  if (filtroCategoria !== "Todos") {
+    artigosFiltrados = artigosFiltrados.filter(
+      (a) => a.categoria === filtroCategoria,
+    );
   }
 
   if (busca) {
@@ -28,16 +30,22 @@ export function BlogGrid() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Cabeçalho */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Todos os Artigos</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Todos os Artigos
+          </h1>
           <p className="text-gray-600 text-lg">
-            Explore todos os artigos, dicas e insights sobre tecnologia, design e negócios
+            Explore todos os artigos, dicas e insights sobre tecnologia, design
+            e negócios
           </p>
         </div>
 
         {/* Busca */}
         <div className="mb-8">
           <div className="relative">
-            <Search className="absolute left-4 top-3.5 text-gray-400" size={20} />
+            <Search
+              className="absolute left-4 top-3.5 text-gray-400"
+              size={20}
+            />
             <input
               type="text"
               placeholder="Buscar artigos..."
@@ -47,7 +55,7 @@ export function BlogGrid() {
             />
             {busca && (
               <button
-                onClick={() => setBusca('')}
+                onClick={() => setBusca("")}
                 className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
               >
                 <X size={20} />
@@ -64,8 +72,8 @@ export function BlogGrid() {
               onClick={() => setFiltroCategoria(categoria)}
               className={`px-4 py-2 rounded-full font-semibold transition-colors duration-200 ${
                 filtroCategoria === categoria
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
               {categoria}
@@ -93,9 +101,14 @@ export function BlogGrid() {
                 {/* Conteúdo */}
                 <div className="p-6 flex-1 flex flex-col">
                   {/* Categoria */}
-                  <div className="mb-3">
+                  <div className="mb-3 flex items-center justify-between">
                     <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
                       {artigo.categoria}
+                    </span>
+
+                    <span className="flex items-center gap-1 text-xs text-gray-500">
+                      <Calendar size={14} />
+                      {new Date(artigo.data).toLocaleDateString("pt-BR")}
                     </span>
                   </div>
 
@@ -109,36 +122,11 @@ export function BlogGrid() {
                     {artigo.resumo}
                   </p>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {artigo.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-
                   {/* Rodapé */}
                   <div className="border-t pt-4 mt-auto">
-                    <div className="flex items-center justify-between mb-4 text-xs text-gray-500">
-                      <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1">
-                          <Calendar size={14} />
-                          {new Date(artigo.data).toLocaleDateString('pt-BR')}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Eye size={14} />
-                          {artigo.visualizacoes}
-                        </span>
-                      </div>
-                    </div>
-
                     <Link
                       href={`/blog/${artigo.slug}`}
-                      className="inline-block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition-colors duration-200"
+                      className="inline-block w-full text-center bg-linear-to-bl from-blue-600 to-blue-800 text-white font-semibold py-2 rounded hover:from-blue-700 hover:to-blue-900 hover:scale-105 transform transition-all duration-300"
                     >
                       Ler Artigo
                     </Link>
