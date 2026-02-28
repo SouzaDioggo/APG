@@ -5,22 +5,11 @@ import { Navbar } from "@/components/layout/navbar";
 import { FloatingElements } from "@/components/layout/floating-elements";
 import { Footer } from "@/components/layout/footer";
 import {
-  ICourse,
   AbstractBackgroundProps,
+  CourseData,
 } from "@/Interfaces/Interface-Cursos";
-import { ArrowRight, CheckCircle2, Clock, Users, Award } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-// Dados dos cursos com informações detalhadas
-interface CourseData extends ICourse {
-  id: string;
-  description: string;
-  duration: string;
-  modules: number;
-  level: string;
-  benefits: string[];
-  hotmartLink: string;
-}
 
 const courses: CourseData[] = [
   {
