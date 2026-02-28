@@ -59,3 +59,9 @@ export const registerUser = (data: any) =>
     method: "POST",
     body: JSON.stringify(data),
   });
+
+export const verifyCode = (data: any) =>
+  fetchApi("/users/verify", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });

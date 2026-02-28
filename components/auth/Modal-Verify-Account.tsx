@@ -63,7 +63,11 @@ export function VerifyEmailModal({
               type="text"
               maxLength={6}
               value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+              onChange={(e) =>
+                setCode(
+                  e.target.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase(),
+                )
+              }
               placeholder="000000"
               className="w-48 text-center text-3-xl tracking-[0.5em] font-bold py-3 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961] outline-none transition-all"
               required
