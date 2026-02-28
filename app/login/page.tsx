@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Eye, EyeOff, Lock, Mail, ArrowRight, ArrowLeft } from "lucide-react";
-import { ForgotPasswordModal } from "@/components/login/Modal-Forget-Password";
+import { ForgotPasswordModal } from "@/components/auth/Modal-Forget-Password";
 import Image from "next/image";
-import { SignUpModal } from "@/components/login/Modal-Create-Account";
+import { SignUpModal } from "@/components/auth/Modal-Create-Account";
 import Link from "next/link"; // Importação do Link para navegação
 
 export default function LoginPage() {

@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Navbar } from "@/components/navbar";
-import { FloatingElements } from "@/components/floating-elements";
-import { Footer } from "@/components/footer";
+import { Navbar } from "@/components/layout/navbar";
+import { FloatingElements } from "@/components/layout/floating-elements";
+import { Footer } from "@/components/layout/footer";
 import {
   ICourse,
   AbstractBackgroundProps,
@@ -27,7 +27,8 @@ const courses: CourseData[] = [
     id: "lideranca-gestao-equipes",
     title: "Liderança e Gestão de Equipes",
     bgClass: "bg-gradient-1",
-    description: "Desenvolva habilidades essenciais de liderança para gerenciar equipes de alta performance, inspirar colaboradores e alcançar resultados extraordinários.",
+    description:
+      "Desenvolva habilidades essenciais de liderança para gerenciar equipes de alta performance, inspirar colaboradores e alcançar resultados extraordinários.",
     duration: "12 horas",
     modules: 8,
     level: "Iniciante",
@@ -36,15 +37,16 @@ const courses: CourseData[] = [
       "Gestão eficaz de conflitos e dinâmica de grupo",
       "Desenvolvimento de inteligência emocional em líderes",
       "Construção de uma cultura organizacional forte",
-      "Mentoria e coaching para colaboradores"
+      "Mentoria e coaching para colaboradores",
     ],
-    hotmartLink: "https://hotmart.com/pt-BR" // Adicione o link específico da Hotmart
+    hotmartLink: "https://hotmart.com/pt-BR", // Adicione o link específico da Hotmart
   },
   {
     id: "estrategias-marketing-digital",
     title: "Estratégias de Marketing Digital",
     bgClass: "bg-gradient-2",
-    description: "Domine as estratégias modernas de marketing digital para aumentar sua presença online, gerar leads qualificados e converter clientes de forma eficaz.",
+    description:
+      "Domine as estratégias modernas de marketing digital para aumentar sua presença online, gerar leads qualificados e converter clientes de forma eficaz.",
     duration: "15 horas",
     modules: 10,
     level: "Intermediário",
@@ -53,15 +55,16 @@ const courses: CourseData[] = [
       "SEO, SEM e marketing de conteúdo avançado",
       "Estratégias de redes sociais e influência digital",
       "Email marketing e automação de vendas",
-      "Análise de métricas e ROI de campanhas"
+      "Análise de métricas e ROI de campanhas",
     ],
-    hotmartLink: "https://hotmart.com/pt-BR"
+    hotmartLink: "https://hotmart.com/pt-BR",
   },
   {
     id: "gestao-projetos-ageis",
     title: "Gestão de Projetos e Metodologias Ágeis",
     bgClass: "bg-gradient-3",
-    description: "Aprenda a gerenciar projetos complexos usando metodologias ágeis como Scrum e Kanban, garantindo prazos, qualidade e satisfação do cliente.",
+    description:
+      "Aprenda a gerenciar projetos complexos usando metodologias ágeis como Scrum e Kanban, garantindo prazos, qualidade e satisfação do cliente.",
     duration: "14 horas",
     modules: 9,
     level: "Intermediário",
@@ -70,15 +73,16 @@ const courses: CourseData[] = [
       "Planejamento e execução de sprints eficientes",
       "Gestão de riscos e mudanças em projetos",
       "Ferramentas de gerenciamento de projetos",
-      "Liderança ágil e gestão de stakeholders"
+      "Liderança ágil e gestão de stakeholders",
     ],
-    hotmartLink: "https://hotmart.com/pt-BR"
+    hotmartLink: "https://hotmart.com/pt-BR",
   },
   {
     id: "inteligencia-emocional",
     title: "Inteligência Emocional no Trabalho",
     bgClass: "bg-gradient-4",
-    description: "Compreenda e desenvolva sua inteligência emocional para melhorar relacionamentos profissionais, tomar decisões melhores e aumentar sua liderança.",
+    description:
+      "Compreenda e desenvolva sua inteligência emocional para melhorar relacionamentos profissionais, tomar decisões melhores e aumentar sua liderança.",
     duration: "10 horas",
     modules: 7,
     level: "Iniciante",
@@ -87,15 +91,16 @@ const courses: CourseData[] = [
       "Empatia e gestão de relacionamentos",
       "Comunicação eficaz e resolução de conflitos",
       "Resiliência e gestão do estresse",
-      "Desenvolvimento da inteligência social"
+      "Desenvolvimento da inteligência social",
     ],
-    hotmartLink: "https://hotmart.com/pt-BR"
+    hotmartLink: "https://hotmart.com/pt-BR",
   },
   {
     id: "tecnicas-negociacao",
     title: "Técnicas Avançadas de Negociação",
     bgClass: "bg-gradient-5",
-    description: "Domine técnicas comprovadas de negociação para fechar melhores acordos, aumentar margens de lucro e construir relacionamentos comerciais duradouros.",
+    description:
+      "Domine técnicas comprovadas de negociação para fechar melhores acordos, aumentar margens de lucro e construir relacionamentos comerciais duradouros.",
     duration: "11 horas",
     modules: 8,
     level: "Avançado",
@@ -104,15 +109,16 @@ const courses: CourseData[] = [
       "Técnicas de persuasão e influência",
       "Leitura de comportamento e análise de sinais",
       "Gestão de objeções e impasses",
-      "Fechamento de acordos com sucesso"
+      "Fechamento de acordos com sucesso",
     ],
-    hotmartLink: "https://hotmart.com/pt-BR"
+    hotmartLink: "https://hotmart.com/pt-BR",
   },
   {
     id: "inovacao-transformacao-digital",
     title: "Inovação e Transformação Digital",
     bgClass: "bg-gradient-6",
-    description: "Entenda os princípios da transformação digital para modernizar processos, criar novos modelos de negócio e se manter competitivo no mercado.",
+    description:
+      "Entenda os princípios da transformação digital para modernizar processos, criar novos modelos de negócio e se manter competitivo no mercado.",
     duration: "13 horas",
     modules: 9,
     level: "Avançado",
@@ -121,9 +127,9 @@ const courses: CourseData[] = [
       "Tecnologias emergentes e sua aplicação",
       "Gestão de mudança organizacional",
       "Inovação de modelos de negócio",
-      "Implementação de soluções digitais"
+      "Implementação de soluções digitais",
     ],
-    hotmartLink: "https://hotmart.com/pt-BR"
+    hotmartLink: "https://hotmart.com/pt-BR",
   },
 ];
 
@@ -293,10 +299,10 @@ const AbstractBackground: React.FC<AbstractBackgroundProps> = ({ bgClass }) => {
             .map((s) => {
               const [key, value] = s.split(":").map((str) => str.trim());
               const camelKey = key.replace(/-([a-z])/g, (g) =>
-                g[1].toUpperCase()
+                g[1].toUpperCase(),
               );
               return [camelKey, value];
-            })
+            }),
         ),
       }}
     >
@@ -306,20 +312,23 @@ const AbstractBackground: React.FC<AbstractBackgroundProps> = ({ bgClass }) => {
 };
 
 // Componente Card de Curso com Design Profissional
-const CourseCard: React.FC<CourseData & { isSelected?: boolean }> = ({ 
+const CourseCard: React.FC<CourseData & { isSelected?: boolean }> = ({
   id,
-  title, 
-  bgClass, 
+  title,
+  bgClass,
   description,
   duration,
   modules,
   level,
   benefits,
   hotmartLink,
-  isSelected = false
+  isSelected = false,
 }) => {
   return (
-    <div id={id} className={`bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full flex flex-col scroll-mt-32 ${isSelected ? 'border-4 border-[#1a4d7a] shadow-2xl animate-course-bounce' : 'border border-gray-200'}`}>
+    <div
+      id={id}
+      className={`bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full flex flex-col scroll-mt-32 ${isSelected ? "border-4 border-[#1a4d7a] shadow-2xl animate-course-bounce" : "border border-gray-200"}`}
+    >
       {/* Header com Gradiente */}
       <div className="relative h-32 overflow-hidden">
         <AbstractBackground bgClass={bgClass} />
@@ -344,29 +353,42 @@ const CourseCard: React.FC<CourseData & { isSelected?: boolean }> = ({
         <div className="grid grid-cols-2 gap-3 mb-6 py-4 border-y border-gray-200">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-[#1a4d7a]" />
-            <span className="text-xs text-gray-600 font-medium">{duration}</span>
+            <span className="text-xs text-gray-600 font-medium">
+              {duration}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <Award className="w-4 h-4 text-[#1a4d7a]" />
-            <span className="text-xs text-gray-600 font-medium">{modules} módulos</span>
+            <span className="text-xs text-gray-600 font-medium">
+              {modules} módulos
+            </span>
           </div>
         </div>
 
         {/* Benefícios */}
         <div className="mb-6">
-          <h4 className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">O que você vai aprender:</h4>
+          <h4 className="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">
+            O que você vai aprender:
+          </h4>
           <ul className="space-y-2">
             {benefits.slice(0, 3).map((benefit, idx) => (
               <li key={idx} className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#1a4d7a] shrink-0 mt-0.5" />
-                <span className="text-xs text-gray-600 font-light">{benefit}</span>
+                <span className="text-xs text-gray-600 font-light">
+                  {benefit}
+                </span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Botão */}
-        <a href={hotmartLink} target="_blank" rel="noopener noreferrer" className="mt-auto">
+        <a
+          href={hotmartLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-auto"
+        >
           <Button className="w-full bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold py-2 rounded-lg transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2">
             Acessar na Hotmart
             <ArrowRight className="w-4 h-4" />
@@ -384,16 +406,16 @@ const App: React.FC = () => {
   useEffect(() => {
     // Detecta o hash da URL e define qual curso está selecionado
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
+      const hash = window.location.hash.replace("#", "");
       if (hash) {
         setSelectedCourseId(hash);
-        
+
         // Aguarda um pouco para o elemento estar renderizado, depois faz scroll suave
         setTimeout(() => {
           const element = document.getElementById(hash);
           if (element) {
             // Scroll suave e centralizado
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.scrollIntoView({ behavior: "smooth", block: "center" });
           }
         }, 100);
       } else {
@@ -405,8 +427,8 @@ const App: React.FC = () => {
     handleHashChange();
 
     // Checa quando o hash muda
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
   return (
     <div className="font-sans min-h-screen bg-white">
@@ -417,7 +439,7 @@ const App: React.FC = () => {
         }
       `}</style>
       <Navbar />
-      
+
       {/* Header */}
       <header className="py-16 md:py-24 bg-linear-to-b from-gray-50 to-white border-b border-gray-200">
         <div className="container mx-auto px-6 text-center">
@@ -425,7 +447,9 @@ const App: React.FC = () => {
             Nossos Cursos
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto font-light">
-            Desenvolvidos para profissionais que buscam aprimorar suas habilidades e alcançar novos patamares em suas carreiras. Todos os cursos estão disponíveis na plataforma Hotmart.
+            Desenvolvidos para profissionais que buscam aprimorar suas
+            habilidades e alcançar novos patamares em suas carreiras. Todos os
+            cursos estão disponíveis na plataforma Hotmart.
           </p>
         </div>
       </header>
@@ -458,7 +482,9 @@ const App: React.FC = () => {
             Pronto para transformar sua empresa?
           </h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto font-light">
-            Todos os nossos cursos foram desenvolvidos por especialistas da indústria e estão disponíveis na Hotmart com acesso imediato após a compra.
+            Todos os nossos cursos foram desenvolvidos por especialistas da
+            indústria e estão disponíveis na Hotmart com acesso imediato após a
+            compra.
           </p>
           <a href="mailto:Apgeducacaoempresarial@gmail.com">
             <Button className="bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:shadow-lg">

@@ -1,13 +1,17 @@
-import { Navbar } from "@/components/navbar"
-import { HeroSection } from "@/components/hero-section"
-import { BenefitsSection } from "@/components/benefits-section"
-import { FeatureBanner } from "@/components/feature-banner"
-import { TestimonialsSection } from "@/components/testimonials-section"
-import { ClientsSection } from "@/components/clients-section"
-import { CTASection } from "@/components/cta-section"
-import { FloatingElements } from "@/components/floating-elements"
-import { Footer } from "@/components/footer"
-import { ScrollReveal } from "@/components/scroll-reveal"
+import { HeroSection } from "@/components/landing-page/hero-section";
+import { AboutSection } from "@/components/landing-page/about-section";
+import { FeatureBanner } from "@/components/landing-page/feature-banner";
+import { CoursesSection } from "@/components/landing-page/courses-section";
+import { BenefitsSection } from "@/components/landing-page/benefits-section";
+import { TestimonialsSection } from "@/components/landing-page/testimonials-section";
+import { FounderSection } from "@/components/landing-page/founder-section";
+import { ClientsSection } from "@/components/landing-page/clients-section";
+import { LatestArticles } from "@/components/landing-page/latest-articles";
+import { CTASection } from "@/components/landing-page/cta-section";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { ScrollReveal } from "@/components/layout/scroll-reveal";
+import { FloatingElements } from "@/components/layout/floating-elements";
 
 export default function Home() {
   return (
@@ -17,15 +21,14 @@ export default function Home() {
       <HeroSection />
 
       {/* As seções abaixo só animam quando você rolar até elas */}
-      
+
       <ScrollReveal>
         <BenefitsSection />
       </ScrollReveal>
 
-      {/* { { <ScrollReveal delay="0.2s"> } */}
-        {/* { <FeatureBanner /> }  */}
+      {/* { <FeatureBanner /> }  */}
       {/* { </ScrollReveal>} } */}
-      
+
       {/* Seção: Para Quem Atendemos */}
       <ScrollReveal>
         <ClientsSection />
@@ -39,13 +42,12 @@ export default function Home() {
       <ScrollReveal>
         <CTASection />
       </ScrollReveal>
-      
+
       {/* O botão flutuante também pode ter animação se desejar, ou deixe fixo */}
       <FloatingElements />
 
       {/* Footer */}
       <Footer />
-
     </main>
-  )
+  );
 }

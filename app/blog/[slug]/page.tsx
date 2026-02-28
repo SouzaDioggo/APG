@@ -1,9 +1,9 @@
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { Navbar } from '@/components/navbar';
-import { Footer } from '@/components/footer';
-import { obterArtigoPorSlug, artigosBlog } from '@/lib/blog-data';
-import { Calendar, Eye, ArrowLeft } from 'lucide-react';
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { obterArtigoPorSlug, artigosBlog } from "@/lib/blog-data";
+import { Calendar, Eye, ArrowLeft } from "lucide-react";
 
 interface PageProps {
   params: {
@@ -38,18 +38,23 @@ export default function ArtigoPage({ params }: PageProps) {
         {/* Hero do artigo */}
         <div className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-12">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <Link href="/blog" className="flex items-center gap-2 text-blue-100 hover:text-white mb-6 transition-colors">
+            <Link
+              href="/blog"
+              className="flex items-center gap-2 text-blue-100 hover:text-white mb-6 transition-colors"
+            >
               <ArrowLeft size={18} />
               Voltar ao Blog
             </Link>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{artigo.titulo}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              {artigo.titulo}
+            </h1>
             <div className="flex flex-wrap items-center gap-6 text-blue-100">
               <span className="flex items-center gap-2">
                 <Calendar size={18} />
-                {new Date(artigo.data).toLocaleDateString('pt-BR', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+                {new Date(artigo.data).toLocaleDateString("pt-BR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </span>
               <span className="flex items-center gap-2">
@@ -76,7 +81,9 @@ export default function ArtigoPage({ params }: PageProps) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-3xl mx-auto">
             {/* Resumo */}
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">{artigo.resumo}</p>
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              {artigo.resumo}
+            </p>
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b">
@@ -100,13 +107,15 @@ export default function ArtigoPage({ params }: PageProps) {
             {/* Autor */}
             <div className="bg-gray-100 rounded-lg p-6 mb-12">
               <p className="text-gray-600">
-                <span className="font-semibold">Escrito por:</span> {artigo.autor}
+                <span className="font-semibold">Escrito por:</span>{" "}
+                {artigo.autor}
               </p>
               <p className="text-gray-600 text-sm">
-                Publicado em {new Date(artigo.data).toLocaleDateString('pt-BR', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+                Publicado em{" "}
+                {new Date(artigo.data).toLocaleDateString("pt-BR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </p>
             </div>
@@ -117,7 +126,9 @@ export default function ArtigoPage({ params }: PageProps) {
         {artigosRelacionados.length > 0 && (
           <section className="bg-gray-50 py-12">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">Artigos Relacionados</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+                Artigos Relacionados
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {artigosRelacionados.map((artigoRel) => (
                   <Link

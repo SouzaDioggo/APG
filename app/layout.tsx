@@ -1,17 +1,17 @@
-import type { Metadata } from "next"
-import { Montserrat, Playfair_Display } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
+import type { Metadata } from "next";
+import { Montserrat, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
 
-const montserrat = Montserrat({ 
+const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
-const playfair = Playfair_Display({ 
+const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
-})
+});
 
 export const metadata: Metadata = {
   title: "APG Empresa | Consultoria em Gestão de Contratos",
@@ -62,13 +62,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://apgempresa.com",
   },
-}
-
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   const schemaData = {
     "@context": "https://schema.org",
@@ -84,7 +83,7 @@ export default function RootLayout({
       contactType: "Customer Service",
       availableLanguage: "pt-BR",
     },
-  }
+  };
 
   return (
     <html lang="pt-BR" className="scroll-smooth">
@@ -94,11 +93,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
-      <html lang="pt-BR" suppressHydrationWarning></html>
-      <body className={`${montserrat.variable} ${playfair.variable} font-sans antialiased`}>
+
+      <body
+        className={`${montserrat.variable} ${playfair.variable} font-sans antialiased`}
+      >
         {children}
         <Analytics />
       </body>
     </html>
-  )
+  );
 }
