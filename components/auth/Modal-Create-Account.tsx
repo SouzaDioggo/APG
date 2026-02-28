@@ -10,8 +10,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { registerUser } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 export function SignUpModal() {
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -23,7 +26,6 @@ export function SignUpModal() {
     confirmPassword: "",
   });
 
-  // Estado para mensagem de erro
   const [error, setError] = useState("");
 
   // Função para atualizar os valores dos inputs
@@ -33,8 +35,6 @@ export function SignUpModal() {
       ...prev,
       [name]: value,
     }));
-
-    // Limpa o erro assim que o usuário começa a corrigir
     if (error) setError("");
   };
 
@@ -47,18 +47,43 @@ export function SignUpModal() {
       return;
     }
 
-    if (formData.password.length < 5) {
+    if (formData.password.length < 6) {
       setError("A senha deve ter pelo menos 6 caracteres.");
       return;
     }
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      toast({
+        title: "Conta criada com sucesso!",
+        description: "Você já pode realizar o login na plataforma.",
+        variant: "default",
+      });
+
       setIsOpen(false);
       setFormData({ name: "", email: "", password: "", confirmPassword: "" });
-    }, 2000);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Ocorreu um erro ao tentar criar a conta.";
+
+      setError(errorMessage);
+      toast({
+        title: "Erro no cadastro",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -145,7 +170,6 @@ export function SignUpModal() {
                 placeholder="Confirme sua senha"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                // Adiciona borda vermelha se houver erro
                 className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 border rounded-lg focus:outline-none focus:ring-1 transition-all font-sans ${
                   error
                     ? "border-red-500 focus:border-red-500 focus:ring-red-500"
@@ -159,7 +183,7 @@ export function SignUpModal() {
           {/* MENSAGEM DE ERRO VISUAL */}
           {error && (
             <div className="flex items-center gap-2 text-red-500 text-sm bg-red-50 p-3 rounded-lg animate-fade-in-up">
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>
           )}
@@ -167,7 +191,7 @@ export function SignUpModal() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#c9a961] hover:bg-[#b89a52] text-[#0d2d4a] font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 mt-2"
+            className="w-full bg-[#c9a961] hover:bg-[#b89a52] text-[#0d2d4a] font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
