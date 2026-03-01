@@ -1,22 +1,56 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, Lock, Mail, ArrowRight, ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  ArrowRight,
+  ArrowLeft,
+  AlertCircle,
+} from "lucide-react";
 import { ForgotPasswordModal } from "@/components/auth/Modal-Forget-Password";
 import Image from "next/image";
 import { SignUpModal } from "@/components/auth/Modal-Create-Account";
-import Link from "next/link"; // Importação do Link para navegação
+import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
+import { loginUser } from "@/lib/api";
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { login } = useAuth();
 
-  // Login Submit
+  // Estados do formulário
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Estados de feedback (loading e erro)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulação de login
-    setTimeout(() => setLoading(false), 2000);
+    setError("");
+
+    try {
+      // Chama a rota POST /api/users/login do backend
+      const response = await loginUser({ email, password });
+
+      // Salva no AuthContext e no localStorage
+      login(response.user);
+
+      router.push("/");
+    } catch (err: any) {
+      setError(
+        err.message || "Ocorreu um erro ao fazer login. Tente novamente.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -24,7 +58,7 @@ export default function LoginPage() {
       {/* Lado Esquerdo - Decorativo / Imagem */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#0d2d4a] items-center justify-center overflow-hidden">
         {/* Overlay com gradiente */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a4d7a]/90 to-[#0d2d4a]/90 z-10" />
+        <div className="absolute inset-0 bg-linear-to-br from-[#1a4d7a]/90 to-[#0d2d4a]/90 z-10" />
 
         {/* Padrão de fundo */}
         <div
@@ -91,6 +125,14 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+            {/* Mensagem de Erro Condicional */}
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm flex items-center gap-2 animate-fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <p>{error}</p>
+              </div>
+            )}
+
             <div className="space-y-4">
               {/* Campo Email */}
               <div className="space-y-2">
@@ -105,6 +147,8 @@ export default function LoginPage() {
                   <input
                     id="email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="seu@email.com"
                     className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961] transition-all font-sans"
                     required
@@ -128,6 +172,8 @@ export default function LoginPage() {
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961] transition-all font-sans"
                     required
@@ -150,7 +196,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group"
+              className="w-full bg-[#1a4d7a] hover:bg-[#0d2d4a] disabled:opacity-70 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group"
             >
               {loading ? (
                 <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

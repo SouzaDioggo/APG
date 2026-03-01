@@ -65,3 +65,9 @@ export const verifyCode = (data: any) =>
     method: "POST",
     body: JSON.stringify(data),
   });
+
+export const loginUser = (data: any) =>
+  fetchApi("/users/login", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });

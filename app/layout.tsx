@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -97,7 +98,7 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${playfair.variable} font-sans antialiased`}
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
         <Analytics />
       </body>
     </html>
