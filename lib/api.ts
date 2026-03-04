@@ -60,6 +60,12 @@ export const registerUser = (data: any) =>
     body: JSON.stringify(data),
   });
 
+export const getUser = (id: string) =>
+  fetchApi(`/users/${id}`, {
+    method: "GET",
+    body: JSON.stringify(id),
+  });
+
 export const verifyCode = (data: any) =>
   fetchApi("/users/verify", {
     method: "POST",
