@@ -157,8 +157,7 @@ export function Navbar() {
                     <User className="w-4 h-4" />
                   </div>
                   <span>
-                    Olá, Vinícius!
-                    {/* Olá, {user.name ? user.name.split(" ")[0] : "Usuário"} */}
+                    Olá, {user.name ? user.name.split(" ")[0] : "Usuário"}
                   </span>
                   <ChevronDown
                     className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isUserMenuOpen ? "rotate-180" : ""}`}
@@ -260,8 +259,7 @@ export function Navbar() {
                       <User className="w-4 h-4 text-slate-300" />
                     </div>
                     <span>
-                      Olá, Vinícius!
-                      {/* Olá, {user.name ? user.name.split(" ")[0] : "Usuário"} */}
+                      Olá, {user.name ? user.name.split(" ")[0] : "Usuário"}
                     </span>
                   </div>
                   <button

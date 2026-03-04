@@ -9,10 +9,11 @@ export async function fetchApi(path: string, options: RequestInit = {}) {
     headers["Content-Type"] = "application/json";
   }
 
-  if (options.headers && "Authorization" in options.headers) {
-    headers["Authorization"] = (options.headers as Record<string, string>)[
-      "Authorization"
-    ];
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
   }
 
   const url = `${API_URL}${path.startsWith("/") ? path : `/${path}`}`;

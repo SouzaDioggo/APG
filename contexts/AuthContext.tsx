@@ -7,48 +7,43 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-
-interface User {
-  nome: string;
-  email: string;
-  password: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  login: (userData: User) => void;
-  logout: () => void;
-}
+import { User, AuthContextType } from "@/Interfaces/Interface-User";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  // Assim que a aplicação carrega, verifica se já tem alguém no localStorage
+  // 2. Verifica se existe usuário E token salvos no carregamento
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+    const storedToken = localStorage.getItem("token");
+
+    if (storedUser && storedToken) {
       setUser(JSON.parse(storedUser));
+      setToken(storedToken);
     }
   }, []);
 
-  const login = (userData: User) => {
+  // 3. Atualizamos a função login para receber o token JWT
+  const login = (userData: User, jwtToken: string) => {
     setUser(userData);
+    setToken(jwtToken);
     localStorage.setItem("user", JSON.stringify(userData));
-    // Se a API retornar um token (JWT), você deve salvá-lo aqui também
-    // localStorage.setItem("token", userData.token);
+    localStorage.setItem("token", jwtToken);
   };
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     localStorage.removeItem("user");
-    // localStorage.removeItem("token");
+    localStorage.removeItem("token");
     window.location.href = "/login";
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
