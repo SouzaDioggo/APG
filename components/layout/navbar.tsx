@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react"; // Adicionado useRef e useEffect
+import { useState, useRef, useEffect } from "react";
 import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
 import {
   DropdownMenu,
@@ -21,10 +21,8 @@ export function Navbar() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { user, logout } = useAuth();
 
-  // Referência para saber onde o menu do usuário está na tela
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Efeito para fechar o menu ao clicar fora dele
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -34,7 +32,6 @@ export function Navbar() {
         setIsUserMenuOpen(false);
       }
     }
-    // Adiciona o listener quando o menu está aberto
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -164,15 +161,35 @@ export function Navbar() {
                   />
                 </button>
 
-                {/* CAIXA DE MENU ABSOLUTA */}
+                {/* CAIXA DE MENU ABSOLUTA (DESKTOP) */}
                 {isUserMenuOpen && (
                   <div className="absolute right-0 top-full mt-3 w-48 p-2 bg-white border border-slate-200 rounded-xl shadow-xl z-50 animate-in fade-in zoom-in-95 slide-in-from-top-2">
+                    {/* VISÍVEL APENAS PARA ADMIN */}
+                    {user?.type === "admin" && (
+                      <a
+                        href="/admin"
+                        className="flex items-center gap-2 text-slate-700 hover:text-[#1a4d7a] hover:bg-slate-50 cursor-pointer font-medium p-3 rounded-lg outline-none transition-colors w-full"
+                      >
+                        Painel Admin
+                      </a>
+                    )}
+
+                    {/* VISÍVEL PARA ADMIN E AUTOR */}
+                    {(user?.type === "admin" || user?.type === "autor") && (
+                      <a
+                        href="/novo-post"
+                        className="flex items-center gap-2 text-slate-700 hover:text-[#1a4d7a] hover:bg-slate-50 cursor-pointer font-medium p-3 rounded-lg outline-none transition-colors w-full"
+                      >
+                        Escrever Artigo
+                      </a>
+                    )}
+
                     <button
                       onClick={() => {
                         setIsUserMenuOpen(false);
                         logout();
                       }}
-                      className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer font-medium p-3 rounded-lg outline-none transition-colors w-full group"
+                      className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer font-medium p-3 rounded-lg outline-none transition-colors w-full group mt-1"
                     >
                       <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                       Sair da conta
@@ -262,6 +279,27 @@ export function Navbar() {
                       Olá, {user.name ? user.name.split(" ")[0] : "Usuário"}
                     </span>
                   </div>
+
+                  {/* Links adicionais Mobile baseados no Type */}
+                  <div className="flex flex-col mt-2 pl-2">
+                    {user?.type === "admin" && (
+                      <a
+                        href="/admin"
+                        className="py-3 px-2 text-sm font-medium text-slate-300 hover:text-[#c9a961] transition-colors duration-150"
+                      >
+                        Painel Admin
+                      </a>
+                    )}
+                    {(user?.type === "admin" || user?.type === "autor") && (
+                      <a
+                        href="/novo-post"
+                        className="py-3 px-2 text-sm font-medium text-slate-300 hover:text-[#c9a961] transition-colors duration-150"
+                      >
+                        Escrever Artigo
+                      </a>
+                    )}
+                  </div>
+
                   <button
                     onClick={() => {
                       logout();

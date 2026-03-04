@@ -8,6 +8,5 @@ export interface Artigos {
   data: string;
   categoria: string;
   imagem: string;
-
   visualizacoes: number;
 }
