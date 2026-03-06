@@ -124,11 +124,11 @@ export function BlogGrid() {
               >
                 <div className="h-48 bg-slate-100 overflow-hidden relative">
                   <img
-                    src="/abstract-blue-waves.png"
+                    src="/abstract-blue-wave-technology.jpg"
                     alt={artigo.title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 opacity-80"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
                 </div>
 
                 <div className="p-6 flex-1 flex flex-col">
@@ -138,7 +138,7 @@ export function BlogGrid() {
                     </span>
                     <span className="flex items-center gap-1 text-xs text-slate-500 font-medium">
                       <Calendar size={14} />
-                      {new Date(artigo.publication_date.toLocaleDateString(
+                      {new Date(artigo.publicationDate).toLocaleDateString(
                         "pt-BR",
                       )}
                     </span>
