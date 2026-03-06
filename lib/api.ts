@@ -116,6 +116,11 @@ export const createPost = (data: any) =>
     body: JSON.stringify(data),
   });
 
+export const getPostById = (id: string | number) =>
+  fetchApi(`/posts/${id}`, {
+    method: "GET",
+  });
+
 // ==========================================
 //  CATEGORIAS
 // ==========================================

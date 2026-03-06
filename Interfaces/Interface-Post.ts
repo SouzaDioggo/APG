@@ -1,7 +1,8 @@
 export interface Post {
   id: number;
   title: string;
-  publication_date: string;
+  content: string;
+  publicationDate: string;
   authorId: number;
   categorieId: number;
 }

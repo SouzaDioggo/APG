@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { getAllPosts } from "@/lib/api";
+import { getAllPosts, getAllCategories } from "@/lib/api";
 import { AdminHeader } from "@/components/admin/admin-header";
-import { FileText, Plus, RefreshCw, Calendar } from "lucide-react";
+import { FileText, Plus, RefreshCw, Calendar, Search } from "lucide-react";
 import { Post } from "@/Interfaces/Interface-Post";
+import { Category } from "@/Interfaces/Interface-Categoria";
 import { ModalNewPost } from "@/components/admin/modal-new-post";
 
 export default function PostsAdminPage() {
@@ -14,24 +15,46 @@ export default function PostsAdminPage() {
   const router = useRouter();
 
   const [posts, setPosts] = useState<Post[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // 2. Estado para controlar a abertura do modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const loadPosts = async () => {
+  const loadData = async () => {
     try {
       setLoading(true);
-      const data = await getAllPosts();
-      setPosts(data);
+      const [postsData, categoriesData] = await Promise.all([
+        getAllPosts(),
+        getAllCategories(),
+      ]);
+      setPosts(postsData);
+      setCategories(categoriesData);
     } catch (err: any) {
-      console.error("Erro ao carregar posts:", err);
+      console.error("Erro ao carregar dados:", err);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (user && user.type !== "leitor") {
+      loadData();
+    }
+  }, [user]);
+
   if (!user || user.type === "leitor") return null;
+
+  const filteredPosts = posts.filter((post) =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const getCategoryName = (categoryId: string | number) => {
+    const category = categories.find(
+      (cat) => String(cat.id) === String(categoryId),
+    );
+    return category ? category.name : "Sem categoria";
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 pb-12">
@@ -43,13 +66,26 @@ export default function PostsAdminPage() {
 
       <main className="container mx-auto px-6 mt-8 animate-fade-in-up">
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-          <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+          <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50">
             <h2 className="font-bold text-[#1a4d7a] flex items-center gap-2 text-xl">
               <FileText className="w-5 h-5" /> Publicações
             </h2>
-            <div className="flex gap-3">
+
+            {/* Barra de Pesquisa */}
+            <div className="flex flex-1 max-w-md w-full items-center relative">
+              <Search className="w-4 h-4 absolute left-3 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Buscar por título..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-[#1a4d7a] focus:ring-1 focus:ring-[#1a4d7a] text-sm"
+              />
+            </div>
+
+            <div className="flex gap-3 w-full md:w-auto">
               <button
-                onClick={loadPosts}
+                onClick={loadData}
                 className="p-2 text-slate-500 hover:text-[#1a4d7a] bg-white rounded-lg border border-slate-200 shadow-sm transition-colors"
                 title="Atualizar lista"
               >
@@ -58,10 +94,9 @@ export default function PostsAdminPage() {
                 />
               </button>
 
-              {/* 3. Substituímos o <Link> por um <button> que abre o modal */}
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white text-sm font-medium rounded-lg transition-colors shadow-md"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white text-sm font-medium rounded-lg transition-colors shadow-md w-full md:w-auto"
               >
                 <Plus className="w-4 h-4" /> Novo Artigo
               </button>
@@ -75,7 +110,8 @@ export default function PostsAdminPage() {
                   <th className="px-6 py-4 font-medium">ID</th>
                   <th className="px-6 py-4 font-medium">Título</th>
                   <th className="px-6 py-4 font-medium">Data de Publicação</th>
-                  <th className="px-6 py-4 font-medium">Categoria ID</th>
+                  <th className="px-6 py-4 font-medium">Categoria</th>{" "}
+                  {/* Alterado de Categoria ID para Categoria */}
                   <th className="px-6 py-4 font-medium text-right">Ações</th>
                 </tr>
               </thead>
@@ -86,14 +122,14 @@ export default function PostsAdminPage() {
                       Carregando publicações...
                     </td>
                   </tr>
-                ) : posts.length === 0 ? (
+                ) : filteredPosts.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="p-8 text-center text-slate-500">
-                      Nenhum artigo encontrado.
+                      Nenhum artigo encontrado com esse título.
                     </td>
                   </tr>
                 ) : (
-                  posts.map((post) => (
+                  filteredPosts.map((post) => (
                     <tr
                       key={post.id}
                       className="hover:bg-slate-50 transition-colors"
@@ -107,12 +143,15 @@ export default function PostsAdminPage() {
                       </td>
                       <td className="px-6 py-4 text-slate-500 flex items-center gap-2">
                         <Calendar className="w-3 h-3" />
-                        {new Date(post.publication_date).toLocaleDateString(
+                        {new Date(post.publicationDate).toLocaleDateString(
                           "pt-BR",
                         )}
                       </td>
                       <td className="px-6 py-4 text-slate-500">
-                        Cat: {post.categorieId}
+                        {/* Aqui exibimos o NOME da Categoria em vez do ID */}
+                        <span className="bg-[#1a4d7a]/10 text-[#1a4d7a] px-3 py-1 rounded-md text-xs font-semibold">
+                          {getCategoryName(post.categorieId)}
+                        </span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <a
@@ -132,12 +171,11 @@ export default function PostsAdminPage() {
         </div>
       </main>
 
-      {/* 4. Renderiza o Modal no final do componente */}
       <ModalNewPost
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={() => {
-          loadPosts();
+          loadData();
         }}
       />
     </div>

@@ -26,6 +26,17 @@ export default function UsersAdminPage() {
   const [error, setError] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
 
+  useEffect(() => {
+    if (user === undefined) return;
+
+    if (!user || user.type !== "admin") {
+      router.push("/");
+    } else {
+      setIsAuthorized(true);
+      loadUsers();
+    }
+  }, [user, router]);
+
   const loadUsers = async () => {
     try {
       setLoading(true);
@@ -52,7 +63,6 @@ export default function UsersAdminPage() {
     try {
       setActionLoading(id);
       await changeUserType(id, newRole);
-      // Atualiza a lista localmente para não precisar fazer outro GET
       setUsersList((prev) =>
         prev.map((u) => (u.id === id ? { ...u, type: newRole } : u)),
       );
@@ -77,9 +87,11 @@ export default function UsersAdminPage() {
       setUsersList((prev) => prev.filter((u) => u.id !== id));
     } catch (err: any) {
       alert(err.message || "Erro ao excluir usuário.");
-      setActionLoading(null); // Só limpa se der erro, pois se der sucesso ele some da lista
+      setActionLoading(null);
     }
   };
+
+  // Se não estiver autorizado (ou ainda estiver verificando), mostra o loading
   if (!isAuthorized) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -95,10 +107,10 @@ export default function UsersAdminPage() {
         description="Controle os acessos e permissões dos usuários cadastrados na plataforma."
         backUrl="/admin"
       />
+
       <main className="container mx-auto px-6 mt-8 animate-fade-in-up">
-        {/* Painel de Gestão de Usuários */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-          <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50">
             <div>
               <h2 className="text-xl font-bold text-[#1a4d7a] flex items-center gap-2">
                 <Users className="w-5 h-5" />
@@ -112,7 +124,7 @@ export default function UsersAdminPage() {
             <button
               onClick={loadUsers}
               disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 shadow-sm hover:border-[#1a4d7a] hover:text-[#1a4d7a] text-slate-600 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
             >
               <RefreshCw
                 className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
@@ -130,7 +142,7 @@ export default function UsersAdminPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider">
+                  <tr className="bg-white text-slate-500 text-sm tracking-wider border-b border-slate-200">
                     <th className="px-6 py-4 font-medium">ID</th>
                     <th className="px-6 py-4 font-medium">Usuário</th>
                     <th className="px-6 py-4 font-medium">Email</th>
@@ -197,11 +209,10 @@ export default function UsersAdminPage() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center justify-end gap-2">
-                            {/* Controle de Nível de Acesso (Select disfarçado de botão) */}
                             <select
                               disabled={
                                 actionLoading === u.id || u.id === user?.id
-                              } // Não deixa o admin tirar o próprio cargo acidentalmente
+                              }
                               value={u.type}
                               onChange={(e) =>
                                 handleRoleChange(u.id, e.target.value as any)
@@ -213,7 +224,6 @@ export default function UsersAdminPage() {
                               <option value="admin">Tornar Admin</option>
                             </select>
 
-                            {/* Botão de Excluir */}
                             <button
                               onClick={() => handleDelete(u.id)}
                               disabled={
