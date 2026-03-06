@@ -37,11 +37,9 @@ export default function LoginPage() {
     setError("");
 
     try {
-      // Chama a rota POST /api/users/login do backend
       const response = await loginUser({ email, password });
 
-      // Salva no AuthContext e no localStorage
-      login(response.user);
+      login(response.user, response.access_token);
 
       router.push("/");
     } catch (err: any) {

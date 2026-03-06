@@ -1,3 +1,5 @@
+import { da } from "date-fns/locale";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function fetchApi(path: string, options: RequestInit = {}) {
@@ -9,10 +11,11 @@ export async function fetchApi(path: string, options: RequestInit = {}) {
     headers["Content-Type"] = "application/json";
   }
 
-  if (options.headers && "Authorization" in options.headers) {
-    headers["Authorization"] = (options.headers as Record<string, string>)[
-      "Authorization"
-    ];
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
   }
 
   const url = `${API_URL}${path.startsWith("/") ? path : `/${path}`}`;
@@ -53,11 +56,19 @@ export async function fetchApi(path: string, options: RequestInit = {}) {
 {
   /* API Endpoints */
 }
-
+// =========================================================================
+// USUÁRIOS
+// =========================================================================
 export const registerUser = (data: any) =>
   fetchApi("/users", {
     method: "POST",
     body: JSON.stringify(data),
+  });
+
+export const getUser = (id: string) =>
+  fetchApi(`/users/${id}`, {
+    method: "GET",
+    body: JSON.stringify(id),
   });
 
 export const verifyCode = (data: any) =>
@@ -70,4 +81,69 @@ export const loginUser = (data: any) =>
   fetchApi("/users/login", {
     method: "POST",
     body: JSON.stringify(data),
+  });
+
+export const getAllUsers = () =>
+  fetchApi("/users", {
+    method: "GET",
+  });
+
+export const changeUserType = (
+  id: number,
+  type: "leitor" | "autor" | "admin",
+) =>
+  fetchApi(`/users/${id}/changeType`, {
+    method: "PATCH",
+    body: JSON.stringify({ type }),
+  });
+
+export const deleteUser = (id: number) =>
+  fetchApi(`/users/${id}`, {
+    method: "DELETE",
+  });
+
+// ==========================================
+// POSTS
+// ==========================================
+export const getAllPosts = () =>
+  fetchApi("/posts", {
+    method: "GET",
+  });
+
+export const createPost = (data: any) =>
+  fetchApi("/posts", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+export const getPostById = (id: string | number) =>
+  fetchApi(`/posts/${id}`, {
+    method: "GET",
+  });
+
+// ==========================================
+//  CATEGORIAS
+// ==========================================
+export const getAllCategories = () =>
+  fetchApi("/categories", {
+    method: "GET",
+  });
+
+export const createCategory = (data: { name: string }) =>
+  fetchApi("/categories", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+// ==========================================
+//  COMENTÁRIOS
+// ==========================================
+export const getCommentsByPost = (postId: number) =>
+  fetchApi(`/comments/post/${postId}`, {
+    method: "GET",
+  });
+
+export const deleteComment = (id: number) =>
+  fetchApi(`/comments/${id}`, {
+    method: "DELETE",
   });
