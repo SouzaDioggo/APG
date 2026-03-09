@@ -1,4 +1,4 @@
-import { LatestArticles } from "@/components/latest-articles"
+import { LatestArticles } from "@/components/landing-page/latest-articles"
 
 export function FeatureBanner() {
   return (

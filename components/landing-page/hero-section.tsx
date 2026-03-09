@@ -21,7 +21,7 @@ export function HeroSection() {
         <img
           src="/LOGO APG NEGATIVO.png"
           alt="APG - Consultoria Empresarial"
-          className="w-full max-w-[280px] md:max-w-[480px] h-auto object-contain drop-shadow-2xl animate-fade-in-up"
+          className="w-full max-w-70 md:max-w-120 h-auto object-contain drop-shadow-2xl animate-fade-in-up"
         />
 
         {/* Textos Adicionais */}
