@@ -142,7 +142,7 @@ export default function PostsAdminPage() {
                       </td>
                       <td className="px-6 py-4 text-slate-500 flex items-center gap-2">
                         <Calendar className="w-3 h-3" />
-                        {new Date(post.publication_date).toLocaleDateString(
+                        {new Date(post.publicationDate).toLocaleDateString(
                           "pt-BR",
                         )}
                       </td>

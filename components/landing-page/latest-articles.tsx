@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArtigosBlog, obterUltimosArtigos } from '@/lib/blog-data';
+import { artigosBlog, obterUltimosArtigos } from '@/lib/blog-data';
 import { Calendar, Eye, Tag } from 'lucide-react';
 
 export function LatestArticles() {
