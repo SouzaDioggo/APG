@@ -6,7 +6,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  assetPrefix: 'https://apgempresa.com',
 }
 
 export default nextConfig
