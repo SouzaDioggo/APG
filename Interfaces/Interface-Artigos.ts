@@ -9,4 +9,5 @@ export interface Artigos {
   categoria: string;
   imagem: string;
   visualizacoes: number;
+  tags: string[];
 }

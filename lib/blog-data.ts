@@ -17,6 +17,7 @@ export const artigosBlog: Artigos[] = [
     imagem:
       "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=800&h=400&fit=crop",
     visualizacoes: 1250,
+    tags: ["JWT", "Next.js", "Autenticação"],
   },
   {
     id: "2",
@@ -32,6 +33,7 @@ export const artigosBlog: Artigos[] = [
     imagem:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop",
     visualizacoes: 980,
+    tags: ["Gestão", "Projetos", "Equipes Remotas"],
   },
   {
     id: "3",
@@ -47,6 +49,7 @@ export const artigosBlog: Artigos[] = [
     imagem:
       "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=400&fit=crop",
     visualizacoes: 1450,
+    tags: ["Growth Hacking", "Marketing", "Startup"],
   },
   {
     id: "4",
@@ -62,6 +65,7 @@ export const artigosBlog: Artigos[] = [
     imagem:
       "https://images.unsplash.com/photo-1677442d019cecf8e5aa1e86ac966185?w=800&h=400&fit=crop",
     visualizacoes: 2100,
+    tags: ["IA", "Inteligência Artificial", "Negócios"],
   },
   {
     id: "5",
@@ -77,6 +81,7 @@ export const artigosBlog: Artigos[] = [
     imagem:
       "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop",
     visualizacoes: 856,
+    tags: ["Design", "Web", "Tendências"],
   },
   {
     id: "6",
@@ -92,6 +97,7 @@ export const artigosBlog: Artigos[] = [
     imagem:
       "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=400&fit=crop",
     visualizacoes: 1100,
+    tags: ["DevOps", "Pipeline", "Deployment"],
   },
 ];
 
