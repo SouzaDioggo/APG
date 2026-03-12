@@ -25,12 +25,12 @@ export function HeroSection() {
         />
 
         {/* Textos Adicionais */}
-        <div className="text-center max-w-3xl animate-fade-in-up animation-delay-200 mt-12">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight font-serif">
+        <div className="text-center max-w-4xl animate-fade-in-up animation-delay-200 mt-12">
+          <h1 className="text-2xl md:text-3xl font-bold mb-4 leading-tight font-serif">
             Especialistas em fazer você e seu negócio gerarem mais receita pela gestão de contratos e estruturação empresarial.
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-200 mb-8">
+          <p className="text-base md:text-1lg text-gray-200 mb-8">
             Consultoria especializada em gestão de contratos, compliance e proteção de dados que gera economia e segurança jurídica para seu negócio.
           </p>
 
