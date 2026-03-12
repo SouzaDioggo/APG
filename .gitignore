@@ -1,6 +1,61 @@
+# =========================================
+# Dependências
+# =========================================
 node_modules/
+/.pnp
+.pnp.*
+
+# =========================================
+# Logs de Erro e Debug
+# =========================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================================
+# Build e Produção (Next.js / React)
+# =========================================
 .next/
+out/
+build/
 dist/
+/swc/
+
+# =========================================
+# Variáveis de Ambiente
+# =========================================
 .env
+.env*.local
+# Nota: Arquivos como .env.example ou .env.template geralmente não são ignorados
+
+# =========================================
+# Testes
+# =========================================
+coverage/
+
+# =========================================
+# Arquivos de Sistema Operacional
+# =========================================
 .DS_Store
-.yarn.lock
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =========================================
+# Editores e IDEs (Opcional, mas recomendado)
+# =========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
