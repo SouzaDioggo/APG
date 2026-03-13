@@ -19,7 +19,6 @@ export async function fetchApi(path: string, options: RequestInit = {}) {
   }
 
   const url = `${API_URL}${path.startsWith("/") ? path : `/${path}`}`;
-  console.log("Tentando fazer requisição para a URL:", url);
 
   const response = await fetch(url, {
     ...options,
