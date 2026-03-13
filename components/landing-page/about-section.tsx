@@ -13,7 +13,7 @@ import {
 
 export function AboutSection() {
   const [isQuemSomosOpen, setIsQuemSomosOpen] = useState(true)
-  const [isOQueFazemosOpen, setIsOQueFazemosOpen] = useState(false)
+  const [isOQueFazemosOpen, setIsOQueFazemosOpen] = useState(true)
 
   const serviceIcons = [
     TrendingUp,
