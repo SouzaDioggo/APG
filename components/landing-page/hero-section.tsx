@@ -25,7 +25,7 @@ export function HeroSection() {
         />
 
         {/* Textos Adicionais */}
-        <div className="text-center max-w-4xl animate-fade-in-up animation-delay-200 mt-12">
+        <div className="text-center max-w-4xl animate-fade-in-up mt-12">
           <h1 className="text-2xl md:text-3xl font-bold mb-4 leading-tight font-serif">
             Especialistas em fazer você e seu negócio gerarem mais receita pela gestão de contratos e estruturação empresarial.
           </h1>
