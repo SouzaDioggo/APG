@@ -29,6 +29,9 @@ export NODE_OPTIONS="--max-old-space-size=3072"
 # 4. Build do Next.js
 echo "⚙️ Executando build Next.js..."
 yarn build
+echo "📂 Copiando arquivos estáticos..."
+cp -r public .next/standalone/
+cp -r .next/static .next/standalone/.next/
 
 # 5. Verificar se o build foi bem-sucedido
 if [ -d ".next" ]; then
