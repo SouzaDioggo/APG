@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getAllPosts, getAllCategories } from "@/lib/api"; // Removido getAllUsers
-import { Calendar, Search, X } from "lucide-react";
+import { Calendar, Search, X, Plus } from "lucide-react";
 import { Post } from "@/Interfaces/Interface-Post";
 import { Category } from "@/Interfaces/Interface-Categoria";
 
@@ -62,13 +62,23 @@ export function BlogGrid() {
   return (
     <div className="py-12 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">
-            Todos os Artigos
-          </h1>
-          <p className="text-slate-600 text-lg">
-            Explore nossos artigos, dicas e insights profissionais
-          </p>
+        <div className="mb-12 flex justify-between items-start">
+          <div className="flex-1">
+            <h1 className="text-4xl font-bold text-slate-900 mb-4">
+              Todos os Artigos
+            </h1>
+            <p className="text-slate-600 text-lg">
+              Explore nossos artigos, dicas e insights profissionais
+            </p>
+          </div>
+          
+          <Link
+            href="/blog/novo-artigo"
+            className="ml-8 px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
+          >
+            <Plus size={20} />
+            Adicionar Artigo
+          </Link>
         </div>
 
         <div className="mb-8">
