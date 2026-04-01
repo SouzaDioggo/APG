@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Card } from "@/components/ui/card"
 
 export function FounderSection() {
@@ -39,7 +40,7 @@ export function FounderSection() {
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      <span>Especialista em Direito Digital e LGPD</span>
+                      <span>Pesquisador de LGPD, privacidade e direito digital</span>
                     </li>                   
                   </ul>
                 </div>
@@ -65,13 +66,14 @@ export function FounderSection() {
 
               {/* Image Placeholder */}
               <div className="flex items-center justify-center">
-                <div className="w-full aspect-square bg-linear-to-br from-[#ecf0f1] to-[#ecf0f1] rounded-lg flex items-center justify-center border-2 border-[#c9a961]">
-                  <div className="text-center">
-                    <svg className="w-20 h-20 text-[#1a4d7a] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <p className="text-[#1a4d7a] font-semibold">Prof. Dr. Gabriel Siggelkow Guimarães</p>
-                  </div>
+                <div className="relative w-full aspect-square bg-linear-to-br from-[#ecf0f1] to-[#ecf0f1] rounded-lg border-2 border-[#c9a961] overflow-hidden">
+                  <Image
+                    src="/gabrielapg.jpeg"
+                    alt="Prof. Dr. Gabriel Siggelkow Guimarães"
+                    fill
+                    className="object-cover w-full h-full"
+                    priority
+                  />
                 </div>
               </div>
             </div>
@@ -123,13 +125,14 @@ export function FounderSection() {
 
               {/* Image Placeholder */}
               <div className="flex items-center justify-center">
-                <div className="w-full aspect-square bg-linear-to-br from-[#ecf0f1] to-[#ecf0f1] rounded-lg flex items-center justify-center border-2 border-[#c9a961]">
-                  <div className="text-center">
-                    <svg className="w-20 h-20 text-[#1a4d7a] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <p className="text-[#1a4d7a] font-semibold">Juliana Calheiros</p>
-                  </div>
+                <div className="relative w-full aspect-square bg-linear-to-br from-[#ecf0f1] to-[#ecf0f1] rounded-lg border-2 border-[#c9a961] overflow-hidden">
+                  <Image
+                    src="/julianaapg.jpeg"
+                    alt="Juliana Calheiros"
+                    fill
+                    className="object-cover w-full h-full"
+                    priority
+                  />
                 </div>
               </div>
             </div>
