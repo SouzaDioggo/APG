@@ -81,14 +81,14 @@ export function Footer() {
                   Sobre
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="/blog"
                   className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light"
                 >
                   Blog
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
 

@@ -64,10 +64,10 @@ export const registerUser = (data: any) =>
     body: JSON.stringify(data),
   });
 
-export const getUser = (id: string) =>
-  fetchApi(`/users/${id}`, {
-    method: "GET",
-    body: JSON.stringify(id),
+export const loginUser = (data: any) =>
+  fetchApi("/users/login", {
+    method: "POST",
+    body: JSON.stringify(data),
   });
 
 export const verifyCode = (data: any) =>
@@ -76,10 +76,26 @@ export const verifyCode = (data: any) =>
     body: JSON.stringify(data),
   });
 
-export const loginUser = (data: any) =>
-  fetchApi("/users/login", {
+export const resendCode = (data: { email: string }) =>
+  fetchApi("/users/resendCode", {
     method: "POST",
     body: JSON.stringify(data),
+  });
+
+export const resetPassword = (data: {
+  email: string;
+  code: string;
+  password: string;
+}) =>
+  fetchApi("/users/resetPassword", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+export const getUser = (id: string) =>
+  fetchApi(`/users/${id}`, {
+    method: "GET",
+    body: JSON.stringify(id),
   });
 
 export const getAllUsers = () =>
