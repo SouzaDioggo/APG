@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'apg-blog',
       script: '.next/standalone/server.js',
-      node_args: '--max-old-space-size=512',
+      node_args: '--max-old-space-size=1024',
       env: {
         NODE_ENV: 'production',
         PORT: 3301,
@@ -13,7 +13,7 @@ module.exports = {
       log_file: './logs/pm2-combined.log',
       merge_logs: true,
       autorestart: true,
-      max_memory_restart: '512M',
+      max_memory_restart: '1G',
       watch: false,
       ignore_watch: [
         'node_modules',
