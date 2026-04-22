@@ -150,6 +150,17 @@ export const createCategory = (data: { name: string }) =>
     body: JSON.stringify(data),
   });
 
+export const deleteCategory = (id: number) =>
+  fetchApi(`/categories/${id}`, {
+    method: "DELETE",
+  });
+
+export const ChangeCategory = (id: number, data: { name: string }) =>
+  fetchApi(`/categories/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+
 // ==========================================
 //  COMENTÁRIOS
 // ==========================================
