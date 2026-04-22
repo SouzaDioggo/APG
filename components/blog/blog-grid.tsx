@@ -6,8 +6,10 @@ import { getAllPosts, getAllCategories } from "@/lib/api";
 import { Calendar, Search, X, Plus } from "lucide-react";
 import { Post } from "@/Interfaces/Interface-Post";
 import { Category } from "@/Interfaces/Interface-Categoria";
+import { useAuth } from "@/contexts/AuthContext"; //
 
 export function BlogGrid() {
+  const { user } = useAuth(); // Obtemos o usuário logado
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +21,6 @@ export function BlogGrid() {
     const loadData = async () => {
       try {
         setLoading(true);
-        // Busca apenas Posts e Categorias (que são rotas públicas)
         const [postsData, categoriesData] = await Promise.all([
           getAllPosts(),
           getAllCategories(),
@@ -40,12 +41,9 @@ export function BlogGrid() {
     return cat ? cat.name : "Sem categoria";
   };
 
-  const categoriasAtivasIds = Array.from(
-    new Set(posts.map((p) => p.categorieId)),
-  );
   const categoriasNomes = [
     "Todos",
-    ...categoriasAtivasIds.map((id) => getCategoryName(id)),
+    ...categories.map((categoria) => categoria.name),
   ];
 
   const artigosFiltrados = posts.filter((post) => {
@@ -72,14 +70,21 @@ export function BlogGrid() {
             </p>
           </div>
 
-          <Link
-            href="/blog/novo-artigo"
-            className="ml-8 px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
-          >
-            <Plus size={20} />
-            Adicionar Artigo
-          </Link>
+          {/* Lógica de Permissão: 
+            Só renderiza se o usuário for 'admin' ou 'autor' 
+          */}
+          {(user?.type === "admin" || user?.type === "autor") && (
+            <Link
+              href="/blog/novo-artigo"
+              className="ml-8 px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
+            >
+              <Plus size={20} />
+              Adicionar Artigo
+            </Link>
+          )}
         </div>
+
+        {/* ... restante do componente (Busca e Filtros) ... */}
 
         <div className="mb-8">
           <div className="relative max-w-2xl">
@@ -133,12 +138,17 @@ export function BlogGrid() {
                 className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col"
               >
                 <div className="h-48 bg-slate-100 overflow-hidden relative">
+                  {/* Atualizado para usar a imagem vinda do backend ou um placeholder */}
                   <img
-                    src="/abstract-blue-wave-technology.jpg"
+                    src={
+                      artigo.image
+                        ? `http://localhost:3001/uploads/${artigo.image}`
+                        : "/abstract-blue-wave-technology.jpg"
+                    }
                     alt={artigo.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 opacity-80"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 </div>
 
                 <div className="p-6 flex-1 flex flex-col">
@@ -159,8 +169,9 @@ export function BlogGrid() {
                   </h3>
 
                   <p className="text-slate-600 text-sm mb-6 line-clamp-3">
-                    {(artigo as any).content
-                      ? (artigo as any).content.substring(0, 120) + "..."
+                    {/* Lógica de resumo em 150 caracteres para blocos de conteúdo */}
+                    {artigo.contents && artigo.contents.length > 0
+                      ? artigo.contents[0].content.substring(0, 150) + "..."
                       : "Clique para ler o artigo completo..."}
                   </p>
 

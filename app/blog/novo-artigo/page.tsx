@@ -1,341 +1,340 @@
 "use client";
 
-import { useState } from "react";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { FloatingElements } from "@/components/layout/floating-elements";
-import Link from "next/link";
-import { ArrowLeft, Upload, X } from "lucide-react";
-import Image from "next/image";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import {
+  ArrowLeft,
+  Plus,
+  Trash2,
+  Layout,
+  Type,
+  Image as ImageIcon,
+  RefreshCw,
+  Upload,
+  ChevronUp,
+  ChevronDown,
+} from "lucide-react";
+import { createPost, getAllCategories } from "@/lib/api";
+import { Category } from "@/Interfaces/Interface-Categoria";
+import { useToast } from "@/hooks/use-toast";
 
-interface FormData {
-  titulo: string;
-  slug: string;
-  resumo: string;
-  conteudo: string;
-  categoria: string;
-  tags: string[];
-  imagem: string | null;
-  imagemFile: File | null;
+interface ContentBlock {
+  type: "text" | "image";
+  content: string;
+  order: number;
 }
 
 export default function NovoArtigoPage() {
-  const [formData, setFormData] = useState<FormData>({
-    titulo: "",
-    slug: "",
-    resumo: "",
-    conteudo: "",
-    categoria: "Desenvolvimento",
-    tags: [],
-    imagem: null,
-    imagemFile: null,
-  });
+  const router = useRouter();
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [previewImagem, setPreviewImagem] = useState<string | null>(null);
-  const [novaTag, setNovaTag] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const categorias = [
-    "Desenvolvimento",
-    "Design",
-    "Marketing",
-    "Gestão",
-    "Tecnologia",
-  ];
+  const [title, setTitle] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [blocks, setBlocks] = useState<ContentBlock[]>([
+    { type: "text", content: "", order: 1 },
+  ]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-      ...(name === "titulo" && { slug: value.toLowerCase().replace(/\s+/g, "-") }),
-    }));
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const data = await getAllCategories();
+      setCategories(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const addBlock = () => {
+    setBlocks([
+      ...blocks,
+      { type: "text", content: "", order: blocks.length + 1 },
+    ]);
+  };
+
+  const removeBlock = (index: number) => {
+    if (blocks.length === 1) return;
+    const newBlocks = blocks
+      .filter((_, i) => i !== index)
+      .map((b, i) => ({ ...b, order: i + 1 }));
+    setBlocks(newBlocks);
+  };
+
+  const moveBlock = (index: number, direction: "up" | "down") => {
+    const newBlocks = [...blocks];
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= blocks.length) return;
+    [newBlocks[index], newBlocks[targetIndex]] = [
+      newBlocks[targetIndex],
+      newBlocks[index],
+    ];
+    setBlocks(newBlocks.map((b, i) => ({ ...b, order: i + 1 })));
+  };
+
+  const updateBlock = (index: number, value: string) => {
+    const newBlocks = [...blocks];
+    newBlocks[index].content = value;
+    setBlocks(newBlocks);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData((prev) => ({
-        ...prev,
-        imagemFile: file,
-      }));
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImagem(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
-  const handleAddTag = () => {
-    if (novaTag.trim() && !formData.tags.includes(novaTag.trim())) {
-      setFormData((prev) => ({
-        ...prev,
-        tags: [...prev.tags, novaTag.trim()],
-      }));
-      setNovaTag("");
-    }
-  };
-
-  const handleRemoveTag = (tagToRemove: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((tag) => tag !== tagToRemove),
-    }));
-  };
-
-  const handleRemoveImage = () => {
-    setFormData((prev) => ({
-      ...prev,
-      imagemFile: null,
-      imagem: null,
-    }));
-    setPreviewImagem(null);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui a lógica do backend será adicionada
-    console.log("Formulário enviado:", {
-      ...formData,
-      imagemFile: previewImagem,
-    });
+    if (
+      !title ||
+      !categoryId ||
+      !selectedFile ||
+      blocks.some((b) => !b.content.trim())
+    ) {
+      toast({
+        title: "Atenção",
+        description: "Preencha todos os campos obrigatórios.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("title", title);
+      formData.append("categorieId", categoryId);
+      formData.append("publicationDate", new Date().toISOString());
+      formData.append("contents", JSON.stringify(blocks));
+
+      await createPost(formData);
+
+      toast({
+        title: "Ação concluída com sucesso!",
+        description: "Seu artigo foi publicado com sucesso.",
+      });
+
+      // Redireciona de volta para a listagem do blog
+      router.push("/blog");
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Falha ao publicar.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <main className="min-h-screen bg-white flex flex-col">
-      <Navbar />
-
-      {/* Hero section */}
-      <section className="bg-linear-to-r from-[#12395c] to-blue-800 text-white py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity"
-          >
-            <ArrowLeft size={20} />
-            Voltar ao Blog
-          </Link>
-          <h1 className="text-4xl font-bold">Criar Novo Artigo</h1>
-          <p className="text-blue-100 text-lg mt-2">
-            Compartilhe seu conhecimento com a comunidade
-          </p>
+    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col">
+        {/* Header */}
+        <div className="flex justify-between items-center p-6 border-b border-slate-100 bg-slate-50/50">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.back()}
+              className="p-2 hover:bg-slate-200 rounded-full transition-all cursor-pointer text-slate-400 hover:text-[#1a4d7a]"
+              title="Voltar"
+            >
+              <ArrowLeft className="w-6 h-6" />
+            </button>
+            <div>
+              <h3 className="font-bold text-[#1a4d7a] text-2xl flex items-center gap-2">
+                <Layout className="w-6 h-6" /> Novo Post
+              </h3>
+              <p className="text-sm text-slate-500">
+                Crie seu conteúdo e faça upload da imagem de destaque.
+              </p>
+            </div>
+          </div>
         </div>
-      </section>
 
-      {/* Form section */}
-      <section className="py-12 bg-slate-50 flex-1">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white rounded-xl shadow-lg p-8 space-y-8"
-          >
-            {/* Upload Imagem */}
-            <div className="space-y-4">
-              <label className="block text-lg font-bold text-slate-900">
-                Imagem de Capa
-              </label>
-              {previewImagem ? (
-                <div className="relative group">
-                  <div className="relative w-full h-64 rounded-lg overflow-hidden bg-slate-100">
-                    <Image
-                      src={previewImagem}
-                      alt="Preview"
-                      fill
-                      className="object-cover"
-                    />
+        <form onSubmit={handleSubmit} className="p-8 space-y-10">
+          {/* Seletor de Imagem */}
+          <section className="space-y-4">
+            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b pb-1">
+              Capa do Artigo
+            </h4>
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="relative h-64 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition-all overflow-hidden group"
+            >
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              {previewUrl ? (
+                <div className="relative w-full h-full">
+                  <img
+                    src={previewUrl}
+                    className="w-full h-full object-cover"
+                    alt="Preview"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <p className="text-white font-bold flex items-center gap-2">
+                      <RefreshCw className="w-5 h-5" /> Trocar Capa
+                    </p>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleRemoveImage}
-                    className="absolute top-3 right-3 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100"
-                  >
-                    <X size={18} />
-                  </button>
                 </div>
               ) : (
-                <label className="flex items-center justify-center w-full h-48 border-3 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-[#1a4d7a] hover:bg-slate-50 transition-colors">
-                  <div className="text-center">
-                    <Upload className="mx-auto mb-2 text-slate-400" size={32} />
-                    <p className="text-slate-600 font-semibold">
-                      Clique para fazer upload ou arraste uma imagem
-                    </p>
-                    <p className="text-slate-500 text-sm mt-1">
-                      PNG, JPG ou GIF (máx. 5MB)
-                    </p>
+                <div className="text-center text-slate-400">
+                  <div className="bg-slate-100 p-5 rounded-full inline-block mb-3 group-hover:bg-[#1a4d7a]/10 transition-colors">
+                    <ImageIcon className="w-10 h-10 text-slate-300 group-hover:text-[#1a4d7a]" />
                   </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                </label>
+                  <p className="text-sm font-semibold">
+                    Clique para subir a imagem de capa
+                  </p>
+                  <p className="text-xs mt-1">
+                    Sugerido: 1200x600px (JPG, PNG)
+                  </p>
+                </div>
               )}
             </div>
+          </section>
 
-            {/* Título */}
+          {/* Dados Gerais */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <label htmlFor="titulo" className="block text-lg font-bold text-slate-900">
-                Título do Artigo
+              <label
+                className="text-xs font-bold text-slate-500 uppercase cursor-pointer"
+                onClick={() => document.getElementById("post-title")?.focus()}
+              >
+                Título
               </label>
               <input
+                id="post-title"
                 type="text"
-                id="titulo"
-                name="titulo"
-                value={formData.titulo}
-                onChange={handleInputChange}
-                placeholder="Digite o título do seu artigo"
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-[#1a4d7a] focus:ring-2 focus:ring-[#1a4d7a]/20"
-                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-0 focus:outline-none text-slate-800 font-medium placeholder:text-slate-300 cursor-text"
+                placeholder="Ex: Minha nova jornada..."
               />
             </div>
-
-            {/* Slug - Gerado automaticamente */}
-            {formData.titulo && (
-              <div className="space-y-2 p-4 bg-slate-50 rounded-lg border border-slate-200">
-                <p className="text-sm text-slate-600 font-semibold">URL do Artigo:</p>
-                <p className="text-slate-900 flex items-center gap-2">
-                  <span className="text-slate-500">blog/</span>
-                  <span className="font-bold text-[#1a4d7a]">{formData.slug}</span>
-                </p>
-              </div>
-            )}
-
-            {/* Categoria */}
             <div className="space-y-2">
-              <label htmlFor="categoria" className="block text-lg font-bold text-slate-900">
+              <label className="text-xs font-bold text-slate-500 uppercase cursor-pointer">
                 Categoria
               </label>
               <select
-                id="categoria"
-                name="categoria"
-                value={formData.categoria}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-[#1a4d7a] focus:ring-2 focus:ring-[#1a4d7a]/20"
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-0 focus:outline-none text-slate-800 cursor-pointer appearance-none"
               >
-                {categorias.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
+                <option value="">Selecione uma categoria...</option>
+                {categories.map((cat) => (
+                  <option
+                    key={cat.id}
+                    value={cat.id}
+                    className="cursor-pointer"
+                  >
+                    {cat.name}
                   </option>
                 ))}
               </select>
             </div>
+          </section>
 
-            {/* Resumo */}
-            <div className="space-y-2">
-              <label htmlFor="resumo" className="block text-lg font-bold text-slate-900">
-                Resumo
-              </label>
-              <p className="text-sm text-slate-500">
-                Descrição breve que será exibida no grid
-              </p>
-              <textarea
-                id="resumo"
-                name="resumo"
-                value={formData.resumo}
-                onChange={handleInputChange}
-                placeholder="Digite um resumo breve do artigo"
-                rows={2}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-[#1a4d7a] focus:ring-2 focus:ring-[#1a4d7a]/20 resize-none"
-                required
-              />
-            </div>
-
-            {/* Conteúdo */}
-            <div className="space-y-2">
-              <label htmlFor="conteudo" className="block text-lg font-bold text-slate-900">
+          {/* Editor de Blocos */}
+          <section className="space-y-6">
+            <div className="flex items-center justify-between border-b pb-2">
+              <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                 Conteúdo do Artigo
-              </label>
-              <p className="text-sm text-slate-500">
-                Digite o conteúdo completo do seu artigo
-              </p>
-              <textarea
-                id="conteudo"
-                name="conteudo"
-                value={formData.conteudo}
-                onChange={handleInputChange}
-                placeholder="Digite o conteúdo completo do seu artigo"
-                rows={10}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-[#1a4d7a] focus:ring-2 focus:ring-[#1a4d7a]/20 resize-none font-mono text-sm"
-                required
-              />
-            </div>
-
-            {/* Tags */}
-            <div className="space-y-4">
-              <label className="block text-lg font-bold text-slate-900">
-                Tags
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={novaTag}
-                  onChange={(e) => setNovaTag(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddTag();
-                    }
-                  }}
-                  placeholder="Digite uma tag e pressione Enter"
-                  className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-[#1a4d7a] focus:ring-2 focus:ring-[#1a4d7a]/20"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddTag}
-                  className="px-6 py-3 bg-slate-200 text-slate-900 font-bold rounded-lg hover:bg-slate-300 transition-colors"
-                >
-                  Adicionar
-                </button>
-              </div>
-
-              {formData.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {formData.tags.map((tag) => (
-                    <div
-                      key={tag}
-                      className="bg-[#1a4d7a] text-white px-4 py-2 rounded-full flex items-center gap-2 text-sm font-semibold"
-                    >
-                      {tag}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveTag(tag)}
-                        className="hover:opacity-70 transition-opacity"
-                      >
-                        <X size={16} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Botões de ação */}
-            <div className="flex gap-4 pt-8 border-t border-slate-200">
-              <Link
-                href="/blog"
-                className="flex-1 px-6 py-3 border border-slate-300 text-slate-900 font-bold rounded-lg hover:bg-slate-50 transition-colors text-center"
-              >
-                Cancelar
-              </Link>
+              </h4>
               <button
-                type="submit"
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 hover:from-[#0f3554] hover:to-blue-800"
+                type="button"
+                onClick={addBlock}
+                className="bg-[#1a4d7a]/5 hover:bg-[#1a4d7a] text-[#1a4d7a] hover:text-white px-3 py-1.5 rounded-lg flex items-center gap-2 text-[10px] font-bold uppercase transition-all cursor-pointer"
               >
-                Publicar Artigo
+                <Plus className="w-3 h-3" /> Novo Bloco
               </button>
             </div>
-          </form>
-        </div>
-      </section>
 
-      <FloatingElements />
-      <Footer />
-    </main>
+            <div className="space-y-10">
+              {blocks.map((block, index) => (
+                <div key={index} className="group relative">
+                  {/* Caixinha Azul Bonita */}
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="bg-[#1a4d7a] text-white px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-tighter shadow-sm flex items-center gap-2">
+                      <Layout className="w-3 h-3" /> Bloco {block.order}
+                    </div>
+
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        type="button"
+                        onClick={() => moveBlock(index, "up")}
+                        title="Subir"
+                        className="p-1.5 bg-slate-100 hover:bg-[#c9a961] hover:text-white rounded-md transition-all cursor-pointer"
+                      >
+                        <ChevronUp className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => moveBlock(index, "down")}
+                        title="Descer"
+                        className="p-1.5 bg-slate-100 hover:bg-[#c9a961] hover:text-white rounded-md transition-all cursor-pointer"
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removeBlock(index)}
+                        title="Excluir"
+                        className="p-1.5 bg-red-50 hover:bg-red-500 hover:text-white text-red-400 rounded-md transition-all cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <textarea
+                    rows={6}
+                    value={block.content}
+                    onChange={(e) => updateBlock(index, e.target.value)}
+                    className="w-full p-6 bg-slate-50 border-none rounded-2xl focus:ring-0 focus:outline-none text-slate-700 resize-none placeholder:text-slate-300 text-lg leading-relaxed cursor-text"
+                    placeholder="Escreva o conteúdo deste bloco aqui..."
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        </form>
+
+        {/* Footer */}
+        <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-end gap-4">
+          <button
+            onClick={() => router.back()}
+            className="px-8 py-3 text-slate-500 hover:text-red-500 font-bold text-sm transition-all cursor-pointer"
+          >
+            Descartar
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="px-10 py-3 bg-[#1a4d7a] hover:bg-[#c9a961] text-white rounded-xl font-bold shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+          >
+            {loading ? (
+              <RefreshCw className="w-5 h-5 animate-spin" />
+            ) : (
+              "Publicar Artigo"
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
