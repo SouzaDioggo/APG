@@ -190,9 +190,13 @@ export const getCommentById = (id: number) =>
     method: "GET",
   });
 
-export const updateComment = (id: number, data: { content: string }) =>
-  fetchApi(`/comments/${id}`, {
-    method: "PATCH",
+export const updateComment = (
+  id: number,
+  userId: number,
+  data: { text: string },
+) =>
+  fetchApi(`/comments/${id}/${userId}`, {
+    method: "PUT",
     body: JSON.stringify(data),
   });
 

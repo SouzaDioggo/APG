@@ -74,7 +74,7 @@ export function BlogGrid() {
           {(user?.type === "admin" || user?.type === "autor") && (
             <Link
               href="/blog/novo-artigo"
-              className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
+              className="w-full md:w-auto px-6 py-3 bg-linear-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
             >
               <Plus size={20} />
               Adicionar Artigo
@@ -144,7 +144,7 @@ export function BlogGrid() {
                     alt={artigo.title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
                 </div>
 
                 <div className="p-6 flex-1 flex flex-col">
