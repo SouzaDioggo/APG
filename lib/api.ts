@@ -125,10 +125,10 @@ export const getAllPosts = () =>
     method: "GET",
   });
 
-export const createPost = (data: any) =>
+export const createPost = (data: FormData) =>
   fetchApi("/posts", {
     method: "POST",
-    body: JSON.stringify(data),
+    body: data,
   });
 
 export const getPostById = (id: string | number) =>
