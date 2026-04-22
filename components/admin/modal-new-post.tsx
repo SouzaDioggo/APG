@@ -16,18 +16,7 @@ import {
 import { createPost, getAllCategories } from "@/lib/api";
 import { Category } from "@/Interfaces/Interface-Categoria";
 import { useToast } from "@/hooks/use-toast";
-
-interface ModalNewPostProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-}
-
-interface ContentBlock {
-  type: "text" | "image";
-  content: string;
-  order: number;
-}
+import { ModalNewPostProps, ContentBlock } from "@/Interfaces/Interface-Post";
 
 export function ModalNewPost({
   isOpen,

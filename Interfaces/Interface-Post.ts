@@ -1,8 +1,28 @@
 export interface Post {
   id: number;
   title: string;
-  content: string;
-  publicationDate: string;
-  authorId: number;
   categorieId: number;
+  publicationDate: string;
+  userId: number;
+  image?: string;
+  contents?: PostContent[];
+}
+export interface ModalNewPostProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export interface ContentBlock {
+  type: "text" | "image";
+  content: string;
+  order: number;
+}
+
+export interface PostContent {
+  id: number;
+  type: string;
+  content: string;
+  order: number;
+  postId?: number;
 }
