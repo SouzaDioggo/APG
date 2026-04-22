@@ -6,10 +6,10 @@ import { getAllPosts, getAllCategories } from "@/lib/api";
 import { Calendar, Search, X, Plus } from "lucide-react";
 import { Post } from "@/Interfaces/Interface-Post";
 import { Category } from "@/Interfaces/Interface-Categoria";
-import { useAuth } from "@/contexts/AuthContext"; //
+import { useAuth } from "@/contexts/AuthContext";
 
 export function BlogGrid() {
-  const { user } = useAuth(); // Obtemos o usuário logado
+  const { user } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,31 +60,28 @@ export function BlogGrid() {
   return (
     <div className="py-12 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 flex justify-between items-start">
-          <div className="flex-1">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">
+        {/* === CABEÇALHO ATUALIZADO RESPONSIVO === */}
+        <div className="mb-10 md:mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="flex-1 w-full">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 md:mb-4">
               Todos os Artigos
             </h1>
-            <p className="text-slate-600 text-lg">
+            <p className="text-slate-600 text-base md:text-lg">
               Explore nossos artigos, dicas e insights profissionais
             </p>
           </div>
 
-          {/* Lógica de Permissão: 
-            Só renderiza se o usuário for 'admin' ou 'autor' 
-          */}
           {(user?.type === "admin" || user?.type === "autor") && (
             <Link
               href="/blog/novo-artigo"
-              className="ml-8 px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
+              className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
             >
               <Plus size={20} />
               Adicionar Artigo
             </Link>
           )}
         </div>
-
-        {/* ... restante do componente (Busca e Filtros) ... */}
+        {/* ======================================= */}
 
         <div className="mb-8">
           <div className="relative max-w-2xl">
@@ -138,7 +135,6 @@ export function BlogGrid() {
                 className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col"
               >
                 <div className="h-48 bg-slate-100 overflow-hidden relative">
-                  {/* Atualizado para usar a imagem vinda do backend ou um placeholder */}
                   <img
                     src={
                       artigo.image
@@ -169,7 +165,6 @@ export function BlogGrid() {
                   </h3>
 
                   <p className="text-slate-600 text-sm mb-6 line-clamp-3">
-                    {/* Lógica de resumo em 150 caracteres para blocos de conteúdo */}
                     {artigo.contents && artigo.contents.length > 0
                       ? artigo.contents[0].content.substring(0, 150) + "..."
                       : "Clique para ler o artigo completo..."}
