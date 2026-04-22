@@ -3,6 +3,7 @@ import { Montserrat, Playfair_Display } from "next/font/google";
 
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { Toaster } from "@/components/ui/toaster";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -98,7 +99,8 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${playfair.variable} font-sans antialiased`}
       >
-        <AuthProvider>{children}</AuthProvider>  
+        <AuthProvider>{children}</AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

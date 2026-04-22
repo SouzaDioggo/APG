@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { getAllPosts, getAllCategories } from "@/lib/api"; // Removido getAllUsers
+import { getAllPosts, getAllCategories } from "@/lib/api";
 import { Calendar, Search, X, Plus } from "lucide-react";
 import { Post } from "@/Interfaces/Interface-Post";
 import { Category } from "@/Interfaces/Interface-Categoria";
@@ -71,7 +71,7 @@ export function BlogGrid() {
               Explore nossos artigos, dicas e insights profissionais
             </p>
           </div>
-          
+
           <Link
             href="/blog/novo-artigo"
             className="ml-8 px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"

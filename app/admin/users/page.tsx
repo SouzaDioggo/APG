@@ -13,18 +13,34 @@ import {
   Shield,
   User as UserIcon,
   Edit3,
+  X,
+  AlertTriangle,
+  Info,
 } from "lucide-react";
 import { User } from "@/Interfaces/Interface-User";
+import { useToast } from "@/hooks/use-toast";
 
 export default function UsersAdminPage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
 
   const [usersList, setUsersList] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
+
+  // Estados dos Modais de Confirmação
+  const [roleConfirmation, setRoleConfirmation] = useState<{
+    id: number;
+    newRole: "leitor" | "autor" | "admin";
+    name: string;
+  } | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
   useEffect(() => {
     if (user === undefined) return;
@@ -44,54 +60,86 @@ export default function UsersAdminPage() {
       setUsersList(data);
     } catch (err: any) {
       setError(err.message || "Erro ao carregar usuários.");
+      toast({
+        title: "Erro de Carregamento",
+        description: "Não foi possível carregar a lista de usuários.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleRoleChange = async (
+  // --- Lógica de Mudança de Cargo ---
+  const handleRoleChangeRequest = (
     id: number,
+    name: string,
     newRole: "leitor" | "autor" | "admin",
   ) => {
-    if (
-      !confirm(
-        `Tem certeza que deseja alterar a permissão deste usuário para ${newRole.toUpperCase()}?`,
-      )
-    )
-      return;
+    setRoleConfirmation({ id, name, newRole });
+  };
+
+  const confirmRoleChange = async () => {
+    if (!roleConfirmation) return;
 
     try {
-      setActionLoading(id);
-      await changeUserType(id, newRole);
+      setActionLoading(roleConfirmation.id);
+      await changeUserType(roleConfirmation.id, roleConfirmation.newRole);
       setUsersList((prev) =>
-        prev.map((u) => (u.id === id ? { ...u, type: newRole } : u)),
+        prev.map((u) =>
+          u.id === roleConfirmation.id
+            ? { ...u, type: roleConfirmation.newRole }
+            : u,
+        ),
       );
+      // Toast ajustado com a mensagem de sucesso padrão
+      toast({
+        title: "Ação concluída com sucesso!",
+        description: `O cargo de ${roleConfirmation.name} foi atualizado para ${roleConfirmation.newRole.toUpperCase()}.`,
+      });
     } catch (err: any) {
-      alert(err.message || "Erro ao alterar cargo do usuário.");
+      toast({
+        title: "Erro na Atualização",
+        description: err.message || "Erro ao alterar cargo do usuário.",
+        variant: "destructive",
+      });
     } finally {
       setActionLoading(null);
+      setRoleConfirmation(null);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (
-      !confirm(
-        "CUIDADO! Tem certeza que deseja excluir este usuário permanentemente?",
-      )
-    )
-      return;
+  // --- Lógica de Exclusão ---
+  const handleDeleteRequest = (id: number, name: string) => {
+    setDeleteConfirmation({ id, name });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirmation) return;
 
     try {
-      setActionLoading(id);
-      await deleteUser(id);
-      setUsersList((prev) => prev.filter((u) => u.id !== id));
+      setActionLoading(deleteConfirmation.id);
+      await deleteUser(deleteConfirmation.id);
+      setUsersList((prev) =>
+        prev.filter((u) => u.id !== deleteConfirmation.id),
+      );
+      // Toast ajustado com a mensagem de sucesso padrão
+      toast({
+        title: "Ação concluída com sucesso!",
+        description: `O usuário ${deleteConfirmation.name} foi removido permanentemente do sistema.`,
+      });
     } catch (err: any) {
-      alert(err.message || "Erro ao excluir usuário.");
+      toast({
+        title: "Erro na Exclusão",
+        description: err.message || "Erro ao excluir usuário.",
+        variant: "destructive",
+      });
+    } finally {
       setActionLoading(null);
+      setDeleteConfirmation(null);
     }
   };
 
-  // Se não estiver autorizado (ou ainda estiver verificando), mostra o loading
   if (!isAuthorized) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -124,7 +172,7 @@ export default function UsersAdminPage() {
             <button
               onClick={loadUsers}
               disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 shadow-sm hover:border-[#1a4d7a] hover:text-[#1a4d7a] text-slate-600 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 shadow-sm hover:border-[#c9a961] hover:text-[#c9a961] text-slate-600 text-sm font-medium rounded-lg transition-all duration-300 hover:scale-105 hover:cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:hover:cursor-not-allowed"
             >
               <RefreshCw
                 className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
@@ -215,9 +263,13 @@ export default function UsersAdminPage() {
                               }
                               value={u.type}
                               onChange={(e) =>
-                                handleRoleChange(u.id, e.target.value as any)
+                                handleRoleChangeRequest(
+                                  u.id,
+                                  u.name,
+                                  e.target.value as any,
+                                )
                               }
-                              className="text-xs bg-white border border-slate-200 text-slate-600 rounded-md px-2 py-1.5 focus:outline-none focus:border-[#1a4d7a] disabled:opacity-50 cursor-pointer"
+                              className="text-xs bg-white border border-slate-200 text-slate-600 rounded-md px-2 py-1.5 focus:outline-none focus:border-[#c9a961] disabled:opacity-50 cursor-pointer transition-colors"
                             >
                               <option value="leitor">Tornar Leitor</option>
                               <option value="autor">Tornar Autor</option>
@@ -225,11 +277,11 @@ export default function UsersAdminPage() {
                             </select>
 
                             <button
-                              onClick={() => handleDelete(u.id)}
+                              onClick={() => handleDeleteRequest(u.id, u.name)}
                               disabled={
                                 actionLoading === u.id || u.id === user?.id
                               }
-                              className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-all duration-300 hover:scale-110 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                               title="Excluir Usuário"
                             >
                               {actionLoading === u.id ? (
@@ -249,6 +301,99 @@ export default function UsersAdminPage() {
           )}
         </div>
       </main>
+
+      {/* Modal de Confirmação de Mudança de Cargo */}
+      {roleConfirmation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden">
+            <div className="flex justify-between items-center p-5 border-b border-slate-100">
+              <h3 className="font-bold text-[#1a4d7a] flex items-center gap-2 text-lg">
+                <Info className="w-5 h-5" /> Alterar Permissão
+              </h3>
+              <button
+                onClick={() => setRoleConfirmation(null)}
+                className="text-slate-400 hover:text-[#c9a961] transition-all duration-300 hover:scale-110 hover:cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-5">
+              <p className="text-slate-600 text-sm">
+                Tem certeza que deseja alterar a permissão de{" "}
+                <strong className="text-slate-800">
+                  "{roleConfirmation.name}"
+                </strong>{" "}
+                para{" "}
+                <strong className="text-[#1a4d7a] uppercase">
+                  {roleConfirmation.newRole}
+                </strong>
+                ?
+              </p>
+              <div className="flex justify-end gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setRoleConfirmation(null)}
+                  className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-[#c9a961] rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 hover:cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmRoleChange}
+                  className="px-4 py-2 bg-[#1a4d7a] hover:bg-[#c9a961] text-white rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 hover:cursor-pointer flex items-center gap-2"
+                >
+                  Confirmar Alteração
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Confirmação de Exclusão */}
+      {deleteConfirmation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden">
+            <div className="flex justify-between items-center p-5 border-b border-slate-100">
+              <h3 className="font-bold text-red-600 flex items-center gap-2 text-lg">
+                <AlertTriangle className="w-5 h-5" /> Excluir Usuário
+              </h3>
+              <button
+                onClick={() => setDeleteConfirmation(null)}
+                className="text-slate-400 hover:text-red-600 transition-all duration-300 hover:scale-110 hover:cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-5">
+              <p className="text-slate-600 text-sm">
+                Tem certeza que deseja excluir o usuário{" "}
+                <strong className="text-slate-800">
+                  "{deleteConfirmation.name}"
+                </strong>
+                ? Esta ação é irreversível e removerá todos os dados vinculados
+                a esta conta.
+              </p>
+              <div className="flex justify-end gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setDeleteConfirmation(null)}
+                  className="px-4 py-2 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 hover:cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDelete}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 hover:cursor-pointer flex items-center gap-2"
+                >
+                  Sim, Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
