@@ -9,12 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-interface VerifyEmailModalProps {
-  email: string;
-  isOpen: boolean;
-  onVerify: (code: string) => Promise<void>;
-}
+import { VerifyEmailModalProps } from "@/Interfaces/Interface-Verificar-Email";
 
 export function VerifyEmailModal({
   email,
@@ -38,7 +33,6 @@ export function VerifyEmailModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
-      {/* onOpenChange vazio impede o fechamento pelo overlay ou Esc */}
       <DialogContent
         className="sm:max-w-md bg-white border-slate-200"
         onPointerDownOutside={(e) => e.preventDefault()}

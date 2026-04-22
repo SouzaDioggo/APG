@@ -5,8 +5,11 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { getPostById, getAllCategories } from "@/lib/api"; // Removido getAllUsers
+import { getPostById, getAllCategories, getAllUsers } from "@/lib/api";
 import { Calendar, ArrowLeft, User as UserIcon } from "lucide-react";
+
+import { CommentSection } from "@/components/blog/post/comment-section";
+import { PostContent } from "@/Interfaces/Interface-Post";
 
 export default function ArtigoPage() {
   const params = useParams();
@@ -15,6 +18,7 @@ export default function ArtigoPage() {
 
   const [post, setPost] = useState<any>(null);
   const [categoryName, setCategoryName] = useState("Carregando...");
+  const [authorName, setAuthorName] = useState("Carregando...");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,10 +26,10 @@ export default function ArtigoPage() {
       if (!id) return;
       try {
         setLoading(true);
-        // Busca o post e as categorias
-        const [postData, categoriesData] = await Promise.all([
-          getPostById(id),
+        const [postData, categoriesData, usersData] = await Promise.all([
+          getPostById(Number(id)),
           getAllCategories(),
+          getAllUsers(),
         ]);
 
         setPost(postData);
@@ -34,6 +38,15 @@ export default function ArtigoPage() {
           (c: any) => String(c.id) === String(postData.categorieId),
         );
         if (cat) setCategoryName(cat.name);
+
+        const author = usersData.find(
+          (u: any) => String(u.id) === String(postData.userId),
+        );
+        if (author) {
+          setAuthorName(author.name);
+        } else {
+          setAuthorName("Equipe APG");
+        }
       } catch (err) {
         console.error("Erro ao carregar artigo:", err);
         router.push("/blog");
@@ -63,7 +76,7 @@ export default function ArtigoPage() {
     <main className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
 
-      <article className="flex-1">
+      <article className="flex-1 ">
         <div className="bg-[#1a4d7a] text-white py-16 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10 mix-blend-overlay pointer-events-none">
             <img
@@ -76,14 +89,14 @@ export default function ArtigoPage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-blue-200 hover:text-white mb-8 transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-2 text-blue-200 hover:text-white mb-8 transition-colors text-sm font-medium hover:cursor-pointer"
             >
               <ArrowLeft size={16} />
               Voltar aos artigos
             </Link>
 
             <div className="max-w-4xl">
-              <span className="inline-block bg-[#c9a961] text-white px-3 py-1 rounded-md text-sm font-bold mb-4 shadow-sm">
+              <span className="inline-block bg-[#c9a961] text-white px-3 py-1 rounded-md text-sm font-bold mb-4 shadow-sm hover:cursor-pointer">
                 {categoryName}
               </span>
               <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
@@ -93,15 +106,16 @@ export default function ArtigoPage() {
               <div className="flex flex-wrap items-center gap-6 text-blue-100 font-medium text-sm border-t border-blue-800/50 pt-6 mt-6">
                 <span className="flex items-center gap-2">
                   <Calendar size={16} />
-                  {new Date(post.publication_date).toLocaleDateString("pt-BR", {
+                  {/* CORREÇÃO: Propriedade publicationDate correta do backend */}
+                  {new Date(post.publicationDate).toLocaleDateString("pt-BR", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
                 </span>
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 hover:cursor-pointer hover:text-white transition-colors">
                   <UserIcon size={16} />
-                  Por Equipe APG
+                  Por {authorName}
                 </span>
               </div>
             </div>
@@ -109,12 +123,33 @@ export default function ArtigoPage() {
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-100">
+          <div className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-100 mb-12">
             <div className="prose prose-lg prose-slate max-w-none">
-              <p className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium">
-                {post.content || "Conteúdo não disponível."}
-              </p>
+              {post.contents && post.contents.length > 0 ? (
+                post.contents
+                  .sort((a: PostContent, b: PostContent) => a.order - b.order)
+                  .map((block: PostContent) => (
+                    <p
+                      key={block.id}
+                      className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium mb-6"
+                    >
+                      {block.content}
+                    </p>
+                  ))
+              ) : post.content ? (
+                <p className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium">
+                  {post.content}
+                </p>
+              ) : (
+                <p className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium text-center py-10">
+                  Conteúdo não disponível.
+                </p>
+              )}
             </div>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <CommentSection postId={Number(id)} />
           </div>
         </div>
       </article>
