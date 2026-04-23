@@ -3,23 +3,43 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { getAllPosts, getAllCategories } from "@/lib/api";
+import { getAllPosts, getAllCategories, deletePost } from "@/lib/api";
 import { AdminHeader } from "@/components/admin/admin-header";
-import { FileText, Plus, RefreshCw, Calendar, Search } from "lucide-react";
+import {
+  FileText,
+  Plus,
+  RefreshCw,
+  Calendar,
+  Search,
+  Trash2,
+  Edit,
+  Eye,
+} from "lucide-react";
 import { Post } from "@/Interfaces/Interface-Post";
 import { Category } from "@/Interfaces/Interface-Categoria";
-import { ModalNewPost } from "@/components/admin/modal-new-post";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function PostsAdminPage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [postToDelete, setPostToDelete] = useState<number | null>(null);
 
   const loadData = async () => {
     try {
@@ -32,6 +52,11 @@ export default function PostsAdminPage() {
       setCategories(categoriesData);
     } catch (err: any) {
       console.error("Erro ao carregar dados:", err);
+      toast({
+        title: "Erro",
+        description: "Falha ao carregar os artigos.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -54,6 +79,31 @@ export default function PostsAdminPage() {
       (cat) => String(cat.id) === String(categoryId),
     );
     return category ? category.name : "Sem categoria";
+  };
+
+  const confirmDelete = async () => {
+    if (!postToDelete) return;
+
+    try {
+      setLoading(true);
+      await deletePost(postToDelete);
+
+      toast({
+        title: "Artigo Excluído",
+        description: "O post foi removido com sucesso.",
+      });
+
+      await loadData();
+    } catch (error) {
+      toast({
+        title: "Erro ao excluir",
+        description: "Não foi possível remover o artigo.",
+        variant: "destructive",
+      });
+      setLoading(false);
+    } finally {
+      setPostToDelete(null);
+    }
   };
 
   return (
@@ -86,7 +136,7 @@ export default function PostsAdminPage() {
             <div className="flex gap-3 w-full md:w-auto">
               <button
                 onClick={loadData}
-                className="p-2 text-slate-500 hover:text-[#1a4d7a] bg-white rounded-lg border border-slate-200 shadow-sm transition-colors"
+                className="p-2 text-slate-500 hover:text-[#1a4d7a] bg-white rounded-lg border border-slate-200 shadow-sm transition-colors cursor-pointer"
                 title="Atualizar lista"
               >
                 <RefreshCw
@@ -94,9 +144,10 @@ export default function PostsAdminPage() {
                 />
               </button>
 
+              {/* Botão de Novo Artigo sem usar o Modal Antigo */}
               <button
-                onClick={() => setIsModalOpen(true)}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white text-sm font-medium rounded-lg transition-colors shadow-md w-full md:w-auto"
+                onClick={() => router.push("/blog/novo-artigo")}
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white text-sm font-medium rounded-lg transition-colors shadow-md w-full md:w-auto cursor-pointer"
               >
                 <Plus className="w-4 h-4" /> Novo Artigo
               </button>
@@ -110,8 +161,7 @@ export default function PostsAdminPage() {
                   <th className="px-6 py-4 font-medium">ID</th>
                   <th className="px-6 py-4 font-medium">Título</th>
                   <th className="px-6 py-4 font-medium">Data de Publicação</th>
-                  <th className="px-6 py-4 font-medium">Categoria</th>{" "}
-                  {/* Alterado de Categoria ID para Categoria */}
+                  <th className="px-6 py-4 font-medium">Categoria</th>
                   <th className="px-6 py-4 font-medium text-right">Ações</th>
                 </tr>
               </thead>
@@ -125,7 +175,7 @@ export default function PostsAdminPage() {
                 ) : filteredPosts.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="p-8 text-center text-slate-500">
-                      Nenhum artigo encontrado com esse título.
+                      Nenhum artigo encontrado.
                     </td>
                   </tr>
                 ) : (
@@ -148,19 +198,41 @@ export default function PostsAdminPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 text-slate-500">
-                        {/* Aqui exibimos o NOME da Categoria em vez do ID */}
                         <span className="bg-[#1a4d7a]/10 text-[#1a4d7a] px-3 py-1 rounded-md text-xs font-semibold">
                           {getCategoryName(post.categorieId)}
                         </span>
                       </td>
+
                       <td className="px-6 py-4 text-right">
-                        <a
-                          href={`/blog/${post.id}`}
-                          target="_blank"
-                          className="text-sm text-[#c9a961] font-semibold hover:underline"
-                        >
-                          Ver
-                        </a>
+                        <div className="flex items-center justify-end gap-3">
+                          <button
+                            onClick={() =>
+                              window.open(`/blog/${post.id}`, "_blank")
+                            }
+                            className="p-1.5 text-slate-400 hover:text-[#1a4d7a] hover:bg-slate-100 rounded-md transition-all cursor-pointer"
+                            title="Ver Artigo"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              router.push(`/admin/posts/editar/${post.id}`)
+                            }
+                            className="p-1.5 text-slate-400 hover:text-[#c9a961] hover:bg-slate-100 rounded-md transition-all cursor-pointer"
+                            title="Editar Artigo"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            onClick={() => setPostToDelete(post.id)} // <--- AQUI ELE ABRE A MODAL
+                            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-all cursor-pointer"
+                            title="Excluir Artigo"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -171,13 +243,33 @@ export default function PostsAdminPage() {
         </div>
       </main>
 
-      <ModalNewPost
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSuccess={() => {
-          loadData();
-        }}
-      />
+      <AlertDialog
+        open={postToDelete !== null}
+        onOpenChange={(isOpen) => !isOpen && setPostToDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-[#1a4d7a]">
+              Tem certeza?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Isso excluirá permanentemente o
+              artigo e o removerá de nossos servidores.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="cursor-pointer hover:bg-slate-100">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-red-500 hover:bg-red-600 text-white cursor-pointer"
+            >
+              Sim, Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

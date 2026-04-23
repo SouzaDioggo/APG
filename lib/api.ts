@@ -136,6 +136,17 @@ export const getPostById = (id: string | number) =>
     method: "GET",
   });
 
+export const updatePost = (id: number, data: any) =>
+  fetchApi(`/posts/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+
+export const deletePost = (id: number) =>
+  fetchApi(`/posts/${id}`, {
+    method: "DELETE",
+  });
+
 // ==========================================
 //  CATEGORIAS
 // ==========================================
