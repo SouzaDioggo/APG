@@ -11,7 +11,7 @@ export default function BlogPage() {
       <Navbar />
 
       <section className="relative bg-linear-to-r from-[#1a4d7a] to-[#0d2d4a] text-white py-16 overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <Link
