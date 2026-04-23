@@ -26,3 +26,8 @@ export interface PostContent {
   order: number;
   postId?: number;
 }
+
+export interface PostBlockEditorProps {
+  blocks: ContentBlock[];
+  setBlocks: (blocks: ContentBlock[]) => void;
+}
