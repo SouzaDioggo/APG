@@ -98,7 +98,7 @@ export default function NovoArtigoPage() {
     if (
       !title ||
       !categoryId ||
-      !selectedFile ||
+      // !selectedFile ||
       blocks.some((b) => !b.content.trim())
     ) {
       toast({
@@ -111,21 +111,19 @@ export default function NovoArtigoPage() {
 
     try {
       setLoading(true);
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      formData.append("title", title);
-      formData.append("categorieId", categoryId);
-      formData.append("publicationDate", new Date().toISOString());
-      formData.append("contents", JSON.stringify(blocks));
+      const payload = {
+        title: title,
+        categorieId: Number(categoryId),
+        content: JSON.stringify(blocks),
+      };
 
-      await createPost(formData);
+      await createPost(payload);
 
       toast({
         title: "Ação concluída com sucesso!",
         description: "Seu artigo foi publicado com sucesso.",
       });
 
-      // Redireciona de volta para a listagem do blog
       router.push("/blog");
     } catch (error) {
       toast({
@@ -137,7 +135,6 @@ export default function NovoArtigoPage() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col">
