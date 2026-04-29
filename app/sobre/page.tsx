@@ -1,8 +1,9 @@
 import { Navbar } from "@/components/layout/navbar";
 import { AboutSection } from "@/components/landing-page/about-section";
-import { ClientsSection } from "@/components/landing-page/clients-section";
-import { FounderSection } from "@/components/landing-page/founder-section";
+// import { ClientsSection } from "@/components/landing-page/clients-section";
+import { TestimonialsSection } from "@/components/landing-page/testimonials-section";
 import { CTASection } from "@/components/landing-page/cta-section";
+import { FounderSection } from "@/components/landing-page/founder-section";
 import { Footer } from "@/components/layout/footer";
 import { ScrollReveal } from "@/components/layout/scroll-reveal";
 
@@ -120,9 +121,9 @@ export default function SobrePage() {
       </section>
 
       {/* Seção: Para Quem Atendemos */}
-      <ScrollReveal>
+      {/* <ScrollReveal>
         <ClientsSection />
-      </ScrollReveal>
+      </ScrollReveal> */}
 
       {/* Seção: Fundador */}
       <ScrollReveal>
