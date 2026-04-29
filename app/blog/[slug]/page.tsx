@@ -125,26 +125,50 @@ export default function ArtigoPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-100 mb-12">
             <div className="prose prose-lg prose-slate max-w-none">
-              {post.contents && post.contents.length > 0 ? (
-                post.contents
-                  .sort((a: PostContent, b: PostContent) => a.order - b.order)
-                  .map((block: PostContent) => (
-                    <p
-                      key={block.id}
-                      className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium mb-6"
-                    >
-                      {block.content}
+              {(() => {
+                if (post.contents && post.contents.length > 0) {
+                  return post.contents
+                    .sort((a: PostContent, b: PostContent) => a.order - b.order)
+                    .map((block: PostContent) => (
+                      <p
+                        key={block.id || block.order}
+                        className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium mb-6"
+                      >
+                        {block.content}
+                      </p>
+                    ));
+                }
+
+                if (post.content) {
+                  try {
+                    const parsedBlocks = JSON.parse(post.content);
+                    if (Array.isArray(parsedBlocks)) {
+                      return parsedBlocks
+                        .sort((a: any, b: any) => a.order - b.order)
+                        .map((block: any, index: number) => (
+                          <p
+                            key={index}
+                            className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium mb-6"
+                          >
+                            {block.content}
+                          </p>
+                        ));
+                    }
+                  } catch (e) {}
+
+                  return (
+                    <p className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium">
+                      {post.content}
                     </p>
-                  ))
-              ) : post.content ? (
-                <p className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium">
-                  {post.content}
-                </p>
-              ) : (
-                <p className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium text-center py-10">
-                  Conteúdo não disponível.
-                </p>
-              )}
+                  );
+                }
+
+                return (
+                  <p className="text-slate-700 leading-relaxed whitespace-pre-wrap font-medium text-center py-10">
+                    Conteúdo não disponível.
+                  </p>
+                );
+              })()}
             </div>
           </div>
 
