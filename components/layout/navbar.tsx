@@ -46,28 +46,20 @@ export function Navbar() {
 
   const coursesList = [
     {
-      name: "Liderança e Gestão de Equipes",
-      href: "/cursos#lideranca-gestao-equipes",
+      name: "Empreender certo - como fazer negócios rentáveis",
+      href: "/cursos#empreender-certo-negocios-rentaveis",
     },
     {
-      name: "Estratégias de Marketing Digital",
-      href: "/cursos#estrategias-marketing-digital",
+      name: "Sociedade Limitada: O que Todo Gestor Precisa Saber",
+      href: "/cursos#sociedade-limitada-gestor-precisa-saber",
     },
     {
-      name: "Gestão de Projetos e Metodologias Ágeis",
-      href: "/cursos#gestao-projetos-ageis",
+      name: "Formação de Gestor de Proteção de Dados (DPO)",
+      href: "/cursos#formacao-gestor-protecao-dados-dpo",
     },
     {
-      name: "Inteligência Emocional no Trabalho",
-      href: "/cursos#inteligencia-emocional",
-    },
-    {
-      name: "Técnicas Avançadas de Negociação",
-      href: "/cursos#tecnicas-negociacao",
-    },
-    {
-      name: "Inovação e Transformação Digital",
-      href: "/cursos#inovacao-transformacao-digital",
+      name: "ONG e OSC: Gestão que Funciona",
+      href: "/cursos#ong-osc-gestao-que-funciona",
     },
   ];
 
