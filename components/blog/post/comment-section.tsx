@@ -1,8 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// Importamos o getAllUsers da API
-import { getCommentsByPost, createComment, getAllUsers } from "@/lib/api";
+import {
+  getCommentsByPost,
+  createComment,
+  getAllUsers,
+  updateComment,
+  deleteComment,
+} from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   MessageSquare,
@@ -10,6 +15,10 @@ import {
   User as UserIcon,
   ChevronLeft,
   ChevronRight,
+  Trash2,
+  Edit,
+  X,
+  Check,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Comment } from "@/Interfaces/Interface-Comentario";
@@ -23,6 +32,10 @@ export function CommentSection({ postId }: { postId: number }) {
   const [usersList, setUsersList] = useState<UserInterface[]>([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editCommentText, setEditCommentText] = useState("");
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
   // Paginação
   const [currentPage, setCurrentPage] = useState(1);
@@ -87,6 +100,65 @@ export function CommentSection({ postId }: { postId: number }) {
     }
   };
 
+  // === INICIAR EDIÇÃO ===
+  const handleStartEdit = (comment: Comment) => {
+    setEditingCommentId(comment.id);
+    setEditCommentText(comment.text || (comment as any).content || "");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCommentId(null);
+    setEditCommentText("");
+  };
+
+  const handleSaveEdit = async (commentId: number) => {
+    if (!editCommentText.trim() || !user) return;
+
+    try {
+      setIsActionLoading(true);
+      await updateComment(commentId, user.id, { text: editCommentText });
+
+      toast({
+        title: "Atualizado!",
+        description: "Comentário alterado com sucesso.",
+      });
+      setEditingCommentId(null);
+      await loadData();
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível atualizar seu comentário.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
+  const handleDelete = async (commentId: number) => {
+    if (!window.confirm("Tem certeza que deseja excluir este comentário?"))
+      return;
+
+    try {
+      setIsActionLoading(true);
+      await deleteComment(commentId);
+
+      toast({
+        title: "Excluído!",
+        description: "Seu comentário foi removido.",
+      });
+      await loadData();
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível excluir o comentário.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
   const getUserName = (userId: number) => {
     const commentUser = usersList.find((u) => String(u.id) === String(userId));
     return commentUser ? commentUser.name : `Usuário #${userId}`;
@@ -144,29 +216,96 @@ export function CommentSection({ postId }: { postId: number }) {
       {/* Lista de Comentários */}
       <div className="space-y-6">
         {currentComments.length > 0 ? (
-          currentComments.map((c) => (
-            <div
-              key={c.id}
-              className="flex gap-4 p-4 hover:bg-slate-50 rounded-2xl transition-colors group"
-            >
-              <div className="w-10 h-10 bg-[#1a4d7a]/10 rounded-full flex items-center justify-center text-[#1a4d7a] shrink-0">
-                <UserIcon className="w-5 h-5" />
-              </div>
-              <div className="space-y-1 flex-1">
-                <div className="flex justify-between items-center">
-                  <h4 className="font-bold text-slate-800 text-sm">
-                    {getUserName(c.userId)}
-                  </h4>
-                  <span className="text-[10px] text-slate-400">
-                    {new Date(c.commentDate).toLocaleDateString("pt-BR")}
-                  </span>
+          currentComments.map((c) => {
+            const isOwner = user?.id === c.userId;
+            const isEditing = editingCommentId === c.id;
+
+            return (
+              <div
+                key={c.id}
+                className={`flex gap-4 p-4 rounded-2xl transition-all border border-transparent ${
+                  isEditing
+                    ? "bg-white border-slate-200 shadow-sm"
+                    : "hover:bg-slate-50 group"
+                }`}
+              >
+                <div className="w-10 h-10 bg-[#1a4d7a]/10 rounded-full flex items-center justify-center text-[#1a4d7a] shrink-0">
+                  <UserIcon className="w-5 h-5" />
                 </div>
-                <p className="text-slate-600 text-sm leading-relaxed">
-                  {c.text || (c as any).content}{" "}
-                </p>
+
+                <div className="space-y-2 flex-1">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-sm">
+                        {getUserName(c.userId)}
+                      </h4>
+                      <span className="text-[10px] text-slate-400">
+                        {new Date(c.commentDate).toLocaleDateString("pt-BR")}
+                      </span>
+                    </div>
+
+                    {isOwner && !isEditing && (
+                      <div className="flex items-center gap-1 opacity-100 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => handleStartEdit(c)}
+                          className="p-1.5 text-slate-400 hover:text-[#c9a961] hover:bg-[#c9a961]/10 rounded-md transition-all cursor-pointer"
+                          title="Editar"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(c.id)}
+                          disabled={isActionLoading}
+                          className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-all cursor-pointer disabled:opacity-50"
+                          title="Excluir"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Renderização Condicional: Modo Leitura vs Modo Edição */}
+                  {isEditing ? (
+                    <div className="space-y-3 mt-2 animate-fade-in">
+                      <textarea
+                        value={editCommentText}
+                        onChange={(e) => setEditCommentText(e.target.value)}
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961] text-sm text-slate-700 resize-none min-h-[80px]"
+                        placeholder="Edite seu comentário..."
+                        disabled={isActionLoading}
+                      />
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={handleCancelEdit}
+                          disabled={isActionLoading}
+                          className="px-3 py-1.5 text-xs font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-all flex items-center gap-1 cursor-pointer"
+                        >
+                          <X className="w-3 h-3" /> Cancelar
+                        </button>
+                        <button
+                          onClick={() => handleSaveEdit(c.id)}
+                          disabled={isActionLoading || !editCommentText.trim()}
+                          className="px-4 py-1.5 text-xs font-bold text-white bg-[#1a4d7a] hover:bg-[#c9a961] rounded-lg transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                        >
+                          {isActionLoading ? (
+                            <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <Check className="w-3 h-3" />
+                          )}
+                          Salvar
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {c.text || (c as any).content}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="text-center text-slate-400 py-10">
             Nenhum comentário ainda. Seja o primeiro a comentar!

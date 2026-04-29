@@ -96,28 +96,28 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="/cursos"
-                  className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light"
-                >
-                  Cursos
-                </a>
-              </li>
-              <li>
-                <a
                   href="/sobre"
                   className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light"
                 >
                   Sobre
                 </a>
               </li>
-              {/* <li>
+              <li>
                 <a
                   href="/blog"
                   className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light"
                 >
                   Blog
                 </a>
-              </li> */}
+              </li>
+              <li>
+                <a
+                  href="/cursos"
+                  className="text-gray-400 hover:text-[#c9a961] transition-colors duration-200 text-sm font-light"
+                >
+                  Cursos
+                </a>
+              </li>
             </ul>
           </div>
 
