@@ -46,8 +46,8 @@ export function Navbar() {
 
   const coursesList = [
     {
-      name: "Liderança e Gestão de Equipes",
-      href: "/cursos#lideranca-gestao-equipes",
+      name: "Empreender certo - como fazer negócios rentáveis",
+      href: "/cursos#empreender-certo-negocios-rentaveis",
     },
     {
       name: "Estratégias de Marketing Digital",

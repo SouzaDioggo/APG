@@ -13,22 +13,20 @@ import { Button } from "@/components/ui/button";
 
 const courses: CourseData[] = [
   {
-    id: "lideranca-gestao-equipes",
-    title: "Liderança e Gestão de Equipes",
+    id: "empreender-certo-negocios-rentaveis",
+    title: "Empreender certo - como fazer negócios rentáveis",
     bgClass: "bg-gradient-1",
     description:
-      "Desenvolva habilidades essenciais de liderança para gerenciar equipes de alta performance, inspirar colaboradores e alcançar resultados extraordinários.",
-    duration: "12 horas",
-    modules: 8,
+      "Aprenda a estruturar a base jurídica da sua empresa de forma estratégica. Entenda como redigir cláusulas que evitam conflitos, protegem o patrimônio dos sócios e garantem a longevidade do negócio desde o primeiro dia.",
+    duration: "6 horas",
+    modules: 5,
     level: "Iniciante",
     benefits: [
-      "Técnicas avançadas de motivação e engajamento",
-      "Gestão eficaz de conflitos e dinâmica de grupo",
-      "Desenvolvimento de inteligência emocional em líderes",
-      "Construção de uma cultura organizacional forte",
-      "Mentoria e coaching para colaboradores",
+      "Cláusulas Essenciais e Estratégicas",
+      "Prevenção de Conflitos Societários",
+      "Segurança Jurídica e Blindagem",
     ],
-    hotmartLink: "https://hotmart.com/pt-BR", // Adicione o link específico da Hotmart
+    hotmartLink: "https://hotmart.com/pt-br/marketplace/produtos/construindo-um-contrato-social/E104548757B", // Adicione o link específico da Hotmart
   },
   {
     id: "estrategias-marketing-digital",

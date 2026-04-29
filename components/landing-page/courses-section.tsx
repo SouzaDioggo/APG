@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 export function CoursesSection() {
   const courses = [
     {
-      title: "Liderança e Gestão de Equipes",
+      title: "Empreender certo - como fazer negócios rentáveis",
       image: "/abstract-purple-waves.png",
     },
     {
