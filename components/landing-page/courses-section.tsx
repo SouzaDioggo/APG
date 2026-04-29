@@ -8,24 +8,16 @@ export function CoursesSection() {
       image: "/abstract-purple-waves.png",
     },
     {
-      title: "Estratégias de Marketing Digital",
+      title: "Sociedade Limitada: O que Todo Gestor Precisa Saber",
       image: "/abstract-blue-lines-pattern.jpg",
     },
     {
-      title: "Gestão de Projetos e Metodologias Ágeis",
-      image: "/abstract-purple-gradient-waves.jpg",
+      title: "Formação de Gestor de Proteção de Dados (DPO)",
+      image: "/abstract-green-gradient.jpg",
     },
     {
-      title: "Inteligência Emocional no Trabalho",
-      image: "/abstract-flowing-purple-lines.jpg",
-    },
-    {
-      title: "Técnicas Avançadas de Negociação",
-      image: "/abstract-blue-wave-technology.jpg",
-    },
-    {
-      title: "Inovação e Transformação Digital",
-      image: "/abstract-purple-blue-gradient.png",
+      title: "ONG e OSC: Gestão que Funciona",
+      image: "/abstract-orange-gradient.jpg",
     },
   ]
 
