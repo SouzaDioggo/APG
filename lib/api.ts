@@ -136,6 +136,17 @@ export const getPostById = (id: string | number) =>
     method: "GET",
   });
 
+export const updatePost = (id: number, data: any) =>
+  fetchApi(`/posts/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+
+export const deletePost = (id: number) =>
+  fetchApi(`/posts/${id}`, {
+    method: "DELETE",
+  });
+
 // ==========================================
 //  CATEGORIAS
 // ==========================================
@@ -150,12 +161,54 @@ export const createCategory = (data: { name: string }) =>
     body: JSON.stringify(data),
   });
 
+export const deleteCategory = (id: number) =>
+  fetchApi(`/categories/${id}`, {
+    method: "DELETE",
+  });
+
+export const ChangeCategory = (id: number, data: { name: string }) =>
+  fetchApi(`/categories/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+
 // ==========================================
 //  COMENTÁRIOS
 // ==========================================
+export const createComment = (data: {
+  text: string;
+  postId: number;
+  userId: number;
+  date?: string;
+}) =>
+  fetchApi("/comments", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+export const getAllComments = () =>
+  fetchApi("/comments", {
+    method: "GET",
+  });
+
 export const getCommentsByPost = (postId: number) =>
   fetchApi(`/comments/post/${postId}`, {
     method: "GET",
+  });
+
+export const getCommentById = (id: number) =>
+  fetchApi(`/comments/${id}`, {
+    method: "GET",
+  });
+
+export const updateComment = (
+  id: number,
+  userId: number,
+  data: { text: string },
+) =>
+  fetchApi(`/comments/${id}/${userId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
   });
 
 export const deleteComment = (id: number) =>

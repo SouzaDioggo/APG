@@ -1,5 +1,5 @@
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export function CoursesSection() {
   const courses = [
@@ -19,14 +19,16 @@ export function CoursesSection() {
       title: "ONG e OSC: Gestão que Funciona",
       image: "/abstract-orange-gradient.jpg",
     },
-  ]
+  ];
 
   return (
     <section id="cursos" className="py-24 bg-white">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Nossos cursos</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+            Nossos cursos
+          </h2>
           <p className="text-xl text-gray-600 font-light">Venha conhecer</p>
         </div>
 
@@ -45,7 +47,9 @@ export function CoursesSection() {
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-gray-900/60 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-white font-bold text-lg leading-tight">{course.title}</h3>
+                  <h3 className="text-white font-bold text-lg leading-tight">
+                    {course.title}
+                  </h3>
                 </div>
               </div>
             </Card>
@@ -54,11 +58,14 @@ export function CoursesSection() {
 
         {/* See More Button */}
         <div className="flex justify-center">
-          <Button size="lg" className="bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white px-8 py-6 text-base">
+          <Button
+            size="lg"
+            className="bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white px-8 py-6 text-base"
+          >
             Ver mais...
           </Button>
         </div>
       </div>
     </section>
-  )
+  );
 }

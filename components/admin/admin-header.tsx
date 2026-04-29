@@ -7,7 +7,7 @@ import Link from "next/link";
 interface AdminHeaderProps {
   title: string;
   description: string;
-  backUrl?: string; // URL para o botão de voltar (padrão é "/")
+  backUrl?: string;
 }
 
 export function AdminHeader({

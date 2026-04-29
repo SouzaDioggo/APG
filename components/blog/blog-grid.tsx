@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { getAllPosts, getAllCategories } from "@/lib/api"; // Removido getAllUsers
+import { getAllPosts, getAllCategories } from "@/lib/api";
 import { Calendar, Search, X, Plus } from "lucide-react";
 import { Post } from "@/Interfaces/Interface-Post";
 import { Category } from "@/Interfaces/Interface-Categoria";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function BlogGrid() {
+  const { user } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +21,6 @@ export function BlogGrid() {
     const loadData = async () => {
       try {
         setLoading(true);
-        // Busca apenas Posts e Categorias (que são rotas públicas)
         const [postsData, categoriesData] = await Promise.all([
           getAllPosts(),
           getAllCategories(),
@@ -40,12 +41,9 @@ export function BlogGrid() {
     return cat ? cat.name : "Sem categoria";
   };
 
-  const categoriasAtivasIds = Array.from(
-    new Set(posts.map((p) => p.categorieId)),
-  );
   const categoriasNomes = [
     "Todos",
-    ...categoriasAtivasIds.map((id) => getCategoryName(id)),
+    ...categories.map((categoria) => categoria.name),
   ];
 
   const artigosFiltrados = posts.filter((post) => {
@@ -62,24 +60,28 @@ export function BlogGrid() {
   return (
     <div className="py-12 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 flex justify-between items-start">
-          <div className="flex-1">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">
+        {/* === CABEÇALHO ATUALIZADO RESPONSIVO === */}
+        <div className="mb-10 md:mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="flex-1 w-full">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 md:mb-4">
               Todos os Artigos
             </h1>
-            <p className="text-slate-600 text-lg">
+            <p className="text-slate-600 text-base md:text-lg">
               Explore nossos artigos, dicas e insights profissionais
             </p>
           </div>
-          
-          <Link
-            href="/blog/novo-artigo"
-            className="ml-8 px-6 py-3 bg-gradient-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
-          >
-            <Plus size={20} />
-            Adicionar Artigo
-          </Link>
+
+          {(user?.type === "admin" || user?.type === "autor") && (
+            <Link
+              href="/blog/novo-artigo"
+              className="w-full md:w-auto px-6 py-3 bg-linear-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
+            >
+              <Plus size={20} />
+              Adicionar Artigo
+            </Link>
+          )}
         </div>
+        {/* ======================================= */}
 
         <div className="mb-8">
           <div className="relative max-w-2xl">
@@ -134,9 +136,13 @@ export function BlogGrid() {
               >
                 <div className="h-48 bg-slate-100 overflow-hidden relative">
                   <img
-                    src="/abstract-blue-wave-technology.jpg"
+                    src={
+                      artigo.image
+                        ? `http://localhost:3001/uploads/${artigo.image}`
+                        : "/abstract-blue-wave-technology.jpg"
+                    }
                     alt={artigo.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 opacity-80"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
                 </div>
@@ -159,8 +165,8 @@ export function BlogGrid() {
                   </h3>
 
                   <p className="text-slate-600 text-sm mb-6 line-clamp-3">
-                    {(artigo as any).content
-                      ? (artigo as any).content.substring(0, 120) + "..."
+                    {artigo.contents && artigo.contents.length > 0
+                      ? artigo.contents[0].content.substring(0, 150) + "..."
                       : "Clique para ler o artigo completo..."}
                   </p>
 

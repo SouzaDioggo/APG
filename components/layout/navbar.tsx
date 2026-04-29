@@ -169,7 +169,7 @@ export function Navbar() {
                     {/* VISÍVEL PARA ADMIN E AUTOR */}
                     {(user?.type === "admin" || user?.type === "autor") && (
                       <a
-                        href="/novo-post"
+                        href="/blog/novo-artigo"
                         className="flex items-center gap-2 text-slate-700 hover:text-[#1a4d7a] hover:bg-slate-50 cursor-pointer font-medium p-3 rounded-lg outline-none transition-colors w-full"
                       >
                         Escrever Artigo
@@ -284,7 +284,7 @@ export function Navbar() {
                     )}
                     {(user?.type === "admin" || user?.type === "autor") && (
                       <a
-                        href="/novo-post"
+                        href="/blog/novo-artigo"
                         className="py-3 px-2 text-sm font-medium text-slate-300 hover:text-[#c9a961] transition-colors duration-150"
                       >
                         Escrever Artigo
