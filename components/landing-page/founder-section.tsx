@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { Card } from "@/components/ui/card"
+import Image from "next/image";
+import { Card } from "@/components/ui/card";
 
 export function FounderSection() {
   return (
-    <section className="py-28 bg-white">
+    <section className="py-14 bg-white">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-20">
@@ -26,31 +26,46 @@ export function FounderSection() {
                 <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
                   Prof. Dr. Gabriel Siggelkow Guimarães
                 </h3>
-                
+
                 <p className="text-[#1a4d7a] font-semibold text-lg mb-6">
                   Advogado, gestor e professor.
                 </p>
 
                 <div className="mb-8">
-                  <h4 className="text-lg font-bold text-gray-900 mb-4">Formação:</h4>
+                  <h4 className="text-lg font-bold text-gray-900 mb-4">
+                    Formação:
+                  </h4>
                   <ul className="space-y-2 text-gray-700">
                     <li className="flex items-center gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      <span>Pós-graduado em direito, Mestre e doutor em Ciência Política.</span>
+                      <span>
+                        Pós-graduado em direito, Mestre e doutor em Ciência
+                        Política.
+                      </span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      <span>Pesquisador de LGPD, privacidade e direito digital</span>
-                    </li>                   
+                      <span>
+                        Pesquisador de LGPD, privacidade e direito digital
+                      </span>
+                    </li>
                   </ul>
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-bold text-gray-900 mb-4">Atuação:</h4>
+                  <h4 className="text-lg font-bold text-gray-900 mb-4">
+                    Atuação:
+                  </h4>
                   <ul className="space-y-2 text-gray-700">
                     <li className="flex items-start gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      <span>Mais de 15 anos de atuação em gestão (pública e privada) e advocacia. Experiência acadêmica sendo professor de graduação e pós-graduação (direito, contabilidade e engenharia de software) e no mercado atuando juridicamente e em planejamento e execução de contratos.</span>
+                      <span>
+                        Mais de 15 anos de atuação em gestão (pública e privada)
+                        e advocacia. Experiência acadêmica sendo professor de
+                        graduação e pós-graduação (direito, contabilidade e
+                        engenharia de software) e no mercado atuando
+                        juridicamente e em planejamento e execução de contratos.
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
@@ -89,35 +104,51 @@ export function FounderSection() {
                 <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
                   Juliana Calheiros
                 </h3>
-                
+
                 <p className="text-[#1a4d7a] font-semibold text-lg mb-6">
                   Especialista em Recursos Humanos e Administração.
                 </p>
 
                 <div className="mb-8">
-                  <h4 className="text-lg font-bold text-gray-900 mb-4">Formação:</h4>
+                  <h4 className="text-lg font-bold text-gray-900 mb-4">
+                    Formação:
+                  </h4>
                   <ul className="space-y-2 text-gray-700">
                     <li className="flex items-center gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      <span>Graduada e pós-graduada em Recursos Humanos e Administração</span>
+                      <span>
+                        Graduada e pós-graduada em Recursos Humanos e
+                        Administração
+                      </span>
                     </li>
                   </ul>
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-bold text-gray-900 mb-4">Atuação:</h4>
+                  <h4 className="text-lg font-bold text-gray-900 mb-4">
+                    Atuação:
+                  </h4>
                   <ul className="space-y-2 text-gray-700">
                     <li className="flex items-start gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      <span>Mais de 10 anos de experiência com recursos humanos e administração</span>
+                      <span>
+                        Mais de 10 anos de experiência com recursos humanos e
+                        administração
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      <span>Experiência com Poder Público e iniciativa privada em gestão de pessoas, planejamento e organização</span>
+                      <span>
+                        Experiência com Poder Público e iniciativa privada em
+                        gestão de pessoas, planejamento e organização
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-[#c9a961] font-bold">•</span>
-                      <span>Atuação em formação de custos para planejamento de compras</span>
+                      <span>
+                        Atuação em formação de custos para planejamento de
+                        compras
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -140,5 +171,5 @@ export function FounderSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

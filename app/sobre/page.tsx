@@ -34,7 +34,7 @@ export default function SobrePage() {
       </ScrollReveal>
 
       {/* Seção de Valores */}
-      <section className="py-28 bg-white">
+      <section className="py-14 bg-white">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold text-gray-900 mb-16 text-center">
             Nossos Valores
