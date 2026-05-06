@@ -95,6 +95,7 @@ export default function NovoArtigoPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (
       !title ||
       !categoryId ||
@@ -103,40 +104,41 @@ export default function NovoArtigoPage() {
     ) {
       toast({
         title: "Atenção",
-        description:
-          "Preencha todos os campos obrigatórios e adicione a imagem.",
+        description: "Preencha todos os campos obrigatórios.",
         variant: "destructive",
       });
       return;
     }
 
     if (!token) {
-      toast({
-        title: "Não autorizado",
-        description: "Você precisa estar logado para publicar um artigo.",
-        variant: "destructive",
-      });
+      toast({ title: "Erro", description: "Usuário não autenticado." });
       return;
     }
 
     try {
       setLoading(true);
 
-      const uploadedImageUrl = await uploadImage(selectedFile, token);
-
-      const payload = {
+      const postPayload = {
         title: title,
         categorieId: Number(categoryId),
         publicationDate: new Date().toISOString(),
-        contents: JSON.stringify(blocks),
-        imageUrl: uploadedImageUrl,
+        content: JSON.stringify(blocks),
+        imageUrl: null,
       };
 
-      await createPost(payload, token);
+      const createdPost = await createPost(postPayload, token);
+
+      const postId = createdPost.id;
+
+      if (!postId) {
+        throw new Error("Backend não retornou o ID do post criado.");
+      }
+
+      await uploadImage(selectedFile, postId, token);
 
       toast({
-        title: "Ação concluída com sucesso!",
-        description: "Seu artigo foi publicado com sucesso.",
+        title: "Sucesso!",
+        description: "Artigo publicado com capa!",
       });
 
       router.push("/blog");

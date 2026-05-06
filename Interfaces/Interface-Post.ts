@@ -37,6 +37,6 @@ export interface CreatePostPayload {
   title: string;
   categorieId: number;
   publicationDate: string;
-  contents: string;
-  imageUrl: string;
+  content: string;
+  imageUrl: string | null;
 }

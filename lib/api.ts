@@ -164,10 +164,14 @@ export const deletePost = (id: number) =>
 
 export const uploadImage = async (
   file: File,
+  postId: number,
   token: string,
-): Promise<string> => {
+) => {
   const formData = new FormData();
   formData.append("file", file);
+
+  formData.append("id", postId.toString());
+  formData.append("postId", postId.toString());
 
   const response = await fetch(`${API_URL}/upload/post`, {
     method: "POST",
@@ -178,12 +182,10 @@ export const uploadImage = async (
   });
 
   if (!response.ok) {
-    throw new Error("Erro ao fazer o upload da imagem de capa.");
+    throw new Error("Erro no upload da imagem");
   }
 
-  const data = await response.json();
-
-  return data.url;
+  return response.json();
 };
 // ==========================================
 //  CATEGORIAS
