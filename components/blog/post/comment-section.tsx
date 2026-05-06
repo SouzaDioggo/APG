@@ -271,7 +271,7 @@ export function CommentSection({ postId }: { postId: number }) {
                       <textarea
                         value={editCommentText}
                         onChange={(e) => setEditCommentText(e.target.value)}
-                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961] text-sm text-slate-700 resize-none min-h-[80px]"
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961] text-sm text-slate-700 resize-none min-h-20"
                         placeholder="Edite seu comentário..."
                         disabled={isActionLoading}
                       />

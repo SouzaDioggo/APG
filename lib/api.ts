@@ -1,3 +1,4 @@
+import { CreatePostPayload } from "@/Interfaces/Interface-Post";
 import { da } from "date-fns/locale";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -125,11 +126,25 @@ export const getAllPosts = () =>
     method: "GET",
   });
 
-export const createPost = (data: any) =>
-  fetchApi("/posts", {
+export const createPost = async (
+  postData: CreatePostPayload,
+  token: string,
+) => {
+  const response = await fetch(`${API_URL}/posts`, {
     method: "POST",
-    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(postData),
   });
+
+  if (!response.ok) {
+    throw new Error("Erro ao criar o post no banco de dados.");
+  }
+
+  return response.json();
+};
 
 export const getPostById = (id: string | number) =>
   fetchApi(`/posts/${id}`, {
@@ -147,6 +162,29 @@ export const deletePost = (id: number) =>
     method: "DELETE",
   });
 
+export const uploadImage = async (
+  file: File,
+  token: string,
+): Promise<string> => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${API_URL}/upload/post`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao fazer o upload da imagem de capa.");
+  }
+
+  const data = await response.json();
+
+  return data.url;
+};
 // ==========================================
 //  CATEGORIAS
 // ==========================================

@@ -7,16 +7,15 @@ import {
   Plus,
   Trash2,
   Layout,
-  Type,
   Image as ImageIcon,
   RefreshCw,
-  Upload,
   ChevronUp,
   ChevronDown,
 } from "lucide-react";
-import { createPost, getAllCategories } from "@/lib/api";
+import { createPost, getAllCategories, uploadImage } from "@/lib/api";
 import { Category } from "@/Interfaces/Interface-Categoria";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ContentBlock {
   type: "text" | "image";
@@ -25,6 +24,7 @@ interface ContentBlock {
 }
 
 export default function NovoArtigoPage() {
+  const { token } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -98,12 +98,22 @@ export default function NovoArtigoPage() {
     if (
       !title ||
       !categoryId ||
-      // !selectedFile ||
+      !selectedFile ||
       blocks.some((b) => !b.content.trim())
     ) {
       toast({
         title: "Atenção",
-        description: "Preencha todos os campos obrigatórios.",
+        description:
+          "Preencha todos os campos obrigatórios e adicione a imagem.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!token) {
+      toast({
+        title: "Não autorizado",
+        description: "Você precisa estar logado para publicar um artigo.",
         variant: "destructive",
       });
       return;
@@ -111,13 +121,18 @@ export default function NovoArtigoPage() {
 
     try {
       setLoading(true);
+
+      const uploadedImageUrl = await uploadImage(selectedFile, token);
+
       const payload = {
         title: title,
         categorieId: Number(categoryId),
-        content: JSON.stringify(blocks),
+        publicationDate: new Date().toISOString(),
+        contents: JSON.stringify(blocks),
+        imageUrl: uploadedImageUrl,
       };
 
-      await createPost(payload);
+      await createPost(payload, token);
 
       toast({
         title: "Ação concluída com sucesso!",
@@ -126,6 +141,7 @@ export default function NovoArtigoPage() {
 
       router.push("/blog");
     } catch (error) {
+      console.error(error);
       toast({
         title: "Erro",
         description: "Falha ao publicar.",
@@ -135,6 +151,7 @@ export default function NovoArtigoPage() {
       setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col">

@@ -2,6 +2,7 @@ export interface Post {
   id: number;
   title: string;
   categorieId: number;
+  ImageUrl?: string | null;
   publicationDate: string;
   userId: number;
   image?: string;
@@ -30,4 +31,12 @@ export interface PostContent {
 export interface PostBlockEditorProps {
   blocks: ContentBlock[];
   setBlocks: (blocks: ContentBlock[]) => void;
+}
+
+export interface CreatePostPayload {
+  title: string;
+  categorieId: number;
+  publicationDate: string;
+  contents: string;
+  imageUrl: string;
 }
