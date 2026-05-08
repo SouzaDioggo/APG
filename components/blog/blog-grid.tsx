@@ -74,7 +74,7 @@ export function BlogGrid() {
           {(user?.type === "admin" || user?.type === "autor") && (
             <Link
               href="/blog/novo-artigo"
-              className="w-full md:w-auto px-6 py-3 bg-linear-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800"
+              className="w-full md:w-auto px-6 py-3 bg-linear-to-r from-[#1a4d7a] to-blue-700 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap hover:from-[#0f3554] hover:to-blue-800 cursor-pointer"
             >
               <Plus size={20} />
               Adicionar Artigo
@@ -99,7 +99,7 @@ export function BlogGrid() {
             {busca && (
               <button
                 onClick={() => setBusca("")}
-                className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600"
+                className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
               >
                 <X size={20} />
               </button>
@@ -112,7 +112,7 @@ export function BlogGrid() {
             <button
               key={categoria}
               onClick={() => setFiltroCategoria(categoria)}
-              className={`px-4 py-2 rounded-full font-semibold transition-colors duration-200 text-sm ${
+              className={`px-4 py-2 rounded-full font-semibold transition-colors duration-200 text-sm cursor-pointer ${
                 filtroCategoria === categoria
                   ? "bg-[#1a4d7a] text-white shadow-sm"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -169,7 +169,7 @@ export function BlogGrid() {
                   <div className="mt-auto">
                     <Link
                       href={`/blog/${artigo.id}`}
-                      className="inline-flex w-full items-center justify-center bg-slate-50 border border-slate-200 text-[#1a4d7a] font-semibold py-2.5 rounded-lg hover:bg-[#1a4d7a] hover:text-white transition-colors duration-300"
+                      className="inline-flex w-full items-center justify-center bg-slate-50 border border-slate-200 text-[#1a4d7a] font-semibold py-2.5 rounded-lg hover:bg-[#1a4d7a] hover:text-white transition-colors duration-300 cursor-pointer"
                     >
                       Ler Artigo
                     </Link>

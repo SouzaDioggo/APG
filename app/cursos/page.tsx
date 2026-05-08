@@ -326,9 +326,9 @@ const CourseCard: React.FC<CourseData & { isSelected?: boolean }> = ({
           href={hotmartLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto"
+          className="mt-auto cursor-pointer"
         >
-          <Button className="w-full bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold py-2 rounded-lg transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2">
+          <Button className="w-full bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold py-2 rounded-lg transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer">
             Acessar na Hotmart
             <ArrowRight className="w-4 h-4" />
           </Button>
@@ -426,7 +426,7 @@ const App: React.FC = () => {
             compra.
           </p>
           <a href="mailto:Apgeducacaoempresarial@gmail.com">
-            <Button className="bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:shadow-lg">
+            <Button className="bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:shadow-lg cursor-pointer">
               Entre em Contato
             </Button>
           </a>

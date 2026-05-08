@@ -262,7 +262,7 @@ export default function EditarArtigoPage() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="mt-3 w-full py-2.5 bg-white border border-slate-300 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 hover:text-[#1a4d7a] hover:border-[#1a4d7a]/50 transition-all text-sm"
+                  className="mt-3 w-full py-2.5 bg-white border border-slate-300 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 hover:text-[#1a4d7a] hover:border-[#1a4d7a]/50 transition-all text-sm cursor-pointer"
                 >
                   {previewImage
                     ? "Trocar Imagem Selecionada"

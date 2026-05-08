@@ -70,7 +70,10 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <a href="/" className="block hover:opacity-90 transition-opacity">
+            <a
+              href="/"
+              className="block hover:opacity-90 transition-opacity cursor-pointer"
+            >
               <img
                 src="/APG BRANCO.png"
                 alt="APG Logo"
@@ -130,7 +133,7 @@ export function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-sm font-medium hover:text-[#c9a961] transition-colors duration-200"
+                  className="text-sm font-medium hover:text-[#c9a961] transition-colors duration-200 cursor-pointer"
                 >
                   {link.name}
                 </a>
@@ -193,7 +196,7 @@ export function Navbar() {
             ) : (
               <a
                 href="/login"
-                className="text-sm font-medium hover:text-[#c9a961] transition-colors duration-200"
+                className="text-sm font-medium hover:text-[#c9a961] transition-colors duration-200 cursor-pointer"
               >
                 Login
               </a>
@@ -202,7 +205,7 @@ export function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white hover:opacity-80 transition-opacity"
+            className="md:hidden text-white hover:opacity-80 transition-opacity cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -223,7 +226,7 @@ export function Navbar() {
                     className="w-full"
                   >
                     <AccordionItem value={link.name} className="border-b-0">
-                      <AccordionTrigger className="py-3 text-sm font-medium hover:text-[#c9a961] hover:no-underline [&>svg]:text-white [&>svg]:w-5 [&>svg]:h-5">
+                      <AccordionTrigger className="py-3 text-sm font-medium hover:text-[#c9a961] hover:no-underline [&>svg]:text-white [&>svg]:w-5 [&>svg]:h-5 cursor-pointer transition-colors">
                         {link.name}
                       </AccordionTrigger>
                       <AccordionContent>
@@ -232,7 +235,7 @@ export function Navbar() {
                             <a
                               key={i}
                               href={course.href}
-                              className="text-sm text-gray-300 hover:text-[#c9a961] transition-colors duration-150"
+                              className="text-sm text-gray-300 hover:text-[#c9a961] transition-colors duration-150 cursor-pointer"
                               onClick={() => setIsOpen(false)}
                             >
                               {course.name}
@@ -240,7 +243,7 @@ export function Navbar() {
                           ))}
                           <a
                             href="/cursos"
-                            className="text-sm font-semibold text-[#c9a961] pt-1 hover:text-[#d4b876] transition-colors duration-150"
+                            className="text-sm font-semibold text-[#c9a961] pt-1 hover:text-[#d4b876] transition-colors duration-150 cursor-pointer"
                             onClick={() => setIsOpen(false)}
                           >
                             Ver todos os cursos →
@@ -253,7 +256,7 @@ export function Navbar() {
                   <a
                     key={link.name}
                     href={link.href}
-                    className="block py-3 text-sm font-medium hover:text-[#c9a961] transition-colors duration-150"
+                    className="block py-3 text-sm font-medium hover:text-[#c9a961] transition-colors duration-150 cursor-pointer"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.name}
@@ -278,7 +281,7 @@ export function Navbar() {
                     {user?.type === "admin" && (
                       <a
                         href="/admin"
-                        className="py-3 px-2 text-sm font-medium text-slate-300 hover:text-[#c9a961] transition-colors duration-150"
+                        className="py-3 px-2 text-sm font-medium text-slate-300 hover:text-[#c9a961] transition-colors duration-150 cursor-pointer"
                       >
                         Painel Admin
                       </a>
@@ -286,7 +289,7 @@ export function Navbar() {
                     {(user?.type === "admin" || user?.type === "autor") && (
                       <a
                         href="/blog/novo-artigo"
-                        className="py-3 px-2 text-sm font-medium text-slate-300 hover:text-[#c9a961] transition-colors duration-150"
+                        className="py-3 px-2 text-sm font-medium text-slate-300 hover:text-[#c9a961] transition-colors duration-150 cursor-pointer"
                       >
                         Escrever Artigo
                       </a>
@@ -298,7 +301,7 @@ export function Navbar() {
                       logout();
                       setIsOpen(false);
                     }}
-                    className="flex items-center gap-2 mt-2 w-full text-left py-3 px-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors duration-150"
+                    className="flex items-center gap-2 mt-2 w-full text-left py-3 px-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors duration-150 cursor-pointer"
                   >
                     <LogOut className="w-4 h-4" />
                     Sair da conta
@@ -308,7 +311,7 @@ export function Navbar() {
                 <div className="mt-2 pt-2 border-t border-slate-700">
                   <a
                     href="/login"
-                    className="block py-3 text-sm font-medium hover:text-[#c9a961] transition-colors duration-150"
+                    className="block py-3 text-sm font-medium hover:text-[#c9a961] transition-colors duration-150 cursor-pointer"
                     onClick={() => setIsOpen(false)}
                   >
                     Login
