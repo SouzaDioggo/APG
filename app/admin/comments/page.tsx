@@ -8,6 +8,7 @@ import {
   getAllPosts,
   deleteComment,
   updateComment,
+  getAllUsers,
 } from "@/lib/api";
 import { AdminHeader } from "@/components/admin/admin-header";
 import {
@@ -23,6 +24,7 @@ import {
 } from "lucide-react";
 import { Comment } from "@/Interfaces/Interface-Comentario";
 import { Post } from "@/Interfaces/Interface-Post";
+import { User } from "@/Interfaces/Interface-User";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -61,6 +63,7 @@ export default function CommentsAdminPage() {
     useState<ExtendedComment | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const [usersList, setUsersList] = useState<User[]>([]);
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
@@ -69,10 +72,13 @@ export default function CommentsAdminPage() {
     try {
       setLoading(true);
 
-      const [commentsData, postsData] = await Promise.all([
+      const [commentsData, postsData, usersData] = await Promise.all([
         getAllComments(),
         getAllPosts(),
+        getAllUsers(),
       ]);
+
+      setUsersList(usersData);
 
       const postMap = new Map();
       postsData.forEach((post: Post) => {
@@ -200,6 +206,11 @@ export default function CommentsAdminPage() {
     }
   };
 
+  const getUserName = (userId: number) => {
+    const commentUser = usersList.find((u) => String(u.id) === String(userId));
+    return commentUser ? commentUser.name : `Usuário #${userId}`;
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 pb-12">
       <AdminHeader
@@ -277,7 +288,7 @@ export default function CommentsAdminPage() {
                         #{comment.id}
                       </td>
                       <td className="px-6 py-4 font-medium text-slate-700">
-                        {comment.userName || `Usuário #${comment.userId}`}
+                        {getUserName(comment.userId)}
                       </td>
                       <td className="px-6 py-4 text-slate-600">
                         <div
