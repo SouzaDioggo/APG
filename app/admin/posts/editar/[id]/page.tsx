@@ -11,8 +11,15 @@ import {
   ChevronUp,
   ChevronDown,
   Save,
+  ImageIcon,
 } from "lucide-react";
-import { updatePost, getPostById, getAllCategories } from "@/lib/api";
+import {
+  updatePost,
+  getPostById,
+  getAllCategories,
+  updatePostImage,
+  getPostImageUrl,
+} from "@/lib/api";
 import { Category } from "@/Interfaces/Interface-Categoria";
 import { useToast } from "@/hooks/use-toast";
 import { ContentBlock } from "@/Interfaces/Interface-Post";
@@ -33,7 +40,11 @@ export default function EditarArtigoPage() {
     { type: "text", content: "", order: 1 },
   ]);
 
-  // Carrega as categorias e os dados do post específico
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     const carregarDados = async () => {
       try {
@@ -46,6 +57,8 @@ export default function EditarArtigoPage() {
         setCategories(cats);
         setTitle(postData.title);
         setCategoryId(String(postData.categorieId));
+
+        setCurrentImage(postData.imageUrl || null);
 
         if (postData.content) {
           try {
@@ -75,7 +88,15 @@ export default function EditarArtigoPage() {
     };
 
     if (postId) carregarDados();
-  }, [postId, router]);
+  }, [postId, router, toast]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
 
   const addBlock = () => {
     setBlocks([
@@ -83,7 +104,6 @@ export default function EditarArtigoPage() {
       { type: "text", content: "", order: blocks.length + 1 },
     ]);
   };
-
   const removeBlock = (index: number) => {
     if (blocks.length === 1) return;
     const newBlocks = blocks
@@ -91,7 +111,6 @@ export default function EditarArtigoPage() {
       .map((b, i) => ({ ...b, order: i + 1 }));
     setBlocks(newBlocks);
   };
-
   const moveBlock = (index: number, direction: "up" | "down") => {
     const newBlocks = [...blocks];
     const targetIndex = direction === "up" ? index - 1 : index + 1;
@@ -102,7 +121,6 @@ export default function EditarArtigoPage() {
     ];
     setBlocks(newBlocks.map((b, i) => ({ ...b, order: i + 1 })));
   };
-
   const updateBlock = (index: number, value: string) => {
     const newBlocks = [...blocks];
     newBlocks[index].content = value;
@@ -128,8 +146,11 @@ export default function EditarArtigoPage() {
         categorieId: Number(categoryId),
         content: JSON.stringify(blocks),
       };
-
       await updatePost(postId, payload);
+
+      if (selectedFile) {
+        await updatePostImage(postId, selectedFile);
+      }
 
       toast({
         title: "Atualizado!",
@@ -138,9 +159,10 @@ export default function EditarArtigoPage() {
 
       router.push("/admin/posts");
     } catch (error) {
+      console.error(error);
       toast({
         title: "Erro",
-        description: "Falha ao atualizar o artigo.",
+        description: "Falha ao atualizar o artigo ou a imagem.",
         variant: "destructive",
       });
     } finally {
@@ -149,6 +171,7 @@ export default function EditarArtigoPage() {
   };
 
   if (initialLoading) {
+    // ... mantido igual
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4 text-slate-500">
@@ -164,7 +187,7 @@ export default function EditarArtigoPage() {
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col">
-        {/* Header */}
+        {/* Header - Mantido igual */}
         <div className="flex justify-between items-center p-6 border-b border-slate-100 bg-slate-50/50">
           <div className="flex items-center gap-4">
             <button
@@ -187,7 +210,69 @@ export default function EditarArtigoPage() {
         </div>
 
         <form onSubmit={handleUpdate} className="p-8 space-y-10">
-          {/* Dados Gerais */}
+          <section className="space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+            <h4 className="text-[12px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2 mb-4">
+              <ImageIcon className="w-4 h-4 text-[#1a4d7a]" /> Imagem de Capa
+            </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <p className="text-xs font-bold text-slate-400 uppercase">
+                  Capa Atual
+                </p>
+                <div className="w-full h-48 bg-slate-200 rounded-xl overflow-hidden border border-slate-200 relative">
+                  <img
+                    src={getPostImageUrl(currentImage)}
+                    alt="Capa Atual"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* NOVA IMAGEM (PREVIEW E INPUT) */}
+              <div className="space-y-2 flex flex-col">
+                <p className="text-xs font-bold text-slate-400 uppercase">
+                  Nova Capa (Preview)
+                </p>
+
+                <div
+                  className={`w-full h-48 rounded-xl overflow-hidden border-2 border-dashed flex flex-col items-center justify-center transition-all ${previewImage ? "border-[#1a4d7a]" : "border-slate-300 bg-white"}`}
+                >
+                  {previewImage ? (
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-slate-400 text-sm">
+                      Nenhuma nova imagem
+                    </span>
+                  )}
+                </div>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="mt-3 w-full py-2.5 bg-white border border-slate-300 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 hover:text-[#1a4d7a] hover:border-[#1a4d7a]/50 transition-all text-sm"
+                >
+                  {previewImage
+                    ? "Trocar Imagem Selecionada"
+                    : "Selecionar Nova Imagem"}
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* Dados Gerais - Mantidos iguais */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2 group">
               <label className="text-xs font-bold text-slate-500 uppercase transition-colors group-hover:text-[#1a4d7a]">
@@ -220,7 +305,7 @@ export default function EditarArtigoPage() {
             </div>
           </section>
 
-          {/* Editor de Blocos */}
+          {/* Editor de Blocos - Mantido igual */}
           <section className="space-y-6">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -288,7 +373,7 @@ export default function EditarArtigoPage() {
           </section>
         </form>
 
-        {/* Footer */}
+        {/* Footer - Mantido igual */}
         <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-end gap-4">
           <button
             onClick={() => router.back()}

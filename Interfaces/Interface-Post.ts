@@ -6,6 +6,7 @@ export interface Post {
   publicationDate: string;
   userId: number;
   image?: string;
+  imageUrl?: string;
   contents?: PostContent[];
 }
 export interface ModalNewPostProps {

@@ -162,31 +162,6 @@ export const deletePost = (id: number) =>
     method: "DELETE",
   });
 
-export const uploadImage = async (
-  file: File,
-  postId: number,
-  token: string,
-) => {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  formData.append("id", postId.toString());
-  formData.append("postId", postId.toString());
-
-  const response = await fetch(`${API_URL}/upload/post`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error("Erro no upload da imagem");
-  }
-
-  return response.json();
-};
 // ==========================================
 //  CATEGORIAS
 // ==========================================
@@ -255,3 +230,50 @@ export const deleteComment = (id: number) =>
   fetchApi(`/comments/${id}`, {
     method: "DELETE",
   });
+
+// ==========================================
+//  IMAGENS
+// ==========================================
+
+export const getPostImageUrl = (imagePath?: string | null) => {
+  if (!imagePath) return "/APG-BRANCO.png";
+
+  const fileName = imagePath.split("/").pop();
+
+  return `${API_URL}/upload/posts/${fileName}`;
+};
+
+export const uploadImage = async (
+  file: File,
+  postId: number,
+  token: string,
+) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  formData.append("id", postId.toString());
+  formData.append("postId", postId.toString());
+
+  const response = await fetch(`${API_URL}/upload/post`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro no upload da imagem");
+  }
+
+  return response.json();
+};
+
+export const updatePostImage = async (postId: number, file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  return fetchApi(`/upload/post/${postId}`, {
+    method: "PUT",
+    body: formData,
+  });
+};

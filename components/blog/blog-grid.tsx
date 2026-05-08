@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { getAllPosts, getAllCategories } from "@/lib/api";
+import { getAllPosts, getAllCategories, getPostImageUrl } from "@/lib/api";
 import { Calendar, Search, X, Plus } from "lucide-react";
 import { Post } from "@/Interfaces/Interface-Post";
 import { Category } from "@/Interfaces/Interface-Categoria";
@@ -136,11 +136,7 @@ export function BlogGrid() {
               >
                 <div className="h-48 bg-slate-100 overflow-hidden relative">
                   <img
-                    src={
-                      artigo.image
-                        ? `http://localhost:3001/uploads/${artigo.image}`
-                        : "/abstract-blue-wave-technology.jpg"
-                    }
+                    src={getPostImageUrl(artigo.imageUrl)}
                     alt={artigo.title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
