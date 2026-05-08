@@ -38,6 +38,7 @@ export async function fetchApi(path: string, options: RequestInit = {}) {
     if (response.status === 401) {
       if (!path.includes("/login")) {
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         window.location.href = "/login";
         throw new Error("Sessão expirada. Redirecionando para login...");
       }
@@ -126,25 +127,11 @@ export const getAllPosts = () =>
     method: "GET",
   });
 
-export const createPost = async (
-  postData: CreatePostPayload,
-  token: string,
-) => {
-  const response = await fetch(`${API_URL}/posts`, {
+export const createPost = (postData: CreatePostPayload) =>
+  fetchApi("/posts", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
     body: JSON.stringify(postData),
   });
-
-  if (!response.ok) {
-    throw new Error("Erro ao criar o post no banco de dados.");
-  }
-
-  return response.json();
-};
 
 export const getPostById = (id: string | number) =>
   fetchApi(`/posts/${id}`, {
@@ -243,30 +230,16 @@ export const getPostImageUrl = (imagePath?: string | null) => {
   return `${API_URL}/upload/posts/${fileName}`;
 };
 
-export const uploadImage = async (
-  file: File,
-  postId: number,
-  token: string,
-) => {
+export const uploadImage = async (file: File, postId: number) => {
   const formData = new FormData();
   formData.append("file", file);
-
   formData.append("id", postId.toString());
   formData.append("postId", postId.toString());
 
-  const response = await fetch(`${API_URL}/upload/post`, {
+  return fetchApi("/upload/post", {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
     body: formData,
   });
-
-  if (!response.ok) {
-    throw new Error("Erro no upload da imagem");
-  }
-
-  return response.json();
 };
 
 export const updatePostImage = async (postId: number, file: File) => {

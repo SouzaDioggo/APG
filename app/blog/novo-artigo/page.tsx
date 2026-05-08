@@ -126,7 +126,7 @@ export default function NovoArtigoPage() {
         imageUrl: null,
       };
 
-      const createdPost = await createPost(postPayload, token);
+      const createdPost = await createPost(postPayload);
 
       const postId = createdPost.id;
 
@@ -134,7 +134,7 @@ export default function NovoArtigoPage() {
         throw new Error("Backend não retornou o ID do post criado.");
       }
 
-      await uploadImage(selectedFile, postId, token);
+      await uploadImage(selectedFile, postId);
 
       toast({
         title: "Sucesso!",

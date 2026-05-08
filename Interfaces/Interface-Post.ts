@@ -9,11 +9,6 @@ export interface Post {
   imageUrl?: string;
   contents?: PostContent[];
 }
-export interface ModalNewPostProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-}
 
 export interface ContentBlock {
   type: "text" | "image";
