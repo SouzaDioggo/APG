@@ -46,7 +46,7 @@ export function PostBlockEditor({ blocks, setBlocks }: PostBlockEditorProps) {
         <button
           type="button"
           onClick={addBlock}
-          className="bg-[#1a4d7a]/5 hover:bg-[#1a4d7a] text-[#1a4d7a] hover:text-white px-3 py-1.5 rounded-lg flex items-center gap-2 text-[10px] font-bold uppercase transition-all"
+          className="bg-[#1a4d7a]/5 hover:bg-[#1a4d7a] text-[#1a4d7a] hover:text-white px-3 py-1.5 rounded-lg flex items-center gap-2 text-[10px] font-bold uppercase transition-all cursor-pointer"
         >
           <Plus className="w-3 h-3" /> Novo Bloco
         </button>
@@ -63,21 +63,21 @@ export function PostBlockEditor({ blocks, setBlocks }: PostBlockEditorProps) {
                 <button
                   type="button"
                   onClick={() => moveBlock(index, "up")}
-                  className="p-1.5 bg-slate-100 hover:bg-[#c9a961] hover:text-white rounded-md"
+                  className="p-1.5 bg-slate-100 hover:bg-[#c9a961] hover:text-white rounded-md transition-colors cursor-pointer"
                 >
                   <ChevronUp className="w-4 h-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => moveBlock(index, "down")}
-                  className="p-1.5 bg-slate-100 hover:bg-[#c9a961] hover:text-white rounded-md"
+                  className="p-1.5 bg-slate-100 hover:bg-[#c9a961] hover:text-white rounded-md transition-colors cursor-pointer"
                 >
                   <ChevronDown className="w-4 h-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => removeBlock(index)}
-                  className="p-1.5 bg-red-50 hover:bg-red-500 hover:text-white text-red-400 rounded-md"
+                  className="p-1.5 bg-red-50 hover:bg-red-500 hover:text-white text-red-400 rounded-md transition-colors cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

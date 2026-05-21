@@ -23,6 +23,16 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Comment } from "@/Interfaces/Interface-Comentario";
 import { User as UserInterface } from "@/Interfaces/Interface-User";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export function CommentSection({ postId }: { postId: number }) {
   const { user } = useAuth();
@@ -36,6 +46,7 @@ export function CommentSection({ postId }: { postId: number }) {
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editCommentText, setEditCommentText] = useState("");
   const [isActionLoading, setIsActionLoading] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
 
   // Paginação
   const [currentPage, setCurrentPage] = useState(1);
@@ -135,13 +146,12 @@ export function CommentSection({ postId }: { postId: number }) {
     }
   };
 
-  const handleDelete = async (commentId: number) => {
-    if (!window.confirm("Tem certeza que deseja excluir este comentário?"))
-      return;
+  const handleDelete = async () => {
+    if (!commentToDelete) return;
 
     try {
       setIsActionLoading(true);
-      await deleteComment(commentId);
+      await deleteComment(commentToDelete);
 
       toast({
         title: "Excluído!",
@@ -156,6 +166,7 @@ export function CommentSection({ postId }: { postId: number }) {
       });
     } finally {
       setIsActionLoading(false);
+      setCommentToDelete(null);
     }
   };
 
@@ -254,7 +265,7 @@ export function CommentSection({ postId }: { postId: number }) {
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(c.id)}
+                          onClick={() => setCommentToDelete(c.id)}
                           disabled={isActionLoading}
                           className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-all cursor-pointer disabled:opacity-50"
                           title="Excluir"
@@ -271,7 +282,7 @@ export function CommentSection({ postId }: { postId: number }) {
                       <textarea
                         value={editCommentText}
                         onChange={(e) => setEditCommentText(e.target.value)}
-                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961] text-sm text-slate-700 resize-none min-h-[80px]"
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961] text-sm text-slate-700 resize-none min-h-20"
                         placeholder="Edite seu comentário..."
                         disabled={isActionLoading}
                       />
@@ -337,6 +348,38 @@ export function CommentSection({ postId }: { postId: number }) {
           </button>
         </div>
       )}
+
+      <AlertDialog
+        open={commentToDelete !== null}
+        onOpenChange={(isOpen) => !isOpen && setCommentToDelete(null)}
+      >
+        <AlertDialogContent className="rounded-2xl border-slate-200 shadow-2xl">
+          <AlertDialogHeader>
+            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-500 sm:mx-0">
+              <Trash2 className="h-5 w-5" />
+            </div>
+            <AlertDialogTitle className="text-[#1a4d7a]">
+              Excluir comentário?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-slate-500">
+              Esta ação não pode ser desfeita. O comentário será removido
+              permanentemente deste artigo.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="cursor-pointer rounded-lg border-slate-200 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-800">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={isActionLoading}
+              className="cursor-pointer rounded-lg bg-red-500 text-white transition-colors hover:bg-red-600 disabled:opacity-70"
+            >
+              {isActionLoading ? "Excluindo..." : "Sim, excluir"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

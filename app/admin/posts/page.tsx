@@ -147,7 +147,7 @@ export default function PostsAdminPage() {
               {/* Botão de Novo Artigo sem usar o Modal Antigo */}
               <button
                 onClick={() => router.push("/blog/novo-artigo")}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-[#1a4d7a] hover:bg-[#0d2d4a] text-white text-sm font-medium rounded-lg transition-colors shadow-md w-full md:w-auto cursor-pointer"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-[#1a4d7a] hover:bg-[#c9a961] text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:scale-105 hover:cursor-pointer w-full md:w-auto"
               >
                 <Plus className="w-4 h-4" /> Novo Artigo
               </button>

@@ -7,16 +7,15 @@ import {
   Plus,
   Trash2,
   Layout,
-  Type,
   Image as ImageIcon,
   RefreshCw,
-  Upload,
   ChevronUp,
   ChevronDown,
 } from "lucide-react";
-import { createPost, getAllCategories } from "@/lib/api";
+import { createPost, getAllCategories, uploadImage } from "@/lib/api";
 import { Category } from "@/Interfaces/Interface-Categoria";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ContentBlock {
   type: "text" | "image";
@@ -25,6 +24,7 @@ interface ContentBlock {
 }
 
 export default function NovoArtigoPage() {
+  const { token } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -95,10 +95,11 @@ export default function NovoArtigoPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (
       !title ||
       !categoryId ||
-      // !selectedFile ||
+      !selectedFile ||
       blocks.some((b) => !b.content.trim())
     ) {
       toast({
@@ -109,23 +110,40 @@ export default function NovoArtigoPage() {
       return;
     }
 
+    if (!token) {
+      toast({ title: "Erro", description: "Usuário não autenticado." });
+      return;
+    }
+
     try {
       setLoading(true);
-      const payload = {
+
+      const postPayload = {
         title: title,
         categorieId: Number(categoryId),
+        publicationDate: new Date().toISOString(),
         content: JSON.stringify(blocks),
+        imageUrl: null,
       };
 
-      await createPost(payload);
+      const createdPost = await createPost(postPayload);
+
+      const postId = createdPost.id;
+
+      if (!postId) {
+        throw new Error("Backend não retornou o ID do post criado.");
+      }
+
+      await uploadImage(selectedFile, postId);
 
       toast({
-        title: "Ação concluída com sucesso!",
-        description: "Seu artigo foi publicado com sucesso.",
+        title: "Sucesso!",
+        description: "Artigo publicado com capa!",
       });
 
       router.push("/blog");
     } catch (error) {
+      console.error(error);
       toast({
         title: "Erro",
         description: "Falha ao publicar.",
@@ -135,6 +153,7 @@ export default function NovoArtigoPage() {
       setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col">

@@ -2,15 +2,12 @@ export interface Post {
   id: number;
   title: string;
   categorieId: number;
+  ImageUrl?: string | null;
   publicationDate: string;
   userId: number;
   image?: string;
+  imageUrl?: string;
   contents?: PostContent[];
-}
-export interface ModalNewPostProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
 }
 
 export interface ContentBlock {
@@ -30,4 +27,12 @@ export interface PostContent {
 export interface PostBlockEditorProps {
   blocks: ContentBlock[];
   setBlocks: (blocks: ContentBlock[]) => void;
+}
+
+export interface CreatePostPayload {
+  title: string;
+  categorieId: number;
+  publicationDate: string;
+  content: string;
+  imageUrl: string | null;
 }

@@ -1,3 +1,4 @@
+import { CreatePostPayload } from "@/Interfaces/Interface-Post";
 import { da } from "date-fns/locale";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -37,6 +38,7 @@ export async function fetchApi(path: string, options: RequestInit = {}) {
     if (response.status === 401) {
       if (!path.includes("/login")) {
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         window.location.href = "/login";
         throw new Error("Sessão expirada. Redirecionando para login...");
       }
@@ -125,10 +127,10 @@ export const getAllPosts = () =>
     method: "GET",
   });
 
-export const createPost = (data: any) =>
+export const createPost = (postData: CreatePostPayload) =>
   fetchApi("/posts", {
     method: "POST",
-    body: JSON.stringify(data),
+    body: JSON.stringify(postData),
   });
 
 export const getPostById = (id: string | number) =>
@@ -215,3 +217,36 @@ export const deleteComment = (id: number) =>
   fetchApi(`/comments/${id}`, {
     method: "DELETE",
   });
+
+// ==========================================
+//  IMAGENS
+// ==========================================
+
+export const getPostImageUrl = (imagePath?: string | null) => {
+  if (!imagePath) return "/APG-BRANCO.png";
+
+  const fileName = imagePath.split("/").pop();
+
+  return `${API_URL}/upload/posts/${fileName}`;
+};
+
+export const uploadImage = async (file: File, postId: number) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("id", postId.toString());
+  formData.append("postId", postId.toString());
+
+  return fetchApi("/upload/post", {
+    method: "POST",
+    body: formData,
+  });
+};
+
+export const updatePostImage = async (postId: number, file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  return fetchApi(`/upload/post/${postId}`, {
+    method: "PUT",
+    body: formData,
+  });
+};
