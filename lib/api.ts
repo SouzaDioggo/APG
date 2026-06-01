@@ -1,3 +1,4 @@
+import { Course } from "@/Interfaces/Interface-CoursesDTO";
 import { CreatePostPayload } from "@/Interfaces/Interface-Post";
 import { da } from "date-fns/locale";
 
@@ -250,3 +251,34 @@ export const updatePostImage = async (postId: number, file: File) => {
     body: formData,
   });
 };
+
+// ==========================================
+//  COURSES
+// ==========================================
+
+export const getAllCourses = () =>
+  fetchApi("/courses", {
+    method: "GET",
+  });
+
+export const getCourseById = (id: string | number): Promise<Course> =>
+  fetchApi(`/courses/${id}`, {
+    method: "GET",
+  });
+
+export const createCourse = (data: {courses: Course[]}): Promise<Course[]> =>
+  fetchApi("/courses", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+export const updateCourse = (id: string | number, data: Course): Promise<Course> =>
+  fetchApi(`/courses/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+export const deleteCourse = (id: string | number): Promise<Course> =>
+  fetchApi(`/courses/${id}`, {
+    method: "DELETE",
+  });
