@@ -15,13 +15,29 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useAuth } from "@/contexts/AuthContext";
+import { getAllCourses } from "@/lib/api";
+import { CourseData } from "@/Interfaces/Interface-Cursos";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [courses, setCourses] = useState<CourseData[]>([]);
   const { user, logout } = useAuth();
 
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const data = await getAllCourses();
+        setCourses(data.slice(0, 3));
+      } catch (error) {
+        console.error("Erro ao buscar cursos na Navbar:", error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -43,25 +59,6 @@ export function Navbar() {
     { name: "Sobre", href: "/sobre" },
     { name: "Blog", href: "/blog" },
     { name: "Cursos", href: "/cursos", hasDropdown: true },
-  ];
-
-  const coursesList = [
-    {
-      name: "Empreender certo - como fazer negócios rentáveis",
-      href: "/cursos#empreender-certo-negocios-rentaveis",
-    },
-    {
-      name: "Sociedade Limitada: O que Todo Gestor Precisa Saber",
-      href: "/cursos#sociedade-limitada-gestor-precisa-saber",
-    },
-    {
-      name: "Formação de Gestor de Proteção de Dados (DPO)",
-      href: "/cursos#formacao-gestor-protecao-dados-dpo",
-    },
-    {
-      name: "ONG e OSC: Gestão que Funciona",
-      href: "/cursos#ong-osc-gestao-que-funciona",
-    },
   ];
 
   return (
@@ -97,21 +94,31 @@ export function Navbar() {
                       align="start"
                       sideOffset={12}
                     >
-                      {coursesList.map((course, index) => (
-                        <DropdownMenuItem
-                          key={index}
-                          asChild
-                          className="cursor-pointer hover:bg-[#ecf0f1] rounded-md transition-colors duration-150"
-                        >
-                          <a
-                            href={course.href}
-                            className="w-full p-3 text-sm font-medium text-gray-700"
-                            onClick={() => setIsOpen(false)}
+                      {courses.length === 0 ? (
+                        <div className="p-3 text-sm text-gray-500 text-center">
+                          Carregando cursos...
+                        </div>
+                      ) : (
+                        courses.map((course) => (
+                          <DropdownMenuItem
+                            key={course.id}
+                            asChild
+                            className="cursor-pointer hover:bg-[#ecf0f1] rounded-md transition-colors duration-150"
                           >
-                            {course.name}
-                          </a>
-                        </DropdownMenuItem>
-                      ))}
+                            <a
+                              href={course.hotmartLink} // Link direto cadastrado no banco
+                              target="_blank" // Abre em nova aba
+                              rel="noopener noreferrer"
+                              className="w-full p-3 text-sm font-medium text-gray-700 line-clamp-1"
+                              onClick={() => setIsOpen(false)}
+                              title={course.title}
+                            >
+                              {course.title}
+                            </a>
+                          </DropdownMenuItem>
+                        ))
+                      )}
+
                       <div className="border-t border-slate-200 my-2" />
                       <DropdownMenuItem
                         asChild
@@ -231,16 +238,25 @@ export function Navbar() {
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="flex flex-col space-y-3 pl-4 pb-2 border-l border-slate-700 ml-2">
-                          {coursesList.map((course, i) => (
-                            <a
-                              key={i}
-                              href={course.href}
-                              className="text-sm text-gray-300 hover:text-[#c9a961] transition-colors duration-150 cursor-pointer"
-                              onClick={() => setIsOpen(false)}
-                            >
-                              {course.name}
-                            </a>
-                          ))}
+                          {courses.length === 0 ? (
+                            <span className="text-sm text-gray-500">
+                              Carregando...
+                            </span>
+                          ) : (
+                            courses.map((course) => (
+                              <a
+                                key={course.id}
+                                href={course.hotmartLink} // Link direto no mobile também
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm text-gray-300 hover:text-[#c9a961] transition-colors duration-150 cursor-pointer line-clamp-1"
+                                title={course.title}
+                                onClick={() => setIsOpen(false)}
+                              >
+                                {course.title}
+                              </a>
+                            ))
+                          )}
                           <a
                             href="/cursos"
                             className="text-sm font-semibold text-[#c9a961] pt-1 hover:text-[#d4b876] transition-colors duration-150 cursor-pointer"

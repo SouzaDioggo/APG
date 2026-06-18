@@ -253,32 +253,31 @@ export const updatePostImage = async (postId: number, file: File) => {
 };
 
 // ==========================================
-//  COURSES
+//  CURSOS
 // ==========================================
-
 export const getAllCourses = () =>
   fetchApi("/courses", {
     method: "GET",
   });
 
-export const getCourseById = (id: string | number): Promise<Course> =>
+export const getCourseById = (id: string) =>
   fetchApi(`/courses/${id}`, {
     method: "GET",
   });
 
-export const createCourse = (data: {courses: Course[]}): Promise<Course[]> =>
+export const createCourse = (data: any) =>
   fetchApi("/courses", {
     method: "POST",
     body: JSON.stringify(data),
   });
 
-export const updateCourse = (id: string | number, data: Course): Promise<Course> =>
+export const updateCourse = (id: string, data: any) =>
   fetchApi(`/courses/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),
   });
 
-export const deleteCourse = (id: string | number): Promise<Course> =>
+export const deleteCourse = (id: string) =>
   fetchApi(`/courses/${id}`, {
     method: "DELETE",
   });

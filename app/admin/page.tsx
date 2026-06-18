@@ -4,7 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { AdminHeader } from "@/components/admin/admin-header";
-import { Users, FileText, Tags, MessageSquare, ArrowRight } from "lucide-react";
+import {
+  Users,
+  FileText,
+  Tags,
+  MessageSquare,
+  ArrowRight,
+  GraduationCap,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function AdminDashboard() {
@@ -65,6 +72,14 @@ export default function AdminDashboard() {
       href: "/admin/comments",
       color: "text-purple-500",
       bgColor: "bg-purple-50",
+    },
+    {
+      title: "Gestão de Cursos",
+      description: "Crie, edite e exclua cursos disponíveis na plataforma.",
+      icon: GraduationCap,
+      href: "/admin/courses",
+      color: "text-blue-500",
+      bgColor: "bg-blue-50",
     },
   ];
 
