@@ -18,6 +18,7 @@ import {
   Trash2,
   X,
   AlertTriangle,
+  Check,
 } from "lucide-react";
 import { CourseData } from "@/Interfaces/Interface-Cursos";
 import { useToast } from "@/hooks/use-toast";
@@ -50,6 +51,21 @@ export default function CoursesAdminPage() {
   // Estados do Modal de Exclusão
   const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const GRADIENT_PRESETS = [
+    {
+      name: "Azul APG",
+      value: "bg-gradient-to-br from-[#1a4d7a] to-[#0d2d4a]",
+    },
+    { name: "Dourado", value: "bg-gradient-to-br from-[#c9a961] to-[#8a733f]" },
+    { name: "Roxo", value: "bg-gradient-to-br from-purple-600 to-indigo-800" },
+    {
+      name: "Esmeralda",
+      value: "bg-gradient-to-br from-emerald-500 to-teal-800",
+    },
+    { name: "Fogo", value: "bg-gradient-to-br from-orange-500 to-red-700" },
+    { name: "Escuro", value: "bg-gradient-to-br from-slate-700 to-slate-900" },
+  ];
 
   const loadData = async () => {
     try {
@@ -428,19 +444,77 @@ export default function CoursesAdminPage() {
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961]"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Classe CSS de Fundo (Tailwind)
+                <div className="col-span-1 md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-3">
+                    Aparência do Card (Cor de Fundo)
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.bgClass}
-                    onChange={(e) =>
-                      setFormData({ ...formData, bgClass: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961]"
-                  />
+
+                  {/* Grid de opções visuais */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                    {GRADIENT_PRESETS.map((preset) => {
+                      const isSelected = formData.bgClass === preset.value;
+                      return (
+                        <button
+                          type="button"
+                          key={preset.value}
+                          onClick={() =>
+                            setFormData({ ...formData, bgClass: preset.value })
+                          }
+                          title={preset.name}
+                          className={`relative h-16 w-full rounded-xl border-2 flex items-center justify-center overflow-hidden transition-all duration-300 hover:scale-105 hover:cursor-pointer hover:shadow-md ${
+                            isSelected
+                              ? "border-[#c9a961] shadow-md scale-105"
+                              : "border-transparent"
+                          }`}
+                        >
+                          <div
+                            className={`absolute inset-0 ${preset.value} opacity-90`}
+                          />
+
+                          {/* Camada escurecida no hover para dar contraste ao texto */}
+                          <div className="absolute inset-0 bg-black/10 hover:bg-black/20 transition-colors" />
+
+                          {/* Ícone de check se estiver selecionado */}
+                          {isSelected && (
+                            <div className="absolute top-1 right-1 bg-[#c9a961] text-white rounded-full p-0.5 shadow-sm z-20">
+                              <Check className="w-3 h-3" />
+                            </div>
+                          )}
+
+                          {/* Nome da cor amigável */}
+                          <span className="relative z-10 text-xs font-bold text-white drop-shadow-md px-2 text-center leading-tight">
+                            {preset.name}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Fallback de segurança: Se a classe atual não bater com nenhuma dos presets (ex: curso antigo) */}
+                  {!GRADIENT_PRESETS.some(
+                    (p) => p.value === formData.bgClass,
+                  ) &&
+                    formData.bgClass !== "" && (
+                      <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                        <p className="text-xs text-amber-800 mb-2 font-medium flex items-center gap-1">
+                          <AlertTriangle className="w-3 h-3" />
+                          Este curso possui uma cor personalizada antiga. Clique
+                          em uma das opções acima para atualizar, ou mantenha a
+                          classe abaixo:
+                        </p>
+                        <input
+                          type="text"
+                          value={formData.bgClass}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              bgClass: e.target.value,
+                            })
+                          }
+                          className="w-full px-3 py-1.5 text-sm border border-amber-300 rounded focus:outline-none focus:border-amber-500 bg-white text-slate-600"
+                        />
+                      </div>
+                    )}
                 </div>
               </div>
 
