@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAllCourses } from "@/lib/api";
+import { getAllCourses, getCourseImageUrl } from "@/lib/api";
 import { CourseData } from "@/Interfaces/Interface-Cursos";
 import {
   GraduationCap,
@@ -90,10 +90,24 @@ export default function PublicCoursesPage() {
                   key={course.id || `course-${index}`}
                   className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col overflow-hidden group animate-fade-in-up"
                 >
+                  {/* INTERCEPTADOR LOGICO: IMAGEM OU GRADIENTE FALLBACK */}
                   <div
-                    className={`${course.bgClass || "bg-[#1a4d7a]"} p-6 relative overflow-hidden`}
+                    className={`${course.imageUrl ? "bg-slate-950" : course.bgClass || "bg-[#1a4d7a]"} p-6 relative overflow-hidden min-h-[140px] flex flex-col justify-end`}
                   >
-                    <div className="absolute inset-0 bg-black/10"></div>
+                    {course.imageUrl ? (
+                      <>
+                        <img
+                          src={getCourseImageUrl(course.imageUrl)}
+                          alt={course.title}
+                          className="absolute inset-0 w-full h-full object-cover opacity-50 transition-transform duration-500 group-hover:scale-105"
+                        />
+                        {/* Overlay escuro para dar contraste ao texto branco */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-0"></div>
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 bg-black/10 z-0"></div>
+                    )}
+
                     <div className="relative z-10 text-white">
                       <div className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold tracking-wider uppercase mb-3 border border-white/20">
                         {course.level}

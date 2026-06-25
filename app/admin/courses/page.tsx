@@ -7,6 +7,8 @@ import {
   createCourse,
   deleteCourse,
   updateCourse,
+  uploadCourseImage,
+  getCourseImageUrl,
 } from "@/lib/api";
 import { AdminHeader } from "@/components/admin/admin-header";
 import {
@@ -19,6 +21,7 @@ import {
   X,
   AlertTriangle,
   Check,
+  UploadCloud,
 } from "lucide-react";
 import { CourseData } from "@/Interfaces/Interface-Cursos";
 import { useToast } from "@/hooks/use-toast";
@@ -47,6 +50,10 @@ export default function CoursesAdminPage() {
     hotmartLink: "",
     benefitsInput: "", // Trataremos isso para virar string[]
   });
+
+  // Novos Estados locais para gerenciar o arquivo físico e preview
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   // Estados do Modal de Exclusão
   const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);
@@ -96,6 +103,22 @@ export default function CoursesAdminPage() {
     course.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+  // Captura o arquivo de imagem no computador
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        toast({
+          variant: "destructive",
+          title: "Apenas imagens são permitidas!",
+        });
+        return;
+      }
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
   // === Funções de Criação / Edição ===
   const handleOpenModal = (course?: CourseData) => {
     if (course) {
@@ -106,10 +129,13 @@ export default function CoursesAdminPage() {
         duration: course.duration,
         modules: course.modules,
         level: course.level,
-        bgClass: course.bgClass,
+        bgClass: course.bgClass || "bg-gradient-to-r from-blue-500 to-blue-700", // Fallback
         hotmartLink: course.hotmartLink,
         benefitsInput: course.benefits.join(", "), // Converte array para string
       });
+      setPreviewUrl(
+        course.imageUrl ? getCourseImageUrl(course.imageUrl) : null,
+      ); 
     } else {
       setEditingCourse(null);
       setFormData({
@@ -122,13 +148,17 @@ export default function CoursesAdminPage() {
         hotmartLink: "",
         benefitsInput: "",
       });
+      setPreviewUrl(null);
     }
+    setImageFile(null); // Limpa arquivo anterior
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingCourse(null);
+    setImageFile(null);
+    setPreviewUrl(null);
   };
 
   const handleSaveCourse = async (e: React.FormEvent) => {
@@ -152,6 +182,8 @@ export default function CoursesAdminPage() {
 
     try {
       setIsSaving(true);
+      let savedCourse: any = null;
+
       if (editingCourse) {
         await updateCourse(editingCourse.id, payload);
         toast({
@@ -159,12 +191,18 @@ export default function CoursesAdminPage() {
           description: `O curso "${formData.title}" foi atualizado.`,
         });
       } else {
-        await createCourse(payload);
+        savedCourse = await createCourse(payload);
         toast({
           title: "Ação concluída com sucesso!",
           description: `O curso "${formData.title}" foi criado.`,
         });
       }
+
+      const targetId = editingCourse ? editingCourse.id : savedCourse?.id;
+      if (imageFile && targetId) {
+        await uploadCourseImage(imageFile, targetId);
+      }
+
       await loadData();
       handleCloseModal();
     } catch (error) {
@@ -254,6 +292,7 @@ export default function CoursesAdminPage() {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="bg-white text-slate-500 border-b border-slate-200">
+                  <th className="px-6 py-4 font-medium w-20">Miniatura</th>{" "}
                   <th className="px-6 py-4 font-medium">Título do Curso</th>
                   <th className="px-6 py-4 font-medium">Nível</th>
                   <th className="px-6 py-4 font-medium">Duração</th>
@@ -263,13 +302,13 @@ export default function CoursesAdminPage() {
               <tbody className="divide-y divide-slate-100">
                 {loading ? (
                   <tr>
-                    <td colSpan={4} className="p-8 text-center text-slate-500">
+                    <td colSpan={5} className="p-8 text-center text-slate-500">
                       Carregando cursos...
                     </td>
                   </tr>
                 ) : filteredCourses.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="p-8 text-center text-slate-500">
+                    <td colSpan={5} className="p-8 text-center text-slate-500">
                       Nenhum curso encontrado.
                     </td>
                   </tr>
@@ -279,6 +318,20 @@ export default function CoursesAdminPage() {
                       key={course.id || `course-${index}`}
                       className="hover:bg-slate-50 transition-colors"
                     >
+                      {/* Renderização da miniatura ou da cor padrão */}
+                      <td className="px-6 py-4">
+                        {course.imageUrl ? (
+                          <img
+                            src={getCourseImageUrl(course.imageUrl)}
+                            alt={course.title}
+                            className="w-12 h-8 object-cover rounded border border-slate-200"
+                          />
+                        ) : (
+                          <div
+                            className={`w-12 h-8 rounded border border-slate-200 ${course.bgClass}`}
+                          />
+                        )}
+                      </td>
                       <td className="px-6 py-4 font-medium text-slate-700">
                         {course.title}
                       </td>
@@ -444,6 +497,51 @@ export default function CoursesAdminPage() {
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-[#c9a961] focus:ring-1 focus:ring-[#c9a961]"
                   />
                 </div>
+
+                {/* CAMPO NOVO: ADICIONAR IMAGEM FÍSICA */}
+                <div className="col-span-1 md:col-span-2 border-t pt-4">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Imagem de Capa do Curso{" "}
+                    <span className="text-xs font-normal text-slate-400">
+                      (Sobrescreve a cor de fundo se adicionada)
+                    </span>
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="file"
+                      id="admin-course-file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        document.getElementById("admin-course-file")?.click()
+                      }
+                      className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg border border-slate-300 transition-all font-medium text-sm hover:cursor-pointer"
+                    >
+                      <UploadCloud className="w-4 h-4 text-slate-500" />
+                      {imageFile ? "Alterar Arquivo" : "Escolher Arquivo"}
+                    </button>
+                    {imageFile && (
+                      <span className="text-xs text-slate-500 truncate max-w-[250px]">
+                        {imageFile.name}
+                      </span>
+                    )}
+                  </div>
+
+                  {previewUrl && (
+                    <div className="mt-3 relative w-full h-32 rounded-lg overflow-hidden border border-slate-200 bg-slate-50 flex items-center justify-center">
+                      <img
+                        src={previewUrl}
+                        alt="Preview da Capa"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-sm font-medium text-slate-700 mb-3">
                     Aparência do Card (Cor de Fundo)

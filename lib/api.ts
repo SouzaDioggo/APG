@@ -281,3 +281,22 @@ export const deleteCourse = (id: string) =>
   fetchApi(`/courses/${id}`, {
     method: "DELETE",
   });
+
+export const getCourseImageUrl = (imagePath?: string | null) => {
+  if (!imagePath) return "/APG-BRANCO.png";
+
+  const fileName = imagePath.split("/").pop();
+
+  return `${API_URL}/upload/courses/${fileName}`;
+};
+
+export const uploadCourseImage = async (file: File, courseId: string) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("courseId", courseId.toString());
+
+  return fetchApi("/upload/course", {
+    method: "POST",
+    body: formData,
+  });
+};
