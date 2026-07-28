@@ -1,6 +1,7 @@
 export interface ICourse {
   title: string;
-  bgClass: string;
+  bgClass: string | null;
+  imageUrl?: string | null;
 }
 
 export interface AbstractBackgroundProps {

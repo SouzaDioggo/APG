@@ -1,3 +1,4 @@
+import { Course } from "@/Interfaces/Interface-CoursesDTO";
 import { CreatePostPayload } from "@/Interfaces/Interface-Post";
 import { da } from "date-fns/locale";
 
@@ -247,6 +248,55 @@ export const updatePostImage = async (postId: number, file: File) => {
   formData.append("file", file);
   return fetchApi(`/upload/post/${postId}`, {
     method: "PUT",
+    body: formData,
+  });
+};
+
+// ==========================================
+//  CURSOS
+// ==========================================
+export const getAllCourses = () =>
+  fetchApi("/courses", {
+    method: "GET",
+  });
+
+export const getCourseById = (id: string) =>
+  fetchApi(`/courses/${id}`, {
+    method: "GET",
+  });
+
+export const createCourse = (data: any) =>
+  fetchApi("/courses", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+export const updateCourse = (id: string, data: any) =>
+  fetchApi(`/courses/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+export const deleteCourse = (id: string) =>
+  fetchApi(`/courses/${id}`, {
+    method: "DELETE",
+  });
+
+export const getCourseImageUrl = (imagePath?: string | null) => {
+  if (!imagePath) return "/APG-BRANCO.png";
+
+  const fileName = imagePath.split("/").pop();
+
+  return `${API_URL}/upload/courses/${fileName}`;
+};
+
+export const uploadCourseImage = async (file: File, courseId: string) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("courseId", courseId.toString());
+
+  return fetchApi("/upload/course", {
+    method: "POST",
     body: formData,
   });
 };
